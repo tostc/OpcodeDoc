@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>OpcodeDoc</title>
+        <meta name="description" content="OpcodeDoc is a collection of various CPU and VM opcodes.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="index.css">
+        <script src="main.js"></script>
+        <script src="search.js"></script>
+    </head>
+    <body>
+        <span id="forkongithub"><a href="https://github.com/tostc/OpcodeDoc" target="_blank">Fork me on GitHub</a></span>
+        <div class="content">
+            <button onclick="scrollUpToTop()" type="button" id="gotop" title="Go to top"><span class="material-icons">arrow_upward</span></button>
+
+            <div class="search-bar">
+                <h1>OpcodeDoc</h1>
+                <div class="search">
+                    <span class="material-icons">search</span>
+                    <input type="text" id="search" required onfocus="toggleHighlightSearchbox(this)" onblur="toggleHighlightSearchbox(this)" onkeyup="search(this)">
+                    <label for="search">Search</label>
+                </div>
+            </div>
+
+            <div id="cards">
+<a href="Chip-8.html">    <div class="search-card">        <div class="search-card-header">Chip-8</div>        <div class="search-card-content">A interpreted programming language for the COSMAC ELF.</div>    </div></a><a href="R4300i.html">    <div class="search-card">        <div class="search-card-header">R4300i</div>        <div class="search-card-content">MIPS processor of the Nintendo 64. The R4300i is a 64-bit processor. It supports the MIPS III ISA introduction set.</div>    </div></a><a href="RSP.html">    <div class="search-card">        <div class="search-card-header">RSP</div>        <div class="search-card-content">Reality Co-Processor of the Nintendo 64. Its main purpose is rendering and computing 3D graphics.</div>    </div></a>            </div>
+        </div>
+    </body>
+</html>

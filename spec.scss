@@ -1,0 +1,185 @@
+@import "scss/variables";
+
+.sources {
+    list-style: none;
+    padding: 0;
+}
+
+.navbar {
+    display: inline;
+    position: fixed;
+    height: 100%;
+    width: $navbar-large-width;
+    overflow: auto;
+    top: 0;
+
+    background-color: $foreground-color;
+
+    .groups {
+        list-style: none;
+        width: 80%;
+        margin-left: 10%;
+        padding: 0;
+
+        a {
+            display: block;
+            margin: 25px 0 25px 16px;
+        }
+    }
+
+    .header {
+        h1 {
+            font-weight: bold;
+            
+            text-align: center;
+        }
+    }
+}
+
+#menu {
+    display: none;
+    position: fixed;
+    width: 50px;
+    height: 50px;
+
+    right: 20px;
+    top: 20px;
+
+    background: none;
+    border: none;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba($color: black, $alpha: 0.6);
+}
+
+.content {
+    margin-left: $navbar-large-width;
+    padding: 1%;
+
+    h2 {
+        margin-left: 10%;
+    }
+
+    .missing {
+        padding: 16px;
+        width: 80%;
+        margin-left: 10%;
+        background-color: rgba($color: red, $alpha: 0.4);
+        border: 1px solid red;
+        border-radius: 5px;
+    }
+
+    .card {
+        width: 80%;
+        margin-left: 10%;
+        border: 1px solid $border-color;
+        border-radius: 5px;
+        background-color: $foreground-color;
+
+        &:not(:first-child) {
+            margin-top: 1%;
+        }
+
+        .card-header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            position: relative;
+            background-color: $border-color;
+
+            .right {
+                position: absolute;
+                right: 0;
+            }
+
+            .material-icons {
+                margin: 10px;
+                transition: color .2s;
+
+                &:hover {
+                    cursor: pointer;
+                    color: $highlight-color;
+                }
+            }
+        }
+
+        .card-content {
+            padding: 16px;
+
+            p:not(.code) {
+                font-weight: bold;
+            }
+
+            .code {
+                padding: 10px 10px 10px 16px;
+                border-left: 3px solid $border-color;
+                background-color: rgba($color: $border-color, $alpha: 0.2);
+                white-space: pre-wrap;
+
+                .glossary {
+                    transition: color .2s;
+                    font-weight: bold;
+
+                    &:hover {
+                        cursor: pointer;
+                        color: $highlight-color;
+                    }
+                }
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+
+                td, th {
+                    border: 1px solid $border-color;
+                    text-align: center;
+                    padding: 8px;
+                }
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $max-large-screen-menu) {
+    .navbar {
+        width: $navbar-middle-width;
+    }
+
+    .content {
+        margin-left: $navbar-middle-width;
+
+        .card {
+            width: 90%;
+            margin-left: 5%;
+        }
+    }
+
+    #menu {
+        display: block;
+    }
+}
+
+@media screen and (max-width: $max-small-screen-menu) {
+    .navbar {
+        display: none;
+        z-index: 10000;
+        width: $navbar-small-width;
+    }
+
+    .content {
+        margin-left: 0;
+
+        .card {
+            width: 90%;
+            margin-left: 5%;
+        }
+    }
+}

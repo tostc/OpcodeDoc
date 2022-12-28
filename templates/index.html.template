@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>OpcodeDoc</title>
+        <meta name="description" content="OpcodeDoc is a collection of various CPU and VM opcodes.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="index.css">
+        <script src="main.js"></script>
+        <script src="search.js"></script>
+    </head>
+    <body>
+        <span id="forkongithub"><a href="https://github.com/tostc/OpcodeDoc" target="_blank">Fork me on GitHub</a></span>
+        <div class="content">
+            <button onclick="scrollUpToTop()" type="button" id="gotop" title="Go to top"><span class="material-icons">arrow_upward</span></button>
+
+            <div class="search-bar">
+                <h1>OpcodeDoc</h1>
+                <div class="search">
+                    <span class="material-icons">search</span>
+                    <input type="text" id="search" required onfocus="toggleHighlightSearchbox(this)" onblur="toggleHighlightSearchbox(this)" onkeyup="search(this)">
+                    <label for="search">Search</label>
+                </div>
+            </div>
+
+            <div id="cards">
+                {{content}}
+            </div>
+        </div>
+    </body>
+</html>

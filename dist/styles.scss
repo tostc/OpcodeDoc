@@ -1,0 +1,205 @@
+@import "scss/variables";
+
+/* roboto-regular - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local(''),
+         url('fonts/roboto-v30-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('fonts/roboto-v30-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+  
+/* roboto-700 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    src: local(''),
+         url('fonts/roboto-v30-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('fonts/roboto-v30-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Material Icons'),
+         local('MaterialIcons-Regular'),
+         url(fonts/MaterialIcons-Regular.ttf) format('truetype');
+}
+  
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    
+  
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+  
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Roboto";
+    color: $text-color;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: $background-color;
+    scroll-behavior: smooth;
+}
+
+body {
+    height: 100vh;
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+    transition: color .2s;
+    color: $text-color;
+
+    &:hover {
+        color: $highlight-color;
+    }
+}
+
+.navbar {
+    display: inline;
+    position: fixed;
+    height: 100%;
+    width: $navbar-width;
+
+    background-color: $foreground-color;
+
+    .groups {
+        list-style: none;
+        width: 80%;
+        margin-left: 10%;
+        padding: 0;
+
+        a {
+            display: block;
+            margin: 10px;
+        }
+    }
+
+    .header {
+        h1 {
+            font-weight: bold;
+            
+            text-align: center;
+        }
+
+        .search {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 0;
+            background-color: $background-color;
+            border-radius: 10px;
+            border: 1px solid $border-color;
+
+            width: 80%;
+            margin-left: 10%;
+
+            transition: border-color .2s;
+
+            &.highlighted {
+                border-color: $highlight-color;
+            }
+
+            .material-icons {
+                position: relative;
+                left: 3%;
+                top: 2px;
+            }
+
+            input[type="text"] {
+                background-color: unset;
+                border: none;
+                font-size: 16pt;
+                
+                margin: 0 5%;
+                width: 100%;
+
+                &:focus {
+                    outline-width: 0;
+                    outline: none;
+                }
+            }
+        }
+    }
+}
+
+.content {
+    margin-left: $navbar-width;
+    padding: 1%;
+
+    .card {
+        width: 80%;
+        margin-left: 10%;
+        border: 1px solid $border-color;
+        border-radius: 5px;
+        background-color: $foreground-color;
+
+        .card-header {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            background-color: $border-color;
+
+            .material-icons {
+                margin: 10px;
+                transition: color .2s;
+
+                &:hover {
+                    cursor: pointer;
+                    color: $highlight-color;
+                }
+            }
+        }
+
+        .card-content {
+            padding: 16px;
+
+            p:not(.code) {
+                font-weight: bold;
+            }
+
+            .code {
+                padding: 10px 10px 10px 16px;
+                border-left: 3px solid $border-color;
+                background-color: rgba($color: $border-color, $alpha: 0.2);
+            }
+
+            table {
+                border-collapse: collapse;
+                width: 100%;
+
+                td, th {
+                    border: 1px solid $border-color;
+                    text-align: center;
+                    padding: 8px;
+                }
+            }
+        }
+    }
+}

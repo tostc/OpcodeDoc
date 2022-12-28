@@ -1,0 +1,2326 @@
+{
+    "$spec": "1.0.0",
+    "$info": {
+        "title": "R4300i",
+        "description": "MIPS processor of the Nintendo 64. The R4300i is a 64-bit processor. It supports the MIPS III ISA introduction set.",
+        "clock_speed": "93.75 MHz",
+        "cache": {
+            "L1": {
+                "size": "24 KB",
+                "comment": "Divided into 16 KB for instructions and 8 KB for data."
+            }
+        },
+        "address_bus": 32,
+        "sources": [ "https://github.com/martinlindhe/n64ops", "https://www.copetti.org/writings/consoles/nintendo-64" ],
+        "version": "1.0.0",
+        "complete": true
+    },
+    "glossary": {
+        "rs": "5-bit source register specifier",
+        "rt": "5-bit target (source/destination) register or branch condition",
+        "rd": "5-bit destination register specifier",
+        "sa": "5-bit shift amount",
+        "fs": "5-bit floating point source register specifier",
+        "ft": "5-bit floating point target (source/destination) register or branch condition",
+        "fd": "5-bit floating point destination register specifier",
+        "base": "5-bit value",
+        "imm": "16 bit immediate value",
+        "offset": "16 bit branch displacement or address displacement",
+        "target": "26 bit jump target address"
+    },
+    "registers": {
+        "Main": [
+            {"name": "r0/reg0", "value": "0x00", "size": 64},
+            {"name": "at/reg1", "value": "0x01", "size": 64},
+            {"name": "v0/reg2", "value": "0x02", "size": 64},
+            {"name": "v1/reg3", "value": "0x03", "size": 64},
+            {"name": "a0/reg4", "value": "0x04", "size": 64},
+            {"name": "a1/reg5", "value": "0x05", "size": 64},
+            {"name": "a2/reg6", "value": "0x06", "size": 64},
+            {"name": "a3/reg7", "value": "0x07", "size": 64},
+            {"name": "t0/reg8", "value": "0x08", "size": 64},
+            {"name": "t1/reg9", "value": "0x09", "size": 64},
+            {"name": "t2/reg10", "value": "0x0A", "size": 64},
+            {"name": "t3/reg11", "value": "0x0B", "size": 64},
+            {"name": "t4/reg12", "value": "0x0C", "size": 64},
+            {"name": "t5/reg13", "value": "0x0D", "size": 64},
+            {"name": "t6/reg14", "value": "0x0E", "size": 64},
+            {"name": "t7/reg15", "value": "0x0F", "size": 64},
+            {"name": "s0/reg16", "value": "0x10", "size": 64},
+            {"name": "s1/reg17", "value": "0x11", "size": 64},
+            {"name": "s2/reg18", "value": "0x12", "size": 64},
+            {"name": "s3/reg19", "value": "0x13", "size": 64},
+            {"name": "s4/reg20", "value": "0x14", "size": 64},
+            {"name": "s5/reg21", "value": "0x15", "size": 64},
+            {"name": "s6/reg22", "value": "0x16", "size": 64},
+            {"name": "s7/reg23", "value": "0x17", "size": 64},
+            {"name": "t8/reg24", "value": "0x18", "size": 64},
+            {"name": "t9/reg25", "value": "0x19", "size": 64},
+            {"name": "k0/reg26", "value": "0x1A", "size": 64},
+            {"name": "k1/reg27", "value": "0x1B", "size": 64},
+            {"name": "gp/reg28", "value": "0x1C", "size": 64},
+            {"name": "sp/reg29", "value": "0x1D", "size": 64},
+            {"name": "s8/reg30", "value": "0x1E", "size": 64},
+            {"name": "ra/reg31", "value": "0x1F", "size": 64}
+        ],
+        "COP0": [
+            {"name": "Index", "value": "0x00", "size": 64},
+            {"name": "Random", "value": "0x01", "size": 64},
+            {"name": "EntryLo0", "value": "0x02", "size": 64},
+            {"name": "EntryLo1", "value": "0x03", "size": 64},
+            {"name": "Context", "value": "0x04", "size": 64},
+            {"name": "PageMask", "value": "0x05", "size": 64},
+            {"name": "Wired", "value": "0x06", "size": 64},
+            {"name": "*RESERVED*", "value": "0x07", "size": 64},
+            {"name": "BadVAddr", "value": "0x08", "size": 64},
+            {"name": "Count", "value": "0x09", "size": 64},
+            {"name": "EntryHi", "value": "0x0A", "size": 64},
+            {"name": "Compare", "value": "0x0B", "size": 64},
+            {"name": "Status", "value": "0x0C", "size": 64},
+            {"name": "Cause", "value": "0x0D", "size": 64},
+            {"name": "EPC", "value": "0x0E", "size": 64},
+            {"name": "PRevID", "value": "0x0F", "size": 64},
+            {"name": "Config", "value": "0x10", "size": 64},
+            {"name": "LLAddr", "value": "0x11", "size": 64},
+            {"name": "WatchLo", "value": "0x12", "size": 64},
+            {"name": "WatchHi", "value": "0x13", "size": 64},
+            {"name": "XContext", "value": "0x14", "size": 64},
+            {"name": "*RESERVED*", "value": "0x15", "size": 64},
+            {"name": "*RESERVED*", "value": "0x16", "size": 64},
+            {"name": "*RESERVED*", "value": "0x17", "size": 64},
+            {"name": "*RESERVED*", "value": "0x18", "size": 64},
+            {"name": "*RESERVED*", "value": "0x19", "size": 64},
+            {"name": "PErr", "value": "0x1A", "size": 64},
+            {"name": "CacheErr", "value": "0x1B", "size": 64},
+            {"name": "TagLo", "value": "0x1C", "size": 64},
+            {"name": "TagHi", "value": "0x1D", "size": 64},
+            {"name": "ErrorEPC", "value": "0x1E", "size": 64},
+            {"name": "*RESERVED*", "value": "0x1F", "size": 64}
+        ]
+    },
+    "groups": [
+        "Load and Store Instructions",
+        "Atithmetic Instructions",
+        "Jump and Branch Instructions",
+        "Special instructions",
+        "Exception Instructions",
+        "System Control Processor (COP0) Instructions",
+        "Floating-point Unit, FPU (COP1) instructions"
+    ],
+    "opcodes": [
+        {
+            "group": 1,
+            "name": "LB",
+            "opcode": 32,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LB rt, offset(base)",
+            "purpose": "To load a byte from memory as a signed value.",
+            "description": "rt = byte[base+offset]"
+        },
+        {
+            "group": 1,
+            "name": "LBU",
+            "opcode": 36,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LBU rt, offset(base)",
+            "purpose": "To load a byte from memory as an unsigned value.",
+            "description": "rt = byte[base+offset]"
+        },
+        {
+            "group": 1,
+            "name": "LD",
+            "opcode": 55,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LD rt, offset(base)",
+            "purpose": "To load a doubleword from memory.",
+            "description": "rt = doubleword[base+offset]"
+        },
+        {
+            "group": 1,
+            "name": "LDL",
+            "opcode": 26,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LDL rt, offset(base)",
+            "purpose": "To load the most-significant part of a doubleword from an unaligned memory address.",
+            "description": "left(rt) = right[base+offset]"
+        },
+        {
+            "group": 1,
+            "name": "LDR",
+            "opcode": 27,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LDR rt, offset(base)",
+            "purpose": "To load the least-significant part of a doubleword from an unaligned memory address.",
+            "description": "right(rt) = left[base+offset]"
+        },
+        {
+            "group": 1,
+            "name": "LH",
+            "opcode": 33,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LH rt, offset(base)",
+            "purpose": "To load a halfword from memory as a signed value.",
+            "description": "rt = halfword[base+offset]"
+        },
+        {
+            "group": 1,
+            "name": "LHU",
+            "opcode": 37,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LHU rt, offset(base)",
+            "purpose": "To load a halfword from memory as an unsigned value.",
+            "description": "rt = halfword[base+offset]"
+        },
+        {
+            "group": 1,
+            "name": "LL",
+            "opcode": 48,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LL rt, offset(base)",
+            "purpose": "To load a word from memory for an atomic read-modify-write."
+        },
+        {
+            "group": 1,
+            "name": "LLD",
+            "opcode": 52,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LLD rt, offset(base)",
+            "purpose": "To load a doubleword from memory for an atomic read-modify-write."
+        },
+        {
+            "group": 1,
+            "name": "LW",
+            "opcode": 35,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LW rt, offset(base)",
+            "purpose": "To load a word from memory as a signed value.",
+            "description": "rt = word[base+offset]"
+        },
+        {
+            "group": 1,
+            "name": "LWL",
+            "opcode": 34,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LWL rt, offset(base)",
+            "purpose": "To load the most-significant part of a word as a signed value from an unaligned memory address.",
+            "description": "left(rt) = right[base+offset]"
+        },
+        {
+            "group": 1,
+            "name": "LWR",
+            "opcode": 38,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LWR rt, offset(base)",
+            "purpose": "To load the least-significant part of a word from an unaligned memory address as a signed value.",
+            "description": "right(rt) = left[base+offset]"
+        },
+        {
+            "group": 1,
+            "name": "LWU",
+            "opcode": 39,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "LWU rt, offset(base)",
+            "purpose": "To load a word from memory as an unsigned value.",
+            "description": "rt = word[base+offset]"
+        },
+        {
+            "group": 1,
+            "name": "SB",
+            "opcode": 40,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "SB rt, offset(base)",
+            "purpose": "To store a byte to memory.",
+            "description": "byte[base+offset] = rt"
+        },
+        {
+            "group": 1,
+            "name": "SC",
+            "opcode": 56,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "SC rt, offset(base)",
+            "purpose": "To store a word to memory to complete an atomic read-modify-write."
+        },
+        {
+            "group": 1,
+            "name": "SCD",
+            "opcode": 60,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "SCD rt, offset(base)",
+            "purpose": "To store a doubleword to memory to complete an atomic"
+        },
+        {
+            "group": 1,
+            "name": "SD",
+            "opcode": 63,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "SD rt, offset(base)",
+            "purpose": "To store a doubleword to memory.",
+            "description": "doulbeword[base+offset] = rt"
+        },
+        {
+            "group": 1,
+            "name": "SDL",
+            "opcode": 44,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "SDL rt, offset(base)",
+            "purpose": "To store the most-significant part of a doubleword to an unaligned memory address.",
+            "description": "right[base+offset] = left(rt)"
+        },
+        {
+            "group": 1,
+            "name": "SDR",
+            "opcode": 45,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "SDR rt, offset(base)",
+            "purpose": "To store the least-significant part of a doubleword to an unaligned memory address.",
+            "description": "left[base+offset] = right(rt)"
+        },
+        {
+            "group": 1,
+            "name": "SH",
+            "opcode": 41,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "SH rt, offset(base)",
+            "purpose": "To store a halfword to memory.",
+            "description": "halfword[base+offset] = rt"
+        },
+        {
+            "group": 1,
+            "name": "SW",
+            "opcode": 43,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "SW rt, offset(base)",
+            "purpose": "To store a word to memory.",
+            "description": "word[base+offset] = rt"
+        },
+        {
+            "group": 1,
+            "name": "SWL",
+            "opcode": 42,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "SWL rt, offset(base)",
+            "purpose": "To store the most-significant part of a word to an unaligned memory address.",
+            "description": "right[base+offset] = left(rt)"
+        },
+        {
+            "group": 1,
+            "name": "SWR",
+            "opcode": 46,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "SWR rt, offset(base)",
+            "purpose": "To store the least-significant part of a word to an unaligned memory address.",
+            "description": "left[base+offset] = right(rt)"
+        },
+        {
+            "group": 1,
+            "name": "SYNC",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "0000 0000 0000 000": 15,
+                "stype": 5,
+                "001111 (15)": 6
+            },
+            "format": "SYNC (stype = 0 implied)",
+            "purpose": "To order loads and stores to shared memory in a"
+        },
+        {
+            "group": 2,
+            "name": "ADD",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "100000 (32)": 6
+            },
+            "format": "ADD rd, rs, rt",
+            "purpose": "To add 32-bit integers. If overflow occurs, then trap. Comment: ADD rd, r0, rs is equal to a MOVE rd, rs",
+            "description": "rd = rs + rt"
+        },
+        {
+            "group": 2,
+            "name": "ADDI",
+            "opcode": 8,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "immediate": 16
+            },
+            "format": "ADDI rt, rs, immediate",
+            "purpose": "To add a constant to a 32-bit integer. If overflow occurs, then trap.",
+            "description": "rt = rs + immediate"
+        },
+        {
+            "group": 2,
+            "name": "ADDIU",
+            "opcode": 9,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "immediate": 16
+            },
+            "format": "ADDIU rt, rs, immediate",
+            "purpose": "To add a constant to a 32-bit integer.",
+            "description": "rt = rs + immediate"
+        },
+        {
+            "group": 2,
+            "name": "ADDU",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "100001 (33)": 6
+            },
+            "format": "ADDU rd, rs, rt",
+            "purpose": "To add 32-bit integers.",
+            "description": "rd = rs + rt"
+        },
+        {
+            "group": 2,
+            "name": "AND",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "100100 (36)": 6
+            },
+            "format": "AND rd, rs, rt",
+            "purpose": "To do a bitwise logical AND.",
+            "description": "rd = (rs AND rt)"
+        },
+        {
+            "group": 2,
+            "name": "ANDI",
+            "opcode": 12,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "immediate": 16
+            },
+            "format": "ANDI rt, rs, immediate",
+            "purpose": "To do a bitwise logical AND with a constant.",
+            "description": "rt = (rs AND immediate)"
+        },
+        {
+            "group": 2,
+            "name": "DADD",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "101100 (44)": 6
+            },
+            "format": "DADD rd, rs, rt",
+            "purpose": "To add 64-bit integers. If overflow occurs, then trap.",
+            "description": "rd = rs + rt"
+        },
+        {
+            "group": 2,
+            "name": "DADDI",
+            "opcode": 24,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "immediate": 16
+            },
+            "format": "DADDI rt, rs, immediate",
+            "purpose": "To add a constant to a 64-bit integer. If overflow occurs, then trap.",
+            "description": "rt = rs + immediate"
+        },
+        {
+            "group": 2,
+            "name": "DADDIU",
+            "opcode": 25,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "immediate": 16
+            },
+            "format": "DADDIU rt, rs, immediate",
+            "purpose": "To add a constant to a 64-bit integer.",
+            "description": "rt = rs + immediate"
+        },
+        {
+            "group": 2,
+            "name": "DADDU",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "101101 (45)": 6
+            },
+            "format": "DADDU rd, rs, rt",
+            "purpose": "To add 64-bit integers.",
+            "description": "rd = rs + rt"
+        },
+        {
+            "group": 2,
+            "name": "DDIV",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "0000 0000 00": 10,
+                "011110 (30)": 6
+            },
+            "format": "DDIV rs, rt",
+            "purpose": "To divide 64-bit signed integers.",
+            "description": "LO = rs / rt;     HI = rs MOD rt"
+        },
+        {
+            "group": 2,
+            "name": "DDIVU",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "0000 0000 00": 10,
+                "011111 (31)": 6
+            },
+            "format": "DDIVU rs, rt",
+            "purpose": "To divide 64-bit unsigned integers.",
+            "description": "LO = rs / rt;     HI = rs MOD rt"
+        },
+        {
+            "group": 2,
+            "name": "DIV",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "0000 0000 00": 10,
+                "011010 (26)": 6
+            },
+            "format": "DIV rs, rt",
+            "purpose": "To divide 32-bit signed integers.",
+            "description": "LO = rs / rt;     HI = rs MOD rt"
+        },
+        {
+            "group": 2,
+            "name": "DIVU",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "0000 0000 00": 10,
+                "011011 (27)": 6
+            },
+            "format": "DIVU rs, rt",
+            "purpose": "To divide 32-bit unsigned integers.",
+            "description": "LO = rs / rt;     HI = rs MOD rt"
+        },
+        {
+            "group": 2,
+            "name": "DMULT",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "0000 0000 00": 10,
+                "011100 (28)": 6
+            },
+            "format": "DMULT rs, rt",
+            "purpose": "To multiply 64-bit signed integers.",
+            "description": "LO = low(rs*rt);  HI = high(rs*rt)"
+        },
+        {
+            "group": 2,
+            "name": "DMULTU",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "0000 0000 00": 10,
+                "011101 (29)": 6
+            },
+            "format": "DMULTU rs, rt",
+            "purpose": "To multiply 64-bit unsigned integers.",
+            "description": "LO = low(rs*rt);  HI = high(rs*rt)"
+        },
+        {
+            "group": 2,
+            "name": "DSLL",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "rd": 5,
+                "sa": 5,
+                "111000 (56)": 6
+            },
+            "format": "DSLL rd, rt, sa",
+            "purpose": "To left shift a doubleword by a fixed amount -- 0 to 31 bits.",
+            "description": "rd = rt << sa"
+        },
+        {
+            "group": 2,
+            "name": "DSLL32",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "rd": 5,
+                "sa": 5,
+                "111100 (60)": 6
+            },
+            "format": "DSLL32 rd, rt, sa",
+            "purpose": "To left shift a doubleword by a fixed amount -- 32 to 63 bits.",
+            "description": "rd = rt << (sa+32)"
+        },
+        {
+            "group": 2,
+            "name": "DSLLV",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "010100 (20)": 6
+            },
+            "format": "DSLLV rd, rt, rs",
+            "purpose": "To left shift a doubleword by a variable number of bits.",
+            "description": "rd = rt << rs"
+        },
+        {
+            "group": 2,
+            "name": "DSRA",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "rd": 5,
+                "sa": 5,
+                "111011 (59)": 6
+            },
+            "format": "DSRA rd, rt, sa",
+            "purpose": "To arithmetic right shift a doubleword by a fixed amount -- 0 to 31 bits.",
+            "description": "rd = rt >> sa"
+        },
+        {
+            "group": 2,
+            "name": "DSRA32",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "rd": 5,
+                "sa": 5,
+                "111111 (63)": 6
+            },
+            "format": "DSRA32 rd, rt, sa",
+            "purpose": "To arithmetic right shift a doubleword by a fixed amount -- 32-63 bits.",
+            "description": "rd = rt >> (sa+32)"
+        },
+        {
+            "group": 2,
+            "name": "DSRAV",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "rd": 5,
+                "rs": 5,
+                "010111 (23)": 6
+            },
+            "format": "DSRAV rd, rt, rs",
+            "purpose": "To arithmetic right shift a doubleword by a variable number of bits.",
+            "description": "rd = rt >> rs"
+        },
+        {
+            "group": 2,
+            "name": "DSRL",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "rd": 5,
+                "sa": 5,
+                "111010 (58)": 6
+            },
+            "format": "DSRL rd, rt, sa",
+            "purpose": "To logical right shift a doubleword by a fixed amount -- 0 to 31 bits.",
+            "description": "rd = rt >> sa"
+        },
+        {
+            "group": 2,
+            "name": "DSRL32",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "rd": 5,
+                "sa": 5,
+                "111110 (62)": 6
+            },
+            "format": "DSRL32 rd, rt, sa",
+            "purpose": "To logical right shift a doubleword by a fixed amount -- 32 to 63 bits.",
+            "description": "rd = rt >> (sa+32)"
+        },
+        {
+            "group": 2,
+            "name": "DSRLV",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "rd": 5,
+                "rs": 5,
+                "010110 (22)": 6
+            },
+            "format": "DSRLV rd, rt, rs",
+            "purpose": "To logical right shift a doubleword by a variable number of bits.",
+            "description": "rd = rt >> rs"
+        },
+        {
+            "group": 2,
+            "name": "DSUB",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "101110 (46)": 6
+            },
+            "format": "DSUB rd, rs, rt",
+            "purpose": "To subtract 64-bit integers; trap if overflow.",
+            "description": "rd = rs - rt"
+        },
+        {
+            "group": 2,
+            "name": "DSUBU",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "101111 (47)": 6
+            },
+            "format": "DSUBU rd, rs, rt",
+            "purpose": "To subtract 64-bit integers.",
+            "description": "rd = rs - rt"
+        },
+        {
+            "group": 2,
+            "name": "LUI",
+            "opcode": 15,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "immediate": 16
+            },
+            "format": "LUI rt, immediate",
+            "purpose": "To load a constant into the upper half of a word.",
+            "description": "rt = immediate * 10000h"
+        },
+        {
+            "group": 2,
+            "name": "MFHI",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "0000 0000 00": 10,
+                "rd": 5,
+                "00000": 5,
+                "010000 (16)": 6
+            },
+            "format": "MFHI rd",
+            "purpose": "To copy the special purpose HI register to a GPR.",
+            "description": "rd = HI"
+        },
+        {
+            "group": 2,
+            "name": "MFLO",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "0000 0000 00": 10,
+                "rd": 5,
+                "00000": 5,
+                "010010 (18)": 6
+            },
+            "format": "MFLO rd",
+            "purpose": "To copy the special purpose LO register to a GPR.",
+            "description": "rd = LO"
+        },
+        {
+            "group": 2,
+            "name": "MTHI",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "0000 0000 0000 000": 15,
+                "010001 (17)": 6
+            },
+            "format": "MTHI rs",
+            "purpose": "To copy a GPR to the special purpose HI register."
+        },
+        {
+            "group": 2,
+            "name": "MTLO",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "0000 0000 0000 000": 15,
+                "010011 (19)": 6
+            },
+            "format": "MTLO rs",
+            "purpose": "To copy a GPR to the special purpose LO register."
+        },
+        {
+            "group": 2,
+            "name": "MULT",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "0000 0000 00": 10,
+                "011000 (24)": 6
+            },
+            "format": "MULT rs, rt",
+            "purpose": "To multiply 32-bit signed integers.",
+            "description": "LO = low(rs*rt);    HI = high(rs*rt)"
+        },
+        {
+            "group": 2,
+            "name": "MULTU",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "0000 0000 00": 10,
+                "011001 (25)": 6
+            },
+            "format": "MULTU rs, rt",
+            "purpose": "To multiply 32-bit unsigned integers.",
+            "description": "LO = low(rs*rt);    HI = high(rs*rt)"
+        },
+        {
+            "group": 2,
+            "name": "NOR",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "100111 (39)": 6
+            },
+            "format": "NOR rd, rs, rt",
+            "purpose": "To do a bitwise logical NOT OR.",
+            "description": "rd = (rs NOR rt)"
+        },
+        {
+            "group": 2,
+            "name": "OR",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "100101 (37)": 6
+            },
+            "format": "OR rd, rs, rt",
+            "purpose": "To do a bitwise logical OR.",
+            "description": "rd = (rs OR rt)"
+        },
+        {
+            "group": 2,
+            "name": "ORI",
+            "opcode": 13,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "immediate": 16
+            },
+            "format": "ORI rt, rs, immediate",
+            "purpose": "To do a bitwise logical OR with a constant. Comment: ORI rt, r0, imm is equal to a LI rt, imm",
+            "description": "rt = (rs OR immediate)"
+        },
+        {
+            "group": 2,
+            "name": "SLL",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "rd": 5,
+                "sa": 5,
+                "000000 (0)": 6
+            },
+            "format": "SLL rd, rt, sa",
+            "purpose": "To left shift a word by a fixed number of bits. Comment: SLL r0, r0, 0 is equal to a NOP (No OPeration)",
+            "description": "rd = rt << sa"
+        },
+        {
+            "group": 2,
+            "name": "SLLV",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "000100 (4)": 6
+            },
+            "format": "SLLV rd, rt, rs",
+            "purpose": "To left shift a word by a variable number of bits.",
+            "description": "rd = rt << sa"
+        },
+        {
+            "group": 2,
+            "name": "SLT",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "101010 (42)": 6
+            },
+            "format": "SLT rd, rs, rt",
+            "purpose": "To record the result of a less-than comparison.",
+            "description": "if rs < rt then rd = 1 else rd = 0"
+        },
+        {
+            "group": 2,
+            "name": "SLTI",
+            "opcode": 10,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "immediate": 16
+            },
+            "format": "SLTI rt, rs, immediate",
+            "purpose": "To record the result of a less-than comparison with a constant.",
+            "description": "if rs < immediate then rd = 1 else rd = 0"
+        },
+        {
+            "group": 2,
+            "name": "SLTIU",
+            "opcode": 11,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "immediate": 16
+            },
+            "format": "SLTIU rt, rs, immediate",
+            "purpose": "To record the result of an unsigned less-than comparison with a constant.",
+            "description": "if rs < immediate then rd = 1 else rd = 0"
+        },
+        {
+            "group": 2,
+            "name": "SLTU",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "101011 (43)": 6
+            },
+            "format": "SLTU rd, rs, rt",
+            "purpose": "To record the result of an unsigned less-than comparison.",
+            "description": "if rs < rt then rd = 1 else rd = 0"
+        },
+        {
+            "group": 2,
+            "name": "SRA",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "rd": 5,
+                "sa": 5,
+                "000011 (3)": 6
+            },
+            "format": "SRA rd, rt, sa",
+            "purpose": "To arithmetic right shift a word by a fixed number of bits.",
+            "description": "rd = rt >> sa"
+        },
+        {
+            "group": 2,
+            "name": "SRAV",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "000111 (7)": 6
+            },
+            "format": "SRAV rd, rt, rs",
+            "purpose": "To arithmetic right shift a word by a variable number of bits.",
+            "description": "rd = rt >> rs"
+        },
+        {
+            "group": 2,
+            "name": "SRL",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "00000": 5,
+                "rt": 5,
+                "rd": 5,
+                "sa": 5,
+                "000010 (2)": 6
+            },
+            "format": "SRL rd, rt, sa",
+            "purpose": "To logical right shift a word by a fixed number of bits.",
+            "description": "rd = rt >> sa"
+        },
+        {
+            "group": 2,
+            "name": "SRLV",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "000110 (6)": 6
+            },
+            "format": "SRLV rd, rt, rs",
+            "purpose": "To logical right shift a word by a variable number of bits.",
+            "description": "rd = rt >> rs"
+        },
+        {
+            "group": 2,
+            "name": "SUB",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "100010 (34)": 6
+            },
+            "format": "SUB rd, rs, rt",
+            "purpose": "To subtract 32-bit integers. If overflow occurs, then trap. Comment: SUB rd, r0, rt is equal to a NEG rd, rt",
+            "description": "rd = rs - rt"
+        },
+        {
+            "group": 2,
+            "name": "SUBU",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "100011 (35)": 6
+            },
+            "format": "SUBU rd, rs, rt",
+            "purpose": "To subtract 32-bit integers. No trap on overflow. Comment: SUBU rd, r0, rs is equal to a NEGU rd, rs",
+            "description": "rd = rs - rt"
+        },
+        {
+            "group": 2,
+            "name": "XOR",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "rd": 5,
+                "00000": 5,
+                "100110 (38)": 6
+            },
+            "format": "XOR rd, rs, rt",
+            "purpose": "To do a bitwise logical EXCLUSIVE OR.",
+            "description": "rd = (rs XOR rt)"
+        },
+        {
+            "group": 2,
+            "name": "XORI",
+            "opcode": 14,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "immediate": 16
+            },
+            "format": "XORI rt, rs, immediate",
+            "purpose": "To do a bitwise logical EXCLUSIVE OR with a constant.",
+            "description": "rd = (rs XOR immediate)"
+        },
+        {
+            "group": 3,
+            "name": "BEQ",
+            "opcode": 4,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "BEQ rs, rt, offset",
+            "purpose": "To compare GPRs then do a PC-relative conditional branch. Comment: BEQ rs, r0, offset is equal to a BEQZ rs, offset BEQ r0, r0, offset is equal to a B offset",
+            "description": "branch if rs = rt"
+        },
+        {
+            "group": 3,
+            "name": "BEQL",
+            "opcode": 20,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "BEQL rs, rt, offset",
+            "purpose": "To compare GPRs then do a PC-relative conditional branch; execute the delay slot only if the branch is taken. Comment: BEQL rs, r0, offset is equal to a BEQZL rs, offset",
+            "description": "branch if rs = rt"
+        },
+        {
+            "group": 3,
+            "name": "BGEZ",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "00001 (1)": 5,
+                "offset": 16
+            },
+            "format": "BGEZ rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional branch.",
+            "description": "branch if rs >= 0 (signed)"
+        },
+        {
+            "group": 3,
+            "name": "BGEZAL",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "10001(17)": 5,
+                "offset": 16
+            },
+            "format": "BGEZAL rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional procedure call. Comment: BGEZAL r0, offset is equal to a BAL offset",
+            "description": "branch if rs >= 0 (signed) (return address in ra)"
+        },
+        {
+            "group": 3,
+            "name": "BGEZALL",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "10011(19)": 5,
+                "offset": 16
+            },
+            "format": "BGEZALL rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional procedure call; execute the delay slot only if the branch is taken.",
+            "description": "branch if rs >= 0 (signed) (return address in ra)"
+        },
+        {
+            "group": 3,
+            "name": "BGEZL",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "00011 (3)": 5,
+                "offset": 16
+            },
+            "format": "BGEZL rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.",
+            "description": "branch if rs >= 0 (signed)"
+        },
+        {
+            "group": 3,
+            "name": "BGTZ",
+            "opcode": 7,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "00000": 5,
+                "offset": 16
+            },
+            "format": "BGTZ rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional branch.",
+            "description": "branch if rs > 0 (signed)"
+        },
+        {
+            "group": 3,
+            "name": "BGTZL",
+            "opcode": 23,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "00000": 5,
+                "offset": 16
+            },
+            "format": "BGTZL rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.",
+            "description": "branch if rs > 0 (signed)"
+        },
+        {
+            "group": 3,
+            "name": "BLEZ",
+            "opcode": 6,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "00000": 5,
+                "offset": 16
+            },
+            "format": "BLEZ rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional branch.",
+            "description": "branch if rs <= 0 (signed)"
+        },
+        {
+            "group": 3,
+            "name": "BLEZL",
+            "opcode": 22,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "00000": 5,
+                "offset": 16
+            },
+            "format": "BLEZL rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.",
+            "description": "branch if rs <= 0 (signed)"
+        },
+        {
+            "group": 3,
+            "name": "BLTZ",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "00000": 5,
+                "offset": 16
+            },
+            "format": "BLTZ rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional branch.",
+            "description": "branch if rs < 0 (signed)"
+        },
+        {
+            "group": 3,
+            "name": "BLTZAL",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "10000": 5,
+                "offset": 16
+            },
+            "format": "BLTZAL rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional procedure call.",
+            "description": "branch if rs < 0 (signed) (return address in ra)"
+        },
+        {
+            "group": 3,
+            "name": "BLTZALL",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "10010": 5,
+                "offset": 16
+            },
+            "format": "BLTZALL rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional procedure call; execute the delay slot only if the branch is taken.",
+            "description": "branch if rs < 0 (signed) (return address in ra)"
+        },
+        {
+            "group": 3,
+            "name": "BLTZL",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "00010 (2)": 5,
+                "offset": 16
+            },
+            "format": "BLTZL rs, offset",
+            "purpose": "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.",
+            "description": "branch if rs < 0 (signed)"
+        },
+        {
+            "group": 3,
+            "name": "BNE",
+            "opcode": 5,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "BNE rs, rt, offset",
+            "purpose": "To compare GPRs then do a PC-relative conditional branch. Comment: BNE rs, r0, offset is equal to a BNEZ rs, offset",
+            "description": "branch if rs <> rt"
+        },
+        {
+            "group": 3,
+            "name": "BNEL",
+            "opcode": 21,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "offset": 16
+            },
+            "format": "BNEL rs, rt, offset",
+            "purpose": "To compare GPRs then do a PC-relative conditional branch; execute the delay slot only if the branch is taken. Comment: BNEL rs, r0, offset is equal to a BNEZL rs, offset",
+            "description": "branch if rs <> rt"
+        },
+        {
+            "group": 3,
+            "name": "J",
+            "opcode": 2,
+            "decode": {
+                "opcode": 6,
+                "instr_index": 26
+            },
+            "format": "J target",
+            "purpose": "To branch within the current 256 MB aligned region."
+        },
+        {
+            "group": 3,
+            "name": "JAL",
+            "opcode": 3,
+            "decode": {
+                "opcode": 6,
+                "instr_index": 26
+            },
+            "format": "JAL target",
+            "purpose": "To procedure call within the current 256 MB aligned region.",
+            "description": "return address in ra"
+        },
+        {
+            "group": 3,
+            "name": "JALR",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "00000": 5,
+                "rd": 5,
+                "001001 (9)": 6
+            },
+            "format": "JALR rs, rd",
+            "purpose": "To procedure call to an instruction address in a register.",
+            "description": "return address in rd"
+        },
+        {
+            "group": 3,
+            "name": "JR",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "0000 0000 0000 000": 15,
+                "001000 (8)": 6
+            },
+            "format": "JR rs",
+            "purpose": "To branch to an instruction address in a register.",
+            "description": "PC = rs"
+        },
+        {
+            "group": 4,
+            "name": "BREAK",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "code": 20,
+                "001101 (13)": 6
+            },
+            "format": "BREAK offset",
+            "purpose": "To cause a Breakpoint exception."
+        },
+        {
+            "group": 4,
+            "name": "SYSCALL",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "code": 20,
+                "001100 (12)": 6
+            },
+            "format": "SYSCALL offset",
+            "purpose": "To cause a System Call exception."
+        },
+        {
+            "group": 5,
+            "name": "TEQ",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "code": 10,
+                "110100 (52)": 6
+            },
+            "format": "TEQ rs, rt",
+            "purpose": "To compare GPRs and do a conditional Trap.",
+            "description": "if rs = rt then trap"
+        },
+        {
+            "group": 5,
+            "name": "TEQI",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "01100(12)": 5,
+                "immediate": 16
+            },
+            "format": "TEQI rs, immediate",
+            "purpose": "To compare a GPR to a constant and do a conditional Trap.",
+            "description": "if rs = immediate then trap"
+        },
+        {
+            "group": 5,
+            "name": "TGE",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "code": 10,
+                "110000 (48)": 6
+            },
+            "format": "TGE rs, rt",
+            "purpose": "To compare GPRs and do a conditional Trap.",
+            "description": "if rs >= rt then trap"
+        },
+        {
+            "group": 5,
+            "name": "TGEI",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "01000 (8)": 5,
+                "immediate": 16
+            },
+            "format": "TGEI rs, immediate",
+            "purpose": "To compare a GPR to a constant and do a conditional Trap.",
+            "description": "if rs >= immediate then trap"
+        },
+        {
+            "group": 5,
+            "name": "TGEIU",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "01001 (9)": 5,
+                "immediate": 16
+            },
+            "format": "TGEIU rs, immediate",
+            "purpose": "To compare a GPR to a constant and do a conditional Trap.",
+            "description": "if rs >= immediate then trap"
+        },
+        {
+            "group": 5,
+            "name": "TGEU",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "code": 10,
+                "110001 (49)": 6
+            },
+            "format": "TGEU rs, rt",
+            "purpose": "To compare GPRs and do a conditional Trap.",
+            "description": "if rs >= rt then trap"
+        },
+        {
+            "group": 5,
+            "name": "TLT",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "code": 10,
+                "110010 (50)": 6
+            },
+            "format": "TLT rs, rt",
+            "purpose": "To compare GPRs and do a conditional Trap.",
+            "description": "if rs < rt then trap"
+        },
+        {
+            "group": 5,
+            "name": "TLTI",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "01010(10)": 5,
+                "immediate": 16
+            },
+            "format": "TLTI rs, immediate",
+            "purpose": "To compare a GPR to a constant and do a conditional Trap.",
+            "description": "if rs < immediate then trap (signed)"
+        },
+        {
+            "group": 5,
+            "name": "TLTIU",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "01011(11)": 5,
+                "immediate": 16
+            },
+            "format": "TLTIU rs, immediate",
+            "purpose": "To compare a GPR to a constant and do a conditional Trap.",
+            "description": "if rs < immediate then trap"
+        },
+        {
+            "group": 5,
+            "name": "TLTU",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "code": 10,
+                "110011 (51)": 6
+            },
+            "format": "TLTU rs, rt",
+            "purpose": "To compare GPRs and do a conditional Trap.",
+            "description": "if rs < rt then trap"
+        },
+        {
+            "group": 5,
+            "name": "TNE",
+            "opcode": 0,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "rt": 5,
+                "code": 10,
+                "110110 (54)": 6
+            },
+            "format": "TNE rs, rt",
+            "purpose": "To compare GPRs and do a conditional Trap.",
+            "description": "if rs <> rt then trap"
+        },
+        {
+            "group": 5,
+            "name": "TNEI",
+            "opcode": 1,
+            "decode": {
+                "opcode": 6,
+                "rs": 5,
+                "01110(14)": 5,
+                "immediate": 16
+            },
+            "format": "TNEI rs, immediate",
+            "purpose": "To compare a GPR to a constant and do a conditional Trap.",
+            "description": "if rs <> immediate then trap"
+        },
+        {
+            "group": 6,
+            "name": "CACHE",
+            "opcode": 47,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "op": 5,
+                "offset": 16
+            },
+            "format": "CACHE op, offset(base)",
+            "purpose": "The 16-bit offset is sign-extended and added to the contents of\ngeneral register base to form a virtual address. The virtual\naddress is translated to a physical address using the TLB, and the\n5-bit sub-opcode specifies a cache operation for that address."
+        },
+        {
+            "group": 6,
+            "name": "ERET",
+            "opcode": 10000,
+            "decode": {
+                "opcode": 6,
+                "CO": 1,
+                "0000 0000 0000 0000 000": 19,
+                "011000 (24)": 6
+            },
+            "format": "ERET",
+            "purpose": "ERET is the R4300 instruction for returning from an interrupt,"
+        },
+        {
+            "group": 6,
+            "name": "MFC0",
+            "opcode": 10000,
+            "decode": {
+                "opcode": 6,
+                "00000 (0)": 5,
+                "rt": 5,
+                "fs": 5,
+                "0000 0000 000": 11
+            },
+            "format": "MFC0 rt, rd",
+            "purpose": "To copy a word from an FPR to a GPR.",
+            "description": "rt = COP rd"
+        },
+        {
+            "group": 6,
+            "name": "MTC0",
+            "opcode": 10000,
+            "decode": {
+                "opcode": 6,
+                "00100 (4)": 5,
+                "rt": 5,
+                "fs": 5,
+                "0000 0000 000": 11
+            },
+            "format": "MTC0 rt, rd",
+            "purpose": "To copy a word from a GPR to an FPR.",
+            "description": "COP rd = rt"
+        },
+        {
+            "group": 6,
+            "name": "TLBP",
+            "opcode": 10000,
+            "decode": {
+                "opcode": 6,
+                "CO": 1,
+                "0000 0000 0000 0000 000": 19,
+                "001000 (8)": 6
+            },
+            "format": "TLBP",
+            "purpose": "The Index register is loaded with the address of the TLB entry"
+        },
+        {
+            "group": 6,
+            "name": "TLBR",
+            "opcode": 10000,
+            "decode": {
+                "opcode": 6,
+                "CO": 1,
+                "0000 0000 0000 0000 000": 19,
+                "000001 (1)": 6
+            },
+            "format": "TLBR",
+            "purpose": "The G bit (which controls ASID matching) read from the TLB is"
+        },
+        {
+            "group": 6,
+            "name": "TLBWI",
+            "opcode": 10000,
+            "decode": {
+                "opcode": 6,
+                "CO": 1,
+                "0000 0000 0000 0000 000": 19,
+                "000010 (2)": 6
+            },
+            "format": "TLBWI",
+            "purpose": "The G bit of the TLB is written with the logical AND of the G bits"
+        },
+        {
+            "group": 6,
+            "name": "TLBWR",
+            "opcode": 10000,
+            "decode": {
+                "opcode": 6,
+                "CO": 1,
+                "0000 0000 0000 0000 000": 19,
+                "000110 (6)": 6
+            },
+            "format": "TLBWR",
+            "purpose": "The G bit of the TLB is written with the logical AND of the G bits"
+        },
+        {
+            "group": 7,
+            "name": "ABS.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "000101 (5)": 6
+            },
+            "format": "ABS.S fd, fs ABS.D fd, fs",
+            "purpose": "To compute the absolute value of an FP value."
+        },
+        {
+            "group": 7,
+            "name": "ADD.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "ft": 5,
+                "fs": 5,
+                "fd": 5,
+                "000000 (0)": 6
+            },
+            "format": "ADD.S fd, fs, ft ADD.D fd, fs, ft",
+            "purpose": "To add FP values."
+        },
+        {
+            "group": 7,
+            "name": "BC1F",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "01000 (8)": 5,
+                "000": 3,
+                "nd (0)": 1,
+                "tf (0)": 1,
+                "offset": 16
+            },
+            "format": "BC1F offset",
+            "purpose": "To test an FP condition code and do a PC-relative conditional branch."
+        },
+        {
+            "group": 7,
+            "name": "BC1FL",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "01000 (8)": 5,
+                "000": 3,
+                "nd (1)": 1,
+                "tf (0)": 1,
+                "offset": 16
+            },
+            "format": "BC1FL offset",
+            "purpose": "To test an FP condition code and do a PC-relative conditional branch; execute the delay slot only if the branch is taken"
+        },
+        {
+            "group": 7,
+            "name": "BC1T",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "01000 (8)": 5,
+                "000": 3,
+                "nd (0)": 1,
+                "tf (1)": 1,
+                "offset": 16
+            },
+            "format": "BC1T offset",
+            "purpose": "To test an FP condition code and do a PC-relative conditional branch."
+        },
+        {
+            "group": 7,
+            "name": "BC1TL",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "01000 (8)": 5,
+                "000": 3,
+                "nd (1)": 1,
+                "tf (1)": 1,
+                "offset": 16
+            },
+            "format": "BC1TL offset",
+            "purpose": "To test an FP condition code and do a PC-relative conditional branch; execute the delay slot only if the branch is taken."
+        },
+        {
+            "group": 7,
+            "name": "C.cond.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "ft": 5,
+                "fs": 5,
+                "000": 3,
+                "00": 2,
+                "11": 2,
+                "cond": 4
+            },
+            "format": "C.cond.S fs, ft C.cond.D fs, ft",
+            "purpose": "To compare FP values and record the Boolean result in"
+        },
+        {
+            "group": 7,
+            "name": "CEIL.L.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "001010 (10)": 6
+            },
+            "format": "CEIL.L.S fd, fs CEIL.L.D fd, fs",
+            "purpose": "To convert an FP value to 64-bit fixed-point, rounding up."
+        },
+        {
+            "group": 7,
+            "name": "CEIL.W.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "001110 (14)": 6
+            },
+            "format": "CEIL.W.S fd, fs CEIL.W.D fd, fs",
+            "purpose": "To convert an FP value to 32-bit fixed-point, rounding up."
+        },
+        {
+            "group": 7,
+            "name": "CFC1",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "00010 (2)": 5,
+                "rt": 5,
+                "fs": 5,
+                "0000 0000 000": 11
+            },
+            "format": "CFC1 rt, fs",
+            "purpose": "To copy a word from an FPU control register to a GPR.",
+            "description": "rt = fs"
+        },
+        {
+            "group": 7,
+            "name": "CTC1",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "00110 (6)": 5,
+                "rt": 5,
+                "fs": 5,
+                "0000 0000 000": 11
+            },
+            "format": "CTC1 rt, fs",
+            "purpose": "To copy a word from a GPR to an FPU control register.",
+            "description": "fs = rt"
+        },
+        {
+            "group": 7,
+            "name": "CVT.D.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "100001 (33)": 6
+            },
+            "format": "CVT.D.S fd, fs CVT.D.W fd, fs CVT.D.L fd, fs",
+            "purpose": "To convert an FP or fixed-point value to double FP."
+        },
+        {
+            "group": 7,
+            "name": "CVT.L.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "100101 (37)": 6
+            },
+            "format": "CVT.L.S fd, fs CVT.L.D fd, fs",
+            "purpose": "To convert an FP value to a 64-bit fixed-point."
+        },
+        {
+            "group": 7,
+            "name": "CVT.S.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "100000 (32)": 6
+            },
+            "format": "CVT.S.D fd, fs CVT.S.W fd, fs CVT.S.L fd, fs",
+            "purpose": "To convert an FP or fixed-point value to single FP."
+        },
+        {
+            "group": 7,
+            "name": "CVT.W.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "100100 (36)": 6
+            },
+            "format": "CVT.W.S fd, fs CVT.W.D fd, fs",
+            "purpose": "To convert an FP value to 32-bit fixed-point."
+        },
+        {
+            "group": 7,
+            "name": "DIV.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "ft": 5,
+                "fs": 5,
+                "fd": 5,
+                "000011 (3)": 6
+            },
+            "format": "DIV.S fd, fs, ft DIV.D fd, fs, ft",
+            "purpose": "To divide FP values."
+        },
+        {
+            "group": 7,
+            "name": "DMFC1",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "00001 (1)": 5,
+                "rt": 5,
+                "fs": 5,
+                "0000 0000 000": 11
+            },
+            "format": "DMFC1 rt, fs",
+            "purpose": "To copy a doubleword from an FPR to a GPR."
+        },
+        {
+            "group": 7,
+            "name": "DMTC1",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "00101 (5)": 5,
+                "rt": 5,
+                "fs": 5,
+                "0000 0000 000": 11
+            },
+            "format": "DMTC1 rt, fs",
+            "purpose": "To copy a doubleword from a GPR to an FPR."
+        },
+        {
+            "group": 7,
+            "name": "FLOOR.L.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "001011 (11)": 6
+            },
+            "format": "FLOOR.L.S fd, fs FLOOR.L.D fd, fs",
+            "purpose": "To convert an FP value to 64-bit fixed-point, rounding down."
+        },
+        {
+            "group": 7,
+            "name": "FLOOR.W.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "001111 (15)": 6
+            },
+            "format": "FLOOR.W.S fd, fs FLOOR.W.D fd, fs",
+            "purpose": "To convert an FP value to 32-bit fixed-point, rounding down."
+        },
+        {
+            "group": 7,
+            "name": "LDC1",
+            "opcode": 53,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "ft": 5,
+                "offset": 16
+            },
+            "format": "LDC1 ft, offset(base)",
+            "purpose": "To load a doubleword from memory to an FPR.",
+            "description": "COP ft = doubleword[base+offset]"
+        },
+        {
+            "group": 7,
+            "name": "LWC1",
+            "opcode": 49,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "ft": 5,
+                "offset": 16
+            },
+            "format": "LWC1 ft, offset(base)",
+            "purpose": "To load a word from memory to an FPR. Comment: LWC1 ft, offset(base) is equal to a L.S ft, offset(base)",
+            "description": "COP ft = word[base+offset]"
+        },
+        {
+            "group": 7,
+            "name": "MFC1",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "00000 (0)": 5,
+                "rt": 5,
+                "fs": 5,
+                "0000 0000 000": 11
+            },
+            "format": "MFC1 rt, fs",
+            "purpose": "To copy a word from an FPU (CP1) general register to a GPR.",
+            "description": "rt = COP fs"
+        },
+        {
+            "group": 7,
+            "name": "MOV.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "000110 (6)": 6
+            },
+            "format": "MOV.S fd, fs\nMOV.D fd, fs",
+            "purpose": "To move an FP value between FPRs."
+        },
+        {
+            "group": 7,
+            "name": "MTC1",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "00100 (4)": 5,
+                "rt": 5,
+                "fs": 5,
+                "0000 0000 000": 11
+            },
+            "format": "MTC1 rt, fs",
+            "purpose": "To copy a word from a GPR to an FPU (CP1) general register.",
+            "description": "COP fs = rt"
+        },
+        {
+            "group": 7,
+            "name": "MUL.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "ft": 5,
+                "fs": 5,
+                "fd": 5,
+                "000010 (2)": 6
+            },
+            "format": "MUL.S fd, fs, ft\nMUL.D fd, fs, ft",
+            "purpose": "To multiply FP values."
+        },
+        {
+            "group": 7,
+            "name": "NEG.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "000111 (7)": 6
+            },
+            "format": "NEG.S fd, fs\nNEG.D fd, fs",
+            "purpose": "To negate an FP value."
+        },
+        {
+            "group": 7,
+            "name": "ROUND.L.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "001000 (8)": 6
+            },
+            "format": "ROUND.L.S fd, fs\nROUND.L.D fd, fs",
+            "purpose": "To convert an FP value to 64-bit fixed-point, rounding to nearest."
+        },
+        {
+            "group": 7,
+            "name": "ROUND.W.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "001100 (12)": 6
+            },
+            "format": "ROUND.W.S fd, fs\nROUND.W.D fd, fs",
+            "purpose": "To convert an FP value to 32-bit fixed-point, rounding to nearest."
+        },
+        {
+            "group": 7,
+            "name": "SDC1",
+            "opcode": 61,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "ft": 5,
+                "offset": 16
+            },
+            "format": "SDC1 ft, offset(base)",
+            "purpose": "To store a doubleword from an FPR to memory.",
+            "description": "doubleword[base+offset] = COP rt"
+        },
+        {
+            "group": 7,
+            "name": "SQRT.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "000100 (4)": 6
+            },
+            "format": "SQRT.S fd, fs\nSQRT.D fd, fs",
+            "purpose": "To compute the square root of an FP value."
+        },
+        {
+            "group": 7,
+            "name": "SUB.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "ft": 5,
+                "fs": 5,
+                "fd": 5,
+                "000001 (1)": 6
+            },
+            "format": "SUB.S fd, fs, ft\nSUB.D fd, fs, ft",
+            "purpose": "To subtract FP values."
+        },
+        {
+            "group": 7,
+            "name": "SWC1",
+            "opcode": 57,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "ft": 5,
+                "offset": 16
+            },
+            "format": "SWC1 ft, offset(base)",
+            "purpose": "To store a word from an FPR to memory. Comment: SWC1 ft, offset(base) is equal to a S.S ft, offset(base)",
+            "description": "word[base+offset] = COP rt"
+        },
+        {
+            "group": 7,
+            "name": "TRUNC.L.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "001001 (9)": 6
+            },
+            "format": "TRUNC.L.S fd, fs\nTRUNC.L.D fd, fs",
+            "purpose": "To convert an FP value to 64-bit fixed-point, rounding toward zero."
+        },
+        {
+            "group": 7,
+            "name": "TRUNC.W.fmt",
+            "opcode": 10001,
+            "decode": {
+                "opcode": 6,
+                "fmt": 5,
+                "00000": 5,
+                "fs": 5,
+                "fd": 5,
+                "001101 (13)": 6
+            },
+            "format": "TRUNC.W.S fd, fs\nTRUNC.W.D fd, fs",
+            "purpose": "To convert an FP value to 32-bit fixed-point, rounding toward zero."
+        }
+    ]
+}

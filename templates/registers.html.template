@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="card-header">
+        <a href="#{{seoname}}" class="material-icons">link</a>
+        <h3 id="{{seoname}}">{{processor}}</h3>
+    </div>
+    <div class="card-content">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Size (Bits)</th>
+            </tr>
+
+            {{registers}}
+        </table>
+    </div>
+</div>

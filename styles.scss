@@ -1,0 +1,244 @@
+@import "scss/variables";
+
+/* roboto-regular - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    src: local(''),
+         url('fonts/roboto-v30-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('fonts/roboto-v30-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+  
+/* roboto-700 - latin */
+@font-face {
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    src: local(''),
+         url('fonts/roboto-v30-latin-700.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
+         url('fonts/roboto-v30-latin-700.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Material Icons'),
+         local('MaterialIcons-Regular'),
+         url(fonts/MaterialIcons-Regular.ttf) format('truetype');
+}
+  
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;  /* Preferred icon size */
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
+    
+  
+    /* Support for all WebKit browsers. */
+    -webkit-font-smoothing: antialiased;
+    /* Support for Safari and Chrome. */
+    text-rendering: optimizeLegibility;
+  
+    /* Support for Firefox. */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: "Roboto";
+    color: $text-color;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: $background-color;
+    scroll-behavior: smooth;
+}
+
+body {
+    height: 100vh;
+    width: 100%;
+}
+
+a {
+    text-decoration: none;
+    transition: color .2s;
+    color: $text-color;
+
+    &:hover {
+        color: $highlight-color;
+    }
+}
+
+#gotop {
+    display: none;
+    position: fixed;
+
+    width: 50px;
+    height: 50px;
+
+    right: 20px;
+    bottom: 20px;
+    border-radius: 50%;
+    border: 1px solid $border-color;
+    background-color: $foreground-color;
+
+    transition: background-color .2s;
+
+    &:hover {
+        background-color: $highlight-color;
+    }
+}
+
+.search {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px 0;
+    background-color: $background-color;
+    border-radius: 10px;
+    border: 1px solid $border-color;
+
+    width: 80%;
+    margin-left: 10%;
+
+    transition: border-color .2s;
+
+    .autocomplete {
+        position: absolute;
+        top: 50px;
+        display: none;
+        max-height: 300px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        background-color: $background-color;
+        border: 1px solid $border-color;
+        border-radius: 10px;
+        width: 100%;
+
+        a {
+            display: block;
+            width: 100%;
+        }
+
+        .highlight {
+            background-color: $highlight-color;
+        }
+    }
+
+    &.highlighted {
+        border-color: $highlight-color;
+    }
+
+    .material-icons {
+        position: relative;
+        left: 14px;
+        top: 2px;
+    }
+
+    input[type="text"] {
+        background-color: unset;
+        border: none;
+        font-size: 16pt;
+        
+        margin: 0 16px;
+        width: 100%;
+
+        &:focus {
+            outline-width: 0;
+            outline: none;
+        }
+    }
+
+    label {
+        position: absolute;
+        left: 40px;
+
+        transition: top .2s, margin-top .2s;
+    }
+
+    input[type="text"]:focus + label {
+        top: 0;
+        margin-top: -10px;
+    }
+
+    input[type="text"]:valid + label {
+        top: 0;
+        margin-top: -10px;
+    }
+}
+
+// https://codepo8.github.io/css-fork-on-github-ribbon/
+#forkongithub a {
+    background: #252433;
+    color: #e0e0e0;
+    text-decoration: none;
+    font-family: arial, sans-serif;
+    text-align: center;
+    font-weight: bold;
+    padding: 5px 40px;
+    font-size: 1rem;
+    line-height: 2rem;
+    position: relative;
+    transition: 0.5s;
+}
+
+#forkongithub a:hover {
+    background: #8989da;
+    color: #e0e0e0;
+}
+
+#forkongithub a::before,
+#forkongithub a::after {
+    content: "";
+    width: 100%;
+    display: block;
+    position: absolute;
+    top: 1px;
+    left: 0;
+    height: 1px;
+    background: #e0e0e0;
+}
+
+#forkongithub a::after {
+    bottom: 1px;
+    top: auto;
+}
+
+@media screen and (min-width: 800px) {
+    #forkongithub {
+        position: fixed;
+        display: block;
+        top: 0;
+        right: 0;
+        width: 200px;
+        overflow: hidden;
+        height: 200px;
+        z-index: 9999;
+    }
+
+    #forkongithub a {
+        // width: 200px;
+        position: absolute;
+        top: 45px;
+        right: -50px;
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.8);
+    }
+}
+  

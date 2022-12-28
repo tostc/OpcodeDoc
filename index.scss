@@ -1,0 +1,44 @@
+@import "scss/variables";
+
+.content {
+    position: relative;
+    width: 60%;
+    height: 100%;
+
+    margin-left: 20%;
+}
+
+.search-bar {
+    margin-top: 15%;
+
+    h1 {
+        text-align: center;
+        font-size: 45pt;
+    }
+}
+
+#cards {
+    margin: 0 10%;
+}
+
+.search-card {
+    border: 1px solid $border-color;
+    border-radius: 5px;
+    background-color: $foreground-color;
+    padding: 16px;
+
+    margin-top: 1%;
+    transition: border-color .2s;
+
+    .search-card-header {
+        font-weight: bold;
+    }
+
+    .search-card-content {
+
+    }
+
+    &:hover {
+        border-color: $highlight-color;
+    }
+}

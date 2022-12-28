@@ -1,0 +1,153 @@
+.sources {
+  list-style: none;
+  padding: 0;
+}
+
+.navbar {
+  display: inline;
+  position: fixed;
+  height: 100%;
+  width: 20%;
+  overflow: auto;
+  top: 0;
+  background-color: #252433;
+}
+.navbar .groups {
+  list-style: none;
+  width: 80%;
+  margin-left: 10%;
+  padding: 0;
+}
+.navbar .groups a {
+  display: block;
+  margin: 25px 0 25px 16px;
+}
+.navbar .header h1 {
+  font-weight: bold;
+  text-align: center;
+}
+
+#menu {
+  display: none;
+  position: fixed;
+  width: 50px;
+  height: 50px;
+  right: 20px;
+  top: 20px;
+  background: none;
+  border: none;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.content {
+  margin-left: 20%;
+  padding: 1%;
+}
+.content h2 {
+  margin-left: 10%;
+}
+.content .missing {
+  padding: 16px;
+  width: 80%;
+  margin-left: 10%;
+  background-color: rgba(255, 0, 0, 0.4);
+  border: 1px solid red;
+  border-radius: 5px;
+}
+.content .card {
+  width: 80%;
+  margin-left: 10%;
+  border: 1px solid #57555f;
+  border-radius: 5px;
+  background-color: #252433;
+}
+.content .card:not(:first-child) {
+  margin-top: 1%;
+}
+.content .card .card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+  background-color: #57555f;
+}
+.content .card .card-header .right {
+  position: absolute;
+  right: 0;
+}
+.content .card .card-header .material-icons {
+  margin: 10px;
+  transition: color 0.2s;
+}
+.content .card .card-header .material-icons:hover {
+  cursor: pointer;
+  color: #8989da;
+}
+.content .card .card-content {
+  padding: 16px;
+}
+.content .card .card-content p:not(.code) {
+  font-weight: bold;
+}
+.content .card .card-content .code {
+  padding: 10px 10px 10px 16px;
+  border-left: 3px solid #57555f;
+  background-color: rgba(87, 85, 95, 0.2);
+  white-space: pre-wrap;
+}
+.content .card .card-content .code .glossary {
+  transition: color 0.2s;
+  font-weight: bold;
+}
+.content .card .card-content .code .glossary:hover {
+  cursor: pointer;
+  color: #8989da;
+}
+.content .card .card-content table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.content .card .card-content table td, .content .card .card-content table th {
+  border: 1px solid #57555f;
+  text-align: center;
+  padding: 8px;
+}
+
+@media screen and (max-width: 1200px) {
+  .navbar {
+    width: 50%;
+  }
+  .content {
+    margin-left: 50%;
+  }
+  .content .card {
+    width: 90%;
+    margin-left: 5%;
+  }
+  #menu {
+    display: block;
+  }
+}
+@media screen and (max-width: 769px) {
+  .navbar {
+    display: none;
+    z-index: 10000;
+    width: 50%;
+  }
+  .content {
+    margin-left: 0;
+  }
+  .content .card {
+    width: 90%;
+    margin-left: 5%;
+  }
+}/*# sourceMappingURL=spec.css.map */

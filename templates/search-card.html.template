@@ -1,0 +1,6 @@
+<a href="{{link}}">
+    <div class="search-card">
+        <div class="search-card-header">{{title}}</div>
+        <div class="search-card-content">{{description}}</div>
+    </div>
+</a>

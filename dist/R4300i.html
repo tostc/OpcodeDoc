@@ -1,0 +1,5321 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>R4300i - OpcodeDoc</title>
+        <meta name="description" content="MIPS processor of the Nintendo 64. The R4300i is a 64-bit processor. It supports the MIPS III ISA introduction set.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="spec.css">
+        <script src="main.js"></script>
+        <script src="spec.js"></script>
+    </head>
+    <body>
+        <span id="forkongithub"><a href="https://github.com/tostc/OpcodeDoc" target="_blank">Fork me on GitHub</a></span>
+        <div class="overlay" id="overlay" onclick="hideMenu()"></div>
+        <div class="navbar" id="sidemenu">
+            <div class="header">
+                <h1><a href="index.html" class="material-icons">home</a>&nbsp;R4300i</h1>
+                <div class="search">
+                    <span class="material-icons">search</span>
+                    <input type="text" id="search" required onfocus="toggleHighlightSearchbox(this)" onblur="toggleHighlightSearchbox(this)" onkeyup="search(this)">
+                    <label for="search">Search</label>
+                    <div class="autocomplete" id="autocomplete"></div>
+                </div>
+            </div>
+            <ul class="groups">
+                <li><h1>Categories</h1></li>
+<li><a href='#info' onclick='hideMenu()'>Specification info</a></li><li><a href='#glossary' onclick='hideMenu()'>Glossary</a></li><li><a href='#registers' onclick='hideMenu()'>Registers</a></li><li><a href='#load-and-store-instructions' onclick='hideMenu()'>Load and Store Instructions</a></li><li><a href='#atithmetic-instructions' onclick='hideMenu()'>Atithmetic Instructions</a></li><li><a href='#jump-and-branch-instructions' onclick='hideMenu()'>Jump and Branch Instructions</a></li><li><a href='#special-instructions' onclick='hideMenu()'>Special instructions</a></li><li><a href='#exception-instructions' onclick='hideMenu()'>Exception Instructions</a></li><li><a href='#system-control-processor-cop0-instructions' onclick='hideMenu()'>System Control Processor (COP0) Instructions</a></li><li><a href='#floating-point-unit,-fpu-cop1-instructions' onclick='hideMenu()'>Floating-point Unit, FPU (COP1) instructions</a></li>            </ul>
+        </div>
+        <div class="content">
+            <button type="button" id="menu" onclick="showMenu()"><span class="material-icons">menu</span></button>
+
+            <button onclick="scrollUpToTop()" type="button" id="gotop" title="Go to top"><span class="material-icons">arrow_upward</span></button>
+<h2 id='info'>Specification info</h2><div class="card">
+    <div class="card-header">
+        <a href="#r4300i" class="material-icons">link</a>
+        <h3 id="r4300i">R4300i</h3>
+        <a href="specs/r4300i.json" target="_blank" class="material-icons right" title="Download specification" download>download</a>
+    </div>
+    <div class="card-content">
+        <p>Description:</p>
+        <p class="code">MIPS processor of the Nintendo 64. The R4300i is a 64-bit processor. It supports the MIPS III ISA introduction set.</p>
+        <p>CPU clock speed:</p>
+        <p class="code">93.75 MHz</p>
+        <p>Address bus:</p>
+        <p class="code">32-Bit<p>
+        <p>CPU caches:</p>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Comment</th>
+            </tr>
+
+<tr><td>L1</td><td>24 KB</td><td>Divided into 16 KB for instructions and 8 KB for data.</td></tr>        </table>
+        <p>Document version:</p>
+        <p class="code">1.0.0</p>
+        <p>Sources:</p>
+        <ul class="sources">
+<li><a href='https://github.com/martinlindhe/n64ops' target='_blank'>https://github.com/martinlindhe/n64ops</a></li>
+<li><a href='https://www.copetti.org/writings/consoles/nintendo-64' target='_blank'>https://www.copetti.org/writings/consoles/nintendo-64</a></li>
+        </ul>
+    </div>
+</div>
+<h2 id='info'>Glossary</h2><div class="card">
+    <div class="card-header">
+        <a href="#glossary" class="material-icons">link</a>
+        <h3 id="glossary">Glossary</h3>
+    </div>
+    <div class="card-content">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+
+<tr><td>rs</td><td>5-bit source register specifier</td></tr><tr><td>rt</td><td>5-bit target (source/destination) register or branch condition</td></tr><tr><td>rd</td><td>5-bit destination register specifier</td></tr><tr><td>sa</td><td>5-bit shift amount</td></tr><tr><td>fs</td><td>5-bit floating point source register specifier</td></tr><tr><td>ft</td><td>5-bit floating point target (source/destination) register or branch condition</td></tr><tr><td>fd</td><td>5-bit floating point destination register specifier</td></tr><tr><td>base</td><td>5-bit value</td></tr><tr><td>imm</td><td>16 bit immediate value</td></tr><tr><td>offset</td><td>16 bit branch displacement or address displacement</td></tr><tr><td>target</td><td>26 bit jump target address</td></tr>        </table>
+    </div>
+</div>
+<h2 id='registers'>Registers</h2><div class="card">
+    <div class="card-header">
+        <a href="#main" class="material-icons">link</a>
+        <h3 id="main">Main-Processor</h3>
+    </div>
+    <div class="card-content">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Size (Bits)</th>
+            </tr>
+
+<tr><td style='text-align:left'>r0/reg0</td><td style='text-align:left'>0x00</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>at/reg1</td><td style='text-align:left'>0x01</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>v0/reg2</td><td style='text-align:left'>0x02</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>v1/reg3</td><td style='text-align:left'>0x03</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>a0/reg4</td><td style='text-align:left'>0x04</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>a1/reg5</td><td style='text-align:left'>0x05</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>a2/reg6</td><td style='text-align:left'>0x06</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>a3/reg7</td><td style='text-align:left'>0x07</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>t0/reg8</td><td style='text-align:left'>0x08</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>t1/reg9</td><td style='text-align:left'>0x09</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>t2/reg10</td><td style='text-align:left'>0x0A</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>t3/reg11</td><td style='text-align:left'>0x0B</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>t4/reg12</td><td style='text-align:left'>0x0C</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>t5/reg13</td><td style='text-align:left'>0x0D</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>t6/reg14</td><td style='text-align:left'>0x0E</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>t7/reg15</td><td style='text-align:left'>0x0F</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>s0/reg16</td><td style='text-align:left'>0x10</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>s1/reg17</td><td style='text-align:left'>0x11</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>s2/reg18</td><td style='text-align:left'>0x12</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>s3/reg19</td><td style='text-align:left'>0x13</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>s4/reg20</td><td style='text-align:left'>0x14</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>s5/reg21</td><td style='text-align:left'>0x15</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>s6/reg22</td><td style='text-align:left'>0x16</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>s7/reg23</td><td style='text-align:left'>0x17</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>t8/reg24</td><td style='text-align:left'>0x18</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>t9/reg25</td><td style='text-align:left'>0x19</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>k0/reg26</td><td style='text-align:left'>0x1A</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>k1/reg27</td><td style='text-align:left'>0x1B</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>gp/reg28</td><td style='text-align:left'>0x1C</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>sp/reg29</td><td style='text-align:left'>0x1D</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>s8/reg30</td><td style='text-align:left'>0x1E</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>ra/reg31</td><td style='text-align:left'>0x1F</td><td style='text-align:left'>64</td></tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#cop0" class="material-icons">link</a>
+        <h3 id="cop0">COP0-Processor</h3>
+    </div>
+    <div class="card-content">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Size (Bits)</th>
+            </tr>
+
+<tr><td style='text-align:left'>Index</td><td style='text-align:left'>0x00</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>Random</td><td style='text-align:left'>0x01</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>EntryLo0</td><td style='text-align:left'>0x02</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>EntryLo1</td><td style='text-align:left'>0x03</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>Context</td><td style='text-align:left'>0x04</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>PageMask</td><td style='text-align:left'>0x05</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>Wired</td><td style='text-align:left'>0x06</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>*RESERVED*</td><td style='text-align:left'>0x07</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>BadVAddr</td><td style='text-align:left'>0x08</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>Count</td><td style='text-align:left'>0x09</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>EntryHi</td><td style='text-align:left'>0x0A</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>Compare</td><td style='text-align:left'>0x0B</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>Status</td><td style='text-align:left'>0x0C</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>Cause</td><td style='text-align:left'>0x0D</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>EPC</td><td style='text-align:left'>0x0E</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>PRevID</td><td style='text-align:left'>0x0F</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>Config</td><td style='text-align:left'>0x10</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>LLAddr</td><td style='text-align:left'>0x11</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>WatchLo</td><td style='text-align:left'>0x12</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>WatchHi</td><td style='text-align:left'>0x13</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>XContext</td><td style='text-align:left'>0x14</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>*RESERVED*</td><td style='text-align:left'>0x15</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>*RESERVED*</td><td style='text-align:left'>0x16</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>*RESERVED*</td><td style='text-align:left'>0x17</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>*RESERVED*</td><td style='text-align:left'>0x18</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>*RESERVED*</td><td style='text-align:left'>0x19</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>PErr</td><td style='text-align:left'>0x1A</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>CacheErr</td><td style='text-align:left'>0x1B</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>TagLo</td><td style='text-align:left'>0x1C</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>TagHi</td><td style='text-align:left'>0x1D</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>ErrorEPC</td><td style='text-align:left'>0x1E</td><td style='text-align:left'>64</td></tr>
+<tr><td style='text-align:left'>*RESERVED*</td><td style='text-align:left'>0x1F</td><td style='text-align:left'>64</td></tr>
+        </table>
+    </div>
+</div>
+<h2 id='load-and-store-instructions'>Load and Store Instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#lb" class="material-icons">link</a>
+        <h3 id="lb">LB</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">32</p>
+        <p>Format:</p>
+        <p class="code">LB rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load a byte from memory as a signed value.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = byte[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lbu" class="material-icons">link</a>
+        <h3 id="lbu">LBU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">36</p>
+        <p>Format:</p>
+        <p class="code">LBU rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load a byte from memory as an unsigned value.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = byte[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ld" class="material-icons">link</a>
+        <h3 id="ld">LD</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">55</p>
+        <p>Format:</p>
+        <p class="code">LD rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load a doubleword from memory.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = doubleword[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ldl" class="material-icons">link</a>
+        <h3 id="ldl">LDL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">26</p>
+        <p>Format:</p>
+        <p class="code">LDL rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load the most-significant part of a doubleword from an unaligned memory address.</p>
+        <p>Implementation:</p>
+        <p class="code">left(rt) = right[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ldr" class="material-icons">link</a>
+        <h3 id="ldr">LDR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">27</p>
+        <p>Format:</p>
+        <p class="code">LDR rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load the least-significant part of a doubleword from an unaligned memory address.</p>
+        <p>Implementation:</p>
+        <p class="code">right(rt) = left[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lh" class="material-icons">link</a>
+        <h3 id="lh">LH</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">33</p>
+        <p>Format:</p>
+        <p class="code">LH rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load a halfword from memory as a signed value.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = halfword[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lhu" class="material-icons">link</a>
+        <h3 id="lhu">LHU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">37</p>
+        <p>Format:</p>
+        <p class="code">LHU rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load a halfword from memory as an unsigned value.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = halfword[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ll" class="material-icons">link</a>
+        <h3 id="ll">LL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">48</p>
+        <p>Format:</p>
+        <p class="code">LL rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load a word from memory for an atomic read-modify-write.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lld" class="material-icons">link</a>
+        <h3 id="lld">LLD</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">52</p>
+        <p>Format:</p>
+        <p class="code">LLD rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load a doubleword from memory for an atomic read-modify-write.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lw" class="material-icons">link</a>
+        <h3 id="lw">LW</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">35</p>
+        <p>Format:</p>
+        <p class="code">LW rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load a word from memory as a signed value.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = word[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lwl" class="material-icons">link</a>
+        <h3 id="lwl">LWL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">34</p>
+        <p>Format:</p>
+        <p class="code">LWL rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load the most-significant part of a word as a signed value from an unaligned memory address.</p>
+        <p>Implementation:</p>
+        <p class="code">left(rt) = right[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lwr" class="material-icons">link</a>
+        <h3 id="lwr">LWR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">38</p>
+        <p>Format:</p>
+        <p class="code">LWR rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load the least-significant part of a word from an unaligned memory address as a signed value.</p>
+        <p>Implementation:</p>
+        <p class="code">right(rt) = left[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lwu" class="material-icons">link</a>
+        <h3 id="lwu">LWU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">39</p>
+        <p>Format:</p>
+        <p class="code">LWU rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load a word from memory as an unsigned value.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = word[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sb" class="material-icons">link</a>
+        <h3 id="sb">SB</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">40</p>
+        <p>Format:</p>
+        <p class="code">SB rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store a byte to memory.</p>
+        <p>Implementation:</p>
+        <p class="code">byte[base+offset] = rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sc" class="material-icons">link</a>
+        <h3 id="sc">SC</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">56</p>
+        <p>Format:</p>
+        <p class="code">SC rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store a word to memory to complete an atomic read-modify-write.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#scd" class="material-icons">link</a>
+        <h3 id="scd">SCD</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">60</p>
+        <p>Format:</p>
+        <p class="code">SCD rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store a doubleword to memory to complete an atomic</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sd" class="material-icons">link</a>
+        <h3 id="sd">SD</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">63</p>
+        <p>Format:</p>
+        <p class="code">SD rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store a doubleword to memory.</p>
+        <p>Implementation:</p>
+        <p class="code">doulbeword[base+offset] = rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sdl" class="material-icons">link</a>
+        <h3 id="sdl">SDL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">44</p>
+        <p>Format:</p>
+        <p class="code">SDL rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store the most-significant part of a doubleword to an unaligned memory address.</p>
+        <p>Implementation:</p>
+        <p class="code">right[base+offset] = left(rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sdr" class="material-icons">link</a>
+        <h3 id="sdr">SDR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">45</p>
+        <p>Format:</p>
+        <p class="code">SDR rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store the least-significant part of a doubleword to an unaligned memory address.</p>
+        <p>Implementation:</p>
+        <p class="code">left[base+offset] = right(rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sh" class="material-icons">link</a>
+        <h3 id="sh">SH</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">41</p>
+        <p>Format:</p>
+        <p class="code">SH rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store a halfword to memory.</p>
+        <p>Implementation:</p>
+        <p class="code">halfword[base+offset] = rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sw" class="material-icons">link</a>
+        <h3 id="sw">SW</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">43</p>
+        <p>Format:</p>
+        <p class="code">SW rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store a word to memory.</p>
+        <p>Implementation:</p>
+        <p class="code">word[base+offset] = rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#swl" class="material-icons">link</a>
+        <h3 id="swl">SWL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">42</p>
+        <p>Format:</p>
+        <p class="code">SWL rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store the most-significant part of a word to an unaligned memory address.</p>
+        <p>Implementation:</p>
+        <p class="code">right[base+offset] = left(rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#swr" class="material-icons">link</a>
+        <h3 id="swr">SWR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">46</p>
+        <p>Format:</p>
+        <p class="code">SWR rt, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store the least-significant part of a word to an unaligned memory address.</p>
+        <p>Implementation:</p>
+        <p class="code">left[base+offset] = right(rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sync" class="material-icons">link</a>
+        <h3 id="sync">SYNC</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SYNC (stype = 0 implied)</p>
+        <p>Purpose:</p>
+        <p class="code">To order loads and stores to shared memory in a</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>0000 0000 0000 000</th>
+<th>stype</th>
+<th>001111 (15)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>15</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='atithmetic-instructions'>Atithmetic Instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#add" class="material-icons">link</a>
+        <h3 id="add">ADD</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">ADD rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To add 32-bit integers. If overflow occurs, then trap. Comment: ADD rd, r0, rs is equal to a MOVE rd, rs</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rs + rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>100000 (32)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#addi" class="material-icons">link</a>
+        <h3 id="addi">ADDI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">8</p>
+        <p>Format:</p>
+        <p class="code">ADDI rt, rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To add a constant to a 32-bit integer. If overflow occurs, then trap.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = rs + immediate</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#addiu" class="material-icons">link</a>
+        <h3 id="addiu">ADDIU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">9</p>
+        <p>Format:</p>
+        <p class="code">ADDIU rt, rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To add a constant to a 32-bit integer.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = rs + immediate</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#addu" class="material-icons">link</a>
+        <h3 id="addu">ADDU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">ADDU rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To add 32-bit integers.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rs + rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>100001 (33)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#and" class="material-icons">link</a>
+        <h3 id="and">AND</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">AND rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To do a bitwise logical AND.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = (rs AND rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>100100 (36)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#andi" class="material-icons">link</a>
+        <h3 id="andi">ANDI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">12</p>
+        <p>Format:</p>
+        <p class="code">ANDI rt, rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To do a bitwise logical AND with a constant.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = (rs AND immediate)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dadd" class="material-icons">link</a>
+        <h3 id="dadd">DADD</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DADD rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To add 64-bit integers. If overflow occurs, then trap.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rs + rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>101100 (44)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#daddi" class="material-icons">link</a>
+        <h3 id="daddi">DADDI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">24</p>
+        <p>Format:</p>
+        <p class="code">DADDI rt, rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To add a constant to a 64-bit integer. If overflow occurs, then trap.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = rs + immediate</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#daddiu" class="material-icons">link</a>
+        <h3 id="daddiu">DADDIU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">25</p>
+        <p>Format:</p>
+        <p class="code">DADDIU rt, rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To add a constant to a 64-bit integer.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = rs + immediate</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#daddu" class="material-icons">link</a>
+        <h3 id="daddu">DADDU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DADDU rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To add 64-bit integers.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rs + rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>101101 (45)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ddiv" class="material-icons">link</a>
+        <h3 id="ddiv">DDIV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DDIV rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To divide 64-bit signed integers.</p>
+        <p>Implementation:</p>
+        <p class="code">LO = rs / rt;     HI = rs MOD rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>0000 0000 00</th>
+<th>011110 (30)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ddivu" class="material-icons">link</a>
+        <h3 id="ddivu">DDIVU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DDIVU rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To divide 64-bit unsigned integers.</p>
+        <p>Implementation:</p>
+        <p class="code">LO = rs / rt;     HI = rs MOD rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>0000 0000 00</th>
+<th>011111 (31)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#div" class="material-icons">link</a>
+        <h3 id="div">DIV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DIV rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To divide 32-bit signed integers.</p>
+        <p>Implementation:</p>
+        <p class="code">LO = rs / rt;     HI = rs MOD rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>0000 0000 00</th>
+<th>011010 (26)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#divu" class="material-icons">link</a>
+        <h3 id="divu">DIVU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DIVU rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To divide 32-bit unsigned integers.</p>
+        <p>Implementation:</p>
+        <p class="code">LO = rs / rt;     HI = rs MOD rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>0000 0000 00</th>
+<th>011011 (27)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dmult" class="material-icons">link</a>
+        <h3 id="dmult">DMULT</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DMULT rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To multiply 64-bit signed integers.</p>
+        <p>Implementation:</p>
+        <p class="code">LO = low(rs*rt);  HI = high(rs*rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>0000 0000 00</th>
+<th>011100 (28)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dmultu" class="material-icons">link</a>
+        <h3 id="dmultu">DMULTU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DMULTU rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To multiply 64-bit unsigned integers.</p>
+        <p>Implementation:</p>
+        <p class="code">LO = low(rs*rt);  HI = high(rs*rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>0000 0000 00</th>
+<th>011101 (29)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dsll" class="material-icons">link</a>
+        <h3 id="dsll">DSLL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DSLL rd, rt, sa</p>
+        <p>Purpose:</p>
+        <p class="code">To left shift a doubleword by a fixed amount -- 0 to 31 bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt << sa</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>rd</th>
+<th>sa</th>
+<th>111000 (56)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dsll32" class="material-icons">link</a>
+        <h3 id="dsll32">DSLL32</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DSLL32 rd, rt, sa</p>
+        <p>Purpose:</p>
+        <p class="code">To left shift a doubleword by a fixed amount -- 32 to 63 bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt << (sa+32)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>rd</th>
+<th>sa</th>
+<th>111100 (60)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dsllv" class="material-icons">link</a>
+        <h3 id="dsllv">DSLLV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DSLLV rd, rt, rs</p>
+        <p>Purpose:</p>
+        <p class="code">To left shift a doubleword by a variable number of bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt << rs</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>010100 (20)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dsra" class="material-icons">link</a>
+        <h3 id="dsra">DSRA</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DSRA rd, rt, sa</p>
+        <p>Purpose:</p>
+        <p class="code">To arithmetic right shift a doubleword by a fixed amount -- 0 to 31 bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt >> sa</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>rd</th>
+<th>sa</th>
+<th>111011 (59)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dsra32" class="material-icons">link</a>
+        <h3 id="dsra32">DSRA32</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DSRA32 rd, rt, sa</p>
+        <p>Purpose:</p>
+        <p class="code">To arithmetic right shift a doubleword by a fixed amount -- 32-63 bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt >> (sa+32)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>rd</th>
+<th>sa</th>
+<th>111111 (63)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dsrav" class="material-icons">link</a>
+        <h3 id="dsrav">DSRAV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DSRAV rd, rt, rs</p>
+        <p>Purpose:</p>
+        <p class="code">To arithmetic right shift a doubleword by a variable number of bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt >> rs</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>rd</th>
+<th>rs</th>
+<th>010111 (23)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dsrl" class="material-icons">link</a>
+        <h3 id="dsrl">DSRL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DSRL rd, rt, sa</p>
+        <p>Purpose:</p>
+        <p class="code">To logical right shift a doubleword by a fixed amount -- 0 to 31 bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt >> sa</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>rd</th>
+<th>sa</th>
+<th>111010 (58)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dsrl32" class="material-icons">link</a>
+        <h3 id="dsrl32">DSRL32</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DSRL32 rd, rt, sa</p>
+        <p>Purpose:</p>
+        <p class="code">To logical right shift a doubleword by a fixed amount -- 32 to 63 bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt >> (sa+32)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>rd</th>
+<th>sa</th>
+<th>111110 (62)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dsrlv" class="material-icons">link</a>
+        <h3 id="dsrlv">DSRLV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DSRLV rd, rt, rs</p>
+        <p>Purpose:</p>
+        <p class="code">To logical right shift a doubleword by a variable number of bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt >> rs</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>rd</th>
+<th>rs</th>
+<th>010110 (22)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dsub" class="material-icons">link</a>
+        <h3 id="dsub">DSUB</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DSUB rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To subtract 64-bit integers; trap if overflow.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rs - rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>101110 (46)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dsubu" class="material-icons">link</a>
+        <h3 id="dsubu">DSUBU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">DSUBU rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To subtract 64-bit integers.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rs - rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>101111 (47)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lui" class="material-icons">link</a>
+        <h3 id="lui">LUI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">15</p>
+        <p>Format:</p>
+        <p class="code">LUI rt, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To load a constant into the upper half of a word.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = immediate * 10000h</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#mfhi" class="material-icons">link</a>
+        <h3 id="mfhi">MFHI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">MFHI rd</p>
+        <p>Purpose:</p>
+        <p class="code">To copy the special purpose HI register to a GPR.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = HI</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>0000 0000 00</th>
+<th>rd</th>
+<th>00000</th>
+<th>010000 (16)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>10</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#mflo" class="material-icons">link</a>
+        <h3 id="mflo">MFLO</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">MFLO rd</p>
+        <p>Purpose:</p>
+        <p class="code">To copy the special purpose LO register to a GPR.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = LO</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>0000 0000 00</th>
+<th>rd</th>
+<th>00000</th>
+<th>010010 (18)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>10</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#mthi" class="material-icons">link</a>
+        <h3 id="mthi">MTHI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">MTHI rs</p>
+        <p>Purpose:</p>
+        <p class="code">To copy a GPR to the special purpose HI register.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>0000 0000 0000 000</th>
+<th>010001 (17)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>15</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#mtlo" class="material-icons">link</a>
+        <h3 id="mtlo">MTLO</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">MTLO rs</p>
+        <p>Purpose:</p>
+        <p class="code">To copy a GPR to the special purpose LO register.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>0000 0000 0000 000</th>
+<th>010011 (19)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>15</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#mult" class="material-icons">link</a>
+        <h3 id="mult">MULT</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">MULT rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To multiply 32-bit signed integers.</p>
+        <p>Implementation:</p>
+        <p class="code">LO = low(rs*rt);    HI = high(rs*rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>0000 0000 00</th>
+<th>011000 (24)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#multu" class="material-icons">link</a>
+        <h3 id="multu">MULTU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">MULTU rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To multiply 32-bit unsigned integers.</p>
+        <p>Implementation:</p>
+        <p class="code">LO = low(rs*rt);    HI = high(rs*rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>0000 0000 00</th>
+<th>011001 (25)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#nor" class="material-icons">link</a>
+        <h3 id="nor">NOR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">NOR rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To do a bitwise logical NOT OR.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = (rs NOR rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>100111 (39)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#or" class="material-icons">link</a>
+        <h3 id="or">OR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">OR rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To do a bitwise logical OR.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = (rs OR rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>100101 (37)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ori" class="material-icons">link</a>
+        <h3 id="ori">ORI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">13</p>
+        <p>Format:</p>
+        <p class="code">ORI rt, rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To do a bitwise logical OR with a constant. Comment: ORI rt, r0, imm is equal to a LI rt, imm</p>
+        <p>Implementation:</p>
+        <p class="code">rt = (rs OR immediate)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sll" class="material-icons">link</a>
+        <h3 id="sll">SLL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SLL rd, rt, sa</p>
+        <p>Purpose:</p>
+        <p class="code">To left shift a word by a fixed number of bits. Comment: SLL r0, r0, 0 is equal to a NOP (No OPeration)</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt << sa</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>rd</th>
+<th>sa</th>
+<th>000000 (0)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sllv" class="material-icons">link</a>
+        <h3 id="sllv">SLLV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SLLV rd, rt, rs</p>
+        <p>Purpose:</p>
+        <p class="code">To left shift a word by a variable number of bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt << sa</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>000100 (4)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#slt" class="material-icons">link</a>
+        <h3 id="slt">SLT</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SLT rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To record the result of a less-than comparison.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs < rt then rd = 1 else rd = 0</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>101010 (42)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#slti" class="material-icons">link</a>
+        <h3 id="slti">SLTI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10</p>
+        <p>Format:</p>
+        <p class="code">SLTI rt, rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To record the result of a less-than comparison with a constant.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs < immediate then rd = 1 else rd = 0</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sltiu" class="material-icons">link</a>
+        <h3 id="sltiu">SLTIU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">11</p>
+        <p>Format:</p>
+        <p class="code">SLTIU rt, rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To record the result of an unsigned less-than comparison with a constant.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs < immediate then rd = 1 else rd = 0</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sltu" class="material-icons">link</a>
+        <h3 id="sltu">SLTU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SLTU rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To record the result of an unsigned less-than comparison.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs < rt then rd = 1 else rd = 0</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>101011 (43)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sra" class="material-icons">link</a>
+        <h3 id="sra">SRA</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SRA rd, rt, sa</p>
+        <p>Purpose:</p>
+        <p class="code">To arithmetic right shift a word by a fixed number of bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt >> sa</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>rd</th>
+<th>sa</th>
+<th>000011 (3)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#srav" class="material-icons">link</a>
+        <h3 id="srav">SRAV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SRAV rd, rt, rs</p>
+        <p>Purpose:</p>
+        <p class="code">To arithmetic right shift a word by a variable number of bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt >> rs</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>000111 (7)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#srl" class="material-icons">link</a>
+        <h3 id="srl">SRL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SRL rd, rt, sa</p>
+        <p>Purpose:</p>
+        <p class="code">To logical right shift a word by a fixed number of bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt >> sa</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000</th>
+<th>rt</th>
+<th>rd</th>
+<th>sa</th>
+<th>000010 (2)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#srlv" class="material-icons">link</a>
+        <h3 id="srlv">SRLV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SRLV rd, rt, rs</p>
+        <p>Purpose:</p>
+        <p class="code">To logical right shift a word by a variable number of bits.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rt >> rs</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>000110 (6)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sub" class="material-icons">link</a>
+        <h3 id="sub">SUB</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SUB rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To subtract 32-bit integers. If overflow occurs, then trap. Comment: SUB rd, r0, rt is equal to a NEG rd, rt</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rs - rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>100010 (34)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#subu" class="material-icons">link</a>
+        <h3 id="subu">SUBU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SUBU rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To subtract 32-bit integers. No trap on overflow. Comment: SUBU rd, r0, rs is equal to a NEGU rd, rs</p>
+        <p>Implementation:</p>
+        <p class="code">rd = rs - rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>100011 (35)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#xor" class="material-icons">link</a>
+        <h3 id="xor">XOR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">XOR rd, rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To do a bitwise logical EXCLUSIVE OR.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = (rs XOR rt)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>rd</th>
+<th>00000</th>
+<th>100110 (38)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#xori" class="material-icons">link</a>
+        <h3 id="xori">XORI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">14</p>
+        <p>Format:</p>
+        <p class="code">XORI rt, rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To do a bitwise logical EXCLUSIVE OR with a constant.</p>
+        <p>Implementation:</p>
+        <p class="code">rd = (rs XOR immediate)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='jump-and-branch-instructions'>Jump and Branch Instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#beq" class="material-icons">link</a>
+        <h3 id="beq">BEQ</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">4</p>
+        <p>Format:</p>
+        <p class="code">BEQ rs, rt, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To compare GPRs then do a PC-relative conditional branch. Comment: BEQ rs, r0, offset is equal to a BEQZ rs, offset BEQ r0, r0, offset is equal to a B offset</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs = rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#beql" class="material-icons">link</a>
+        <h3 id="beql">BEQL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">20</p>
+        <p>Format:</p>
+        <p class="code">BEQL rs, rt, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To compare GPRs then do a PC-relative conditional branch; execute the delay slot only if the branch is taken. Comment: BEQL rs, r0, offset is equal to a BEQZL rs, offset</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs = rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bgez" class="material-icons">link</a>
+        <h3 id="bgez">BGEZ</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">BGEZ rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional branch.</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs >= 0 (signed)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>00001 (1)</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bgezal" class="material-icons">link</a>
+        <h3 id="bgezal">BGEZAL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">BGEZAL rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional procedure call. Comment: BGEZAL r0, offset is equal to a BAL offset</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs >= 0 (signed) (return address in ra)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>10001(17)</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bgezall" class="material-icons">link</a>
+        <h3 id="bgezall">BGEZALL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">BGEZALL rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional procedure call; execute the delay slot only if the branch is taken.</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs >= 0 (signed) (return address in ra)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>10011(19)</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bgezl" class="material-icons">link</a>
+        <h3 id="bgezl">BGEZL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">BGEZL rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs >= 0 (signed)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>00011 (3)</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bgtz" class="material-icons">link</a>
+        <h3 id="bgtz">BGTZ</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">7</p>
+        <p>Format:</p>
+        <p class="code">BGTZ rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional branch.</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs > 0 (signed)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>00000</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bgtzl" class="material-icons">link</a>
+        <h3 id="bgtzl">BGTZL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">23</p>
+        <p>Format:</p>
+        <p class="code">BGTZL rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs > 0 (signed)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>00000</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#blez" class="material-icons">link</a>
+        <h3 id="blez">BLEZ</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">6</p>
+        <p>Format:</p>
+        <p class="code">BLEZ rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional branch.</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs <= 0 (signed)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>00000</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#blezl" class="material-icons">link</a>
+        <h3 id="blezl">BLEZL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">22</p>
+        <p>Format:</p>
+        <p class="code">BLEZL rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs <= 0 (signed)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>00000</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bltz" class="material-icons">link</a>
+        <h3 id="bltz">BLTZ</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">BLTZ rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional branch.</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs < 0 (signed)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>00000</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bltzal" class="material-icons">link</a>
+        <h3 id="bltzal">BLTZAL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">BLTZAL rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional procedure call.</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs < 0 (signed) (return address in ra)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>10000</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bltzall" class="material-icons">link</a>
+        <h3 id="bltzall">BLTZALL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">BLTZALL rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional procedure call; execute the delay slot only if the branch is taken.</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs < 0 (signed) (return address in ra)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>10010</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bltzl" class="material-icons">link</a>
+        <h3 id="bltzl">BLTZL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">BLTZL rs, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs < 0 (signed)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>00010 (2)</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bne" class="material-icons">link</a>
+        <h3 id="bne">BNE</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">5</p>
+        <p>Format:</p>
+        <p class="code">BNE rs, rt, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To compare GPRs then do a PC-relative conditional branch. Comment: BNE rs, r0, offset is equal to a BNEZ rs, offset</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs <> rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bnel" class="material-icons">link</a>
+        <h3 id="bnel">BNEL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">21</p>
+        <p>Format:</p>
+        <p class="code">BNEL rs, rt, offset</p>
+        <p>Purpose:</p>
+        <p class="code">To compare GPRs then do a PC-relative conditional branch; execute the delay slot only if the branch is taken. Comment: BNEL rs, r0, offset is equal to a BNEZL rs, offset</p>
+        <p>Implementation:</p>
+        <p class="code">branch if rs <> rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#j" class="material-icons">link</a>
+        <h3 id="j">J</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">2</p>
+        <p>Format:</p>
+        <p class="code">J target</p>
+        <p>Purpose:</p>
+        <p class="code">To branch within the current 256 MB aligned region.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>instr_index</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>26</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#jal" class="material-icons">link</a>
+        <h3 id="jal">JAL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">3</p>
+        <p>Format:</p>
+        <p class="code">JAL target</p>
+        <p>Purpose:</p>
+        <p class="code">To procedure call within the current 256 MB aligned region.</p>
+        <p>Implementation:</p>
+        <p class="code">return address in ra</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>instr_index</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>26</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#jalr" class="material-icons">link</a>
+        <h3 id="jalr">JALR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">JALR rs, rd</p>
+        <p>Purpose:</p>
+        <p class="code">To procedure call to an instruction address in a register.</p>
+        <p>Implementation:</p>
+        <p class="code">return address in rd</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>00000</th>
+<th>rd</th>
+<th>001001 (9)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#jr" class="material-icons">link</a>
+        <h3 id="jr">JR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">JR rs</p>
+        <p>Purpose:</p>
+        <p class="code">To branch to an instruction address in a register.</p>
+        <p>Implementation:</p>
+        <p class="code">PC = rs</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>0000 0000 0000 000</th>
+<th>001000 (8)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>15</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='special-instructions'>Special instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#break" class="material-icons">link</a>
+        <h3 id="break">BREAK</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">BREAK offset</p>
+        <p>Purpose:</p>
+        <p class="code">To cause a Breakpoint exception.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>code</th>
+<th>001101 (13)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>20</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#syscall" class="material-icons">link</a>
+        <h3 id="syscall">SYSCALL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">SYSCALL offset</p>
+        <p>Purpose:</p>
+        <p class="code">To cause a System Call exception.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>code</th>
+<th>001100 (12)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>20</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='exception-instructions'>Exception Instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#teq" class="material-icons">link</a>
+        <h3 id="teq">TEQ</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">TEQ rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To compare GPRs and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs = rt then trap</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>code</th>
+<th>110100 (52)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#teqi" class="material-icons">link</a>
+        <h3 id="teqi">TEQI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">TEQI rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To compare a GPR to a constant and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs = immediate then trap</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>01100(12)</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tge" class="material-icons">link</a>
+        <h3 id="tge">TGE</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">TGE rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To compare GPRs and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs >= rt then trap</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>code</th>
+<th>110000 (48)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tgei" class="material-icons">link</a>
+        <h3 id="tgei">TGEI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">TGEI rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To compare a GPR to a constant and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs >= immediate then trap</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>01000 (8)</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tgeiu" class="material-icons">link</a>
+        <h3 id="tgeiu">TGEIU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">TGEIU rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To compare a GPR to a constant and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs >= immediate then trap</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>01001 (9)</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tgeu" class="material-icons">link</a>
+        <h3 id="tgeu">TGEU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">TGEU rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To compare GPRs and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs >= rt then trap</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>code</th>
+<th>110001 (49)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tlt" class="material-icons">link</a>
+        <h3 id="tlt">TLT</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">TLT rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To compare GPRs and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs < rt then trap</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>code</th>
+<th>110010 (50)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tlti" class="material-icons">link</a>
+        <h3 id="tlti">TLTI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">TLTI rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To compare a GPR to a constant and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs < immediate then trap (signed)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>01010(10)</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tltiu" class="material-icons">link</a>
+        <h3 id="tltiu">TLTIU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">TLTIU rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To compare a GPR to a constant and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs < immediate then trap</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>01011(11)</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tltu" class="material-icons">link</a>
+        <h3 id="tltu">TLTU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">TLTU rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To compare GPRs and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs < rt then trap</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>code</th>
+<th>110011 (51)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tne" class="material-icons">link</a>
+        <h3 id="tne">TNE</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">TNE rs, rt</p>
+        <p>Purpose:</p>
+        <p class="code">To compare GPRs and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs <> rt then trap</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>rt</th>
+<th>code</th>
+<th>110110 (54)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>10</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tnei" class="material-icons">link</a>
+        <h3 id="tnei">TNEI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">TNEI rs, immediate</p>
+        <p>Purpose:</p>
+        <p class="code">To compare a GPR to a constant and do a conditional Trap.</p>
+        <p>Implementation:</p>
+        <p class="code">if rs <> immediate then trap</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>rs</th>
+<th>01110(14)</th>
+<th>immediate</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='system-control-processor-cop0-instructions'>System Control Processor (COP0) Instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#cache" class="material-icons">link</a>
+        <h3 id="cache">CACHE</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">47</p>
+        <p>Format:</p>
+        <p class="code">CACHE op, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">The 16-bit offset is sign-extended and added to the contents of
+general register base to form a virtual address. The virtual
+address is translated to a physical address using the TLB, and the
+5-bit sub-opcode specifies a cache operation for that address.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>op</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#eret" class="material-icons">link</a>
+        <h3 id="eret">ERET</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10000</p>
+        <p>Format:</p>
+        <p class="code">ERET</p>
+        <p>Purpose:</p>
+        <p class="code">ERET is the R4300 instruction for returning from an interrupt,</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>CO</th>
+<th>0000 0000 0000 0000 000</th>
+<th>011000 (24)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>19</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#mfc0" class="material-icons">link</a>
+        <h3 id="mfc0">MFC0</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10000</p>
+        <p>Format:</p>
+        <p class="code">MFC0 rt, rd</p>
+        <p>Purpose:</p>
+        <p class="code">To copy a word from an FPR to a GPR.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = COP rd</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000 (0)</th>
+<th>rt</th>
+<th>fs</th>
+<th>0000 0000 000</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>11</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#mtc0" class="material-icons">link</a>
+        <h3 id="mtc0">MTC0</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10000</p>
+        <p>Format:</p>
+        <p class="code">MTC0 rt, rd</p>
+        <p>Purpose:</p>
+        <p class="code">To copy a word from a GPR to an FPR.</p>
+        <p>Implementation:</p>
+        <p class="code">COP rd = rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00100 (4)</th>
+<th>rt</th>
+<th>fs</th>
+<th>0000 0000 000</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>11</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tlbp" class="material-icons">link</a>
+        <h3 id="tlbp">TLBP</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10000</p>
+        <p>Format:</p>
+        <p class="code">TLBP</p>
+        <p>Purpose:</p>
+        <p class="code">The Index register is loaded with the address of the TLB entry</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>CO</th>
+<th>0000 0000 0000 0000 000</th>
+<th>001000 (8)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>19</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tlbr" class="material-icons">link</a>
+        <h3 id="tlbr">TLBR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10000</p>
+        <p>Format:</p>
+        <p class="code">TLBR</p>
+        <p>Purpose:</p>
+        <p class="code">The G bit (which controls ASID matching) read from the TLB is</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>CO</th>
+<th>0000 0000 0000 0000 000</th>
+<th>000001 (1)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>19</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tlbwi" class="material-icons">link</a>
+        <h3 id="tlbwi">TLBWI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10000</p>
+        <p>Format:</p>
+        <p class="code">TLBWI</p>
+        <p>Purpose:</p>
+        <p class="code">The G bit of the TLB is written with the logical AND of the G bits</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>CO</th>
+<th>0000 0000 0000 0000 000</th>
+<th>000010 (2)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>19</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#tlbwr" class="material-icons">link</a>
+        <h3 id="tlbwr">TLBWR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10000</p>
+        <p>Format:</p>
+        <p class="code">TLBWR</p>
+        <p>Purpose:</p>
+        <p class="code">The G bit of the TLB is written with the logical AND of the G bits</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>CO</th>
+<th>0000 0000 0000 0000 000</th>
+<th>000110 (6)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>19</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='floating-point-unit,-fpu-cop1-instructions'>Floating-point Unit, FPU (COP1) instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#abs-fmt" class="material-icons">link</a>
+        <h3 id="abs-fmt">ABS.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">ABS.S fd, fs ABS.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To compute the absolute value of an FP value.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>000101 (5)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#add-fmt" class="material-icons">link</a>
+        <h3 id="add-fmt">ADD.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">ADD.S fd, fs, ft ADD.D fd, fs, ft</p>
+        <p>Purpose:</p>
+        <p class="code">To add FP values.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>ft</th>
+<th>fs</th>
+<th>fd</th>
+<th>000000 (0)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bc1f" class="material-icons">link</a>
+        <h3 id="bc1f">BC1F</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">BC1F offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test an FP condition code and do a PC-relative conditional branch.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>01000 (8)</th>
+<th>000</th>
+<th>nd (0)</th>
+<th>tf (0)</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bc1fl" class="material-icons">link</a>
+        <h3 id="bc1fl">BC1FL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">BC1FL offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test an FP condition code and do a PC-relative conditional branch; execute the delay slot only if the branch is taken</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>01000 (8)</th>
+<th>000</th>
+<th>nd (1)</th>
+<th>tf (0)</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bc1t" class="material-icons">link</a>
+        <h3 id="bc1t">BC1T</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">BC1T offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test an FP condition code and do a PC-relative conditional branch.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>01000 (8)</th>
+<th>000</th>
+<th>nd (0)</th>
+<th>tf (1)</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#bc1tl" class="material-icons">link</a>
+        <h3 id="bc1tl">BC1TL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">BC1TL offset</p>
+        <p>Purpose:</p>
+        <p class="code">To test an FP condition code and do a PC-relative conditional branch; execute the delay slot only if the branch is taken.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>01000 (8)</th>
+<th>000</th>
+<th>nd (1)</th>
+<th>tf (1)</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>3</td>
+<td>1</td>
+<td>1</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#c-cond-fmt" class="material-icons">link</a>
+        <h3 id="c-cond-fmt">C.cond.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">C.cond.S fs, ft C.cond.D fs, ft</p>
+        <p>Purpose:</p>
+        <p class="code">To compare FP values and record the Boolean result in</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>ft</th>
+<th>fs</th>
+<th>000</th>
+<th>00</th>
+<th>11</th>
+<th>cond</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>3</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ceil-l-fmt" class="material-icons">link</a>
+        <h3 id="ceil-l-fmt">CEIL.L.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">CEIL.L.S fd, fs CEIL.L.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP value to 64-bit fixed-point, rounding up.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>001010 (10)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ceil-w-fmt" class="material-icons">link</a>
+        <h3 id="ceil-w-fmt">CEIL.W.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">CEIL.W.S fd, fs CEIL.W.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP value to 32-bit fixed-point, rounding up.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>001110 (14)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#cfc1" class="material-icons">link</a>
+        <h3 id="cfc1">CFC1</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">CFC1 rt, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To copy a word from an FPU control register to a GPR.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = fs</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00010 (2)</th>
+<th>rt</th>
+<th>fs</th>
+<th>0000 0000 000</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>11</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ctc1" class="material-icons">link</a>
+        <h3 id="ctc1">CTC1</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">CTC1 rt, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To copy a word from a GPR to an FPU control register.</p>
+        <p>Implementation:</p>
+        <p class="code">fs = rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00110 (6)</th>
+<th>rt</th>
+<th>fs</th>
+<th>0000 0000 000</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>11</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#cvt-d-fmt" class="material-icons">link</a>
+        <h3 id="cvt-d-fmt">CVT.D.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">CVT.D.S fd, fs CVT.D.W fd, fs CVT.D.L fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP or fixed-point value to double FP.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>100001 (33)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#cvt-l-fmt" class="material-icons">link</a>
+        <h3 id="cvt-l-fmt">CVT.L.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">CVT.L.S fd, fs CVT.L.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP value to a 64-bit fixed-point.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>100101 (37)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#cvt-s-fmt" class="material-icons">link</a>
+        <h3 id="cvt-s-fmt">CVT.S.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">CVT.S.D fd, fs CVT.S.W fd, fs CVT.S.L fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP or fixed-point value to single FP.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>100000 (32)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#cvt-w-fmt" class="material-icons">link</a>
+        <h3 id="cvt-w-fmt">CVT.W.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">CVT.W.S fd, fs CVT.W.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP value to 32-bit fixed-point.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>100100 (36)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#div-fmt" class="material-icons">link</a>
+        <h3 id="div-fmt">DIV.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">DIV.S fd, fs, ft DIV.D fd, fs, ft</p>
+        <p>Purpose:</p>
+        <p class="code">To divide FP values.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>ft</th>
+<th>fs</th>
+<th>fd</th>
+<th>000011 (3)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dmfc1" class="material-icons">link</a>
+        <h3 id="dmfc1">DMFC1</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">DMFC1 rt, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To copy a doubleword from an FPR to a GPR.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00001 (1)</th>
+<th>rt</th>
+<th>fs</th>
+<th>0000 0000 000</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>11</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#dmtc1" class="material-icons">link</a>
+        <h3 id="dmtc1">DMTC1</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">DMTC1 rt, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To copy a doubleword from a GPR to an FPR.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00101 (5)</th>
+<th>rt</th>
+<th>fs</th>
+<th>0000 0000 000</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>11</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#floor-l-fmt" class="material-icons">link</a>
+        <h3 id="floor-l-fmt">FLOOR.L.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">FLOOR.L.S fd, fs FLOOR.L.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP value to 64-bit fixed-point, rounding down.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>001011 (11)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#floor-w-fmt" class="material-icons">link</a>
+        <h3 id="floor-w-fmt">FLOOR.W.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">FLOOR.W.S fd, fs FLOOR.W.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP value to 32-bit fixed-point, rounding down.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>001111 (15)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ldc1" class="material-icons">link</a>
+        <h3 id="ldc1">LDC1</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">53</p>
+        <p>Format:</p>
+        <p class="code">LDC1 ft, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load a doubleword from memory to an FPR.</p>
+        <p>Implementation:</p>
+        <p class="code">COP ft = doubleword[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>ft</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lwc1" class="material-icons">link</a>
+        <h3 id="lwc1">LWC1</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">49</p>
+        <p>Format:</p>
+        <p class="code">LWC1 ft, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To load a word from memory to an FPR. Comment: LWC1 ft, offset(base) is equal to a L.S ft, offset(base)</p>
+        <p>Implementation:</p>
+        <p class="code">COP ft = word[base+offset]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>ft</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#mfc1" class="material-icons">link</a>
+        <h3 id="mfc1">MFC1</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">MFC1 rt, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To copy a word from an FPU (CP1) general register to a GPR.</p>
+        <p>Implementation:</p>
+        <p class="code">rt = COP fs</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00000 (0)</th>
+<th>rt</th>
+<th>fs</th>
+<th>0000 0000 000</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>11</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#mov-fmt" class="material-icons">link</a>
+        <h3 id="mov-fmt">MOV.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">MOV.S fd, fs
+MOV.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To move an FP value between FPRs.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>000110 (6)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#mtc1" class="material-icons">link</a>
+        <h3 id="mtc1">MTC1</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">MTC1 rt, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To copy a word from a GPR to an FPU (CP1) general register.</p>
+        <p>Implementation:</p>
+        <p class="code">COP fs = rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>00100 (4)</th>
+<th>rt</th>
+<th>fs</th>
+<th>0000 0000 000</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>11</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#mul-fmt" class="material-icons">link</a>
+        <h3 id="mul-fmt">MUL.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">MUL.S fd, fs, ft
+MUL.D fd, fs, ft</p>
+        <p>Purpose:</p>
+        <p class="code">To multiply FP values.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>ft</th>
+<th>fs</th>
+<th>fd</th>
+<th>000010 (2)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#neg-fmt" class="material-icons">link</a>
+        <h3 id="neg-fmt">NEG.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">NEG.S fd, fs
+NEG.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To negate an FP value.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>000111 (7)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#round-l-fmt" class="material-icons">link</a>
+        <h3 id="round-l-fmt">ROUND.L.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">ROUND.L.S fd, fs
+ROUND.L.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP value to 64-bit fixed-point, rounding to nearest.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>001000 (8)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#round-w-fmt" class="material-icons">link</a>
+        <h3 id="round-w-fmt">ROUND.W.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">ROUND.W.S fd, fs
+ROUND.W.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP value to 32-bit fixed-point, rounding to nearest.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>001100 (12)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sdc1" class="material-icons">link</a>
+        <h3 id="sdc1">SDC1</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">61</p>
+        <p>Format:</p>
+        <p class="code">SDC1 ft, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store a doubleword from an FPR to memory.</p>
+        <p>Implementation:</p>
+        <p class="code">doubleword[base+offset] = COP rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>ft</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sqrt-fmt" class="material-icons">link</a>
+        <h3 id="sqrt-fmt">SQRT.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">SQRT.S fd, fs
+SQRT.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To compute the square root of an FP value.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>000100 (4)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sub-fmt" class="material-icons">link</a>
+        <h3 id="sub-fmt">SUB.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">SUB.S fd, fs, ft
+SUB.D fd, fs, ft</p>
+        <p>Purpose:</p>
+        <p class="code">To subtract FP values.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>ft</th>
+<th>fs</th>
+<th>fd</th>
+<th>000001 (1)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#swc1" class="material-icons">link</a>
+        <h3 id="swc1">SWC1</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">57</p>
+        <p>Format:</p>
+        <p class="code">SWC1 ft, offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">To store a word from an FPR to memory. Comment: SWC1 ft, offset(base) is equal to a S.S ft, offset(base)</p>
+        <p>Implementation:</p>
+        <p class="code">word[base+offset] = COP rt</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>ft</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#trunc-l-fmt" class="material-icons">link</a>
+        <h3 id="trunc-l-fmt">TRUNC.L.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">TRUNC.L.S fd, fs
+TRUNC.L.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP value to 64-bit fixed-point, rounding toward zero.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>001001 (9)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#trunc-w-fmt" class="material-icons">link</a>
+        <h3 id="trunc-w-fmt">TRUNC.W.fmt</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10001</p>
+        <p>Format:</p>
+        <p class="code">TRUNC.W.S fd, fs
+TRUNC.W.D fd, fs</p>
+        <p>Purpose:</p>
+        <p class="code">To convert an FP value to 32-bit fixed-point, rounding toward zero.</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>fmt</th>
+<th>00000</th>
+<th>fs</th>
+<th>fd</th>
+<th>001101 (13)</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+        </div>
+
+        <script type="application/json" id="searchIndex">
+[{"href": "movc", "index": ["MOVC", "MOVC vx, NN", "Stores number NN in vx", "vx = NN"]}, {"href": "movr", "index": ["MOVR", "MOVR vx, vy", "Stores the value of vy in vx", "vx = vy"]}, {"href": "addc", "index": ["ADDC", "ADDC vx, NN", "Adds the value NN to register vx", "vx += NN"]}, {"href": "addr", "index": ["ADDR", "ADDR vx, vy", "Adds the value of register vy to register vx. Sets the VF to 01 if a carry (Integer overflow) occurs, otherwise to 00", "vx += vy\nif int_overflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "subr", "index": ["SUBR", "SUBR vx, vy", "Subtracts register vy from vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00", "vx -= vy\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "subr2", "index": ["SUBR2", "SUBR2 vx, vy", "Subtracts register vx from vy and stores the result in vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00", "vx = vy - vx\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "andr", "index": ["ANDR", "ANDR vx, vy", "Sets vx to vx AND vy", "vx = vx & vy"]}, {"href": "orr", "index": ["ORR", "ORR vx, vy", "Sets vx to vx OR vy", "vx = vx | vy"]}, {"href": "xorr", "index": ["XORR", "XORR vx, vy", "Sets vx to vx XOR vy", "vx = vx ^ vy"]}, {"href": "shrr", "index": ["SHRR", "SHRR vx, vy", "Stores the value of register vy shifted right by one bit in register vx. Sets VF to the old least significant bit", "VF = vy & 0x1\nvx = vy >> 1"]}, {"href": "shlr", "index": ["SHLR", "SHLR vx, vy", "Stores the value of register vy shifted left by one bit in register vx. Sets VF to the old most significant bit", "VF = vy & 0x80\nvx = vy << 1"]}, {"href": "rndr", "index": ["RNDR", "RNDR vx", "Sets vx to a random number with a mask of NN", "vx = randi() & NN"]}, {"href": "jmp", "index": ["JMP", "JMP NNN", "Jumps to address NNN", "I = NNN"]}, {"href": "jmprel", "index": ["JMPREL", "JMPREL NNN", "Jumps to address NNN + V0", "I = NNN + V0"]}, {"href": "call", "index": ["CALL", "CALL NNN", "Calls a subroutine at the address NNN.", "stack.push(I)\nI = NNN"]}, {"href": "ret", "index": ["RET", "RET", "Returns from a subroutine.", "I = stack.pop()"]}, {"href": "callm", "index": ["CALLM", "CALLM NNN", "Calls a subroutine at the address NNN. This is an introduction to call a real machine code subroutine on the COSMAC ELF. The subroutine must be end with D4 to inform the chip-8 interpreter, that the routine is finished.", "*(NNN)()"]}, {"href": "jnec", "index": ["JNEC", "JNEC vx, NN", "Skips the next introduction if vx == NN", "if vx != NN:"]}, {"href": "jner", "index": ["JNER", "JNER vx, vy", "Skips the next introduction if vx == vy", "if vx != vy:"]}, {"href": "jec", "index": ["JEC", "JEC vx, NN", "Skips the next introduction if vx != NN", "if vx == NN:"]}, {"href": "jer", "index": ["JER", "JER vx, vy", "Skips the next introduction if vx != vy", "if vx == vy:"]}, {"href": "kne", "index": ["KNE", "KNE vx", "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is pressed", "if key != vx:"]}, {"href": "ke", "index": ["KE", "KE vx", "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is not pressed", "if key == vx:"]}, {"href": "delay", "index": ["DELAY", "DELAY vx", "Sets the delay timer to the value of register vx", "delay = vx"]}, {"href": "delayr", "index": ["DELAYR", "DELAYR vx", "Stores the current value of the delay timer in register vx", "vx = delay"]}, {"href": "buzzer", "index": ["BUZZER", "BUZZER vx", "Sets the sound timer to the value of register vx", "buzzer = vx"]}, {"href": "waitk", "index": ["WAITK", "WAITK vx", "Waits for a keypress and store the result in register VX", ""]}, {"href": "seti", "index": ["SETI", "SETI NNN", "Stores memory address NNN in register I", "I = NNN"]}, {"href": "addi", "index": ["ADDI", "ADDI vx", "Adds the value stored in register vx to register I", "I += vx"]}, {"href": "draw", "index": ["DRAW", "DRAW vx, vy", "Draws a sprite at position vx, vy with N bytes of sprite data starting at the address stored in I. Sets VF to 01 if any set pixels are changed to unset, and 00 otherwise", "Draw(vx, vx)"]}, {"href": "cls", "index": ["CLS", "CLS", "Clears the screen", "Clear()"]}, {"href": "fnt", "index": ["FNT", "FNT vx", "Sets I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register vx", "I = SearchLetter(vx)"]}, {"href": "bcd", "index": ["BCD", "BCD vx", "Stores the binary-coded decimal equivalent of the value stored in register vx at addresses I, I+1, and I+2"]}, {"href": "dmpr", "index": ["DMPR", "DMPR vx", "Stores the values of registers V0 to VX inclusive in memory starting at address I. I is set to I + X + 1 after the operation", "for 0 to vx: mem[I++] = V[Idx]"]}, {"href": "rdr", "index": ["RDR", "RDR vx", "Fill registers V0 to VX inclusive with the values stored in memory starting at address I. I is set to I + X + 1 after operation", "for 0 to vx: V[Idx] = mem[I++]"]}, {"href": "lb", "index": ["LB", "LB rt, offset(base)", "To load a byte from memory as a signed value.", "rt = byte[base+offset]"]}, {"href": "lbu", "index": ["LBU", "LBU rt, offset(base)", "To load a byte from memory as an unsigned value.", "rt = byte[base+offset]"]}, {"href": "ld", "index": ["LD", "LD rt, offset(base)", "To load a doubleword from memory.", "rt = doubleword[base+offset]"]}, {"href": "ldl", "index": ["LDL", "LDL rt, offset(base)", "To load the most-significant part of a doubleword from an unaligned memory address.", "left(rt) = right[base+offset]"]}, {"href": "ldr", "index": ["LDR", "LDR rt, offset(base)", "To load the least-significant part of a doubleword from an unaligned memory address.", "right(rt) = left[base+offset]"]}, {"href": "lh", "index": ["LH", "LH rt, offset(base)", "To load a halfword from memory as a signed value.", "rt = halfword[base+offset]"]}, {"href": "lhu", "index": ["LHU", "LHU rt, offset(base)", "To load a halfword from memory as an unsigned value.", "rt = halfword[base+offset]"]}, {"href": "ll", "index": ["LL", "LL rt, offset(base)", "To load a word from memory for an atomic read-modify-write."]}, {"href": "lld", "index": ["LLD", "LLD rt, offset(base)", "To load a doubleword from memory for an atomic read-modify-write."]}, {"href": "lw", "index": ["LW", "LW rt, offset(base)", "To load a word from memory as a signed value.", "rt = word[base+offset]"]}, {"href": "lwl", "index": ["LWL", "LWL rt, offset(base)", "To load the most-significant part of a word as a signed value from an unaligned memory address.", "left(rt) = right[base+offset]"]}, {"href": "lwr", "index": ["LWR", "LWR rt, offset(base)", "To load the least-significant part of a word from an unaligned memory address as a signed value.", "right(rt) = left[base+offset]"]}, {"href": "lwu", "index": ["LWU", "LWU rt, offset(base)", "To load a word from memory as an unsigned value.", "rt = word[base+offset]"]}, {"href": "sb", "index": ["SB", "SB rt, offset(base)", "To store a byte to memory.", "byte[base+offset] = rt"]}, {"href": "sc", "index": ["SC", "SC rt, offset(base)", "To store a word to memory to complete an atomic read-modify-write."]}, {"href": "scd", "index": ["SCD", "SCD rt, offset(base)", "To store a doubleword to memory to complete an atomic"]}, {"href": "sd", "index": ["SD", "SD rt, offset(base)", "To store a doubleword to memory.", "doulbeword[base+offset] = rt"]}, {"href": "sdl", "index": ["SDL", "SDL rt, offset(base)", "To store the most-significant part of a doubleword to an unaligned memory address.", "right[base+offset] = left(rt)"]}, {"href": "sdr", "index": ["SDR", "SDR rt, offset(base)", "To store the least-significant part of a doubleword to an unaligned memory address.", "left[base+offset] = right(rt)"]}, {"href": "sh", "index": ["SH", "SH rt, offset(base)", "To store a halfword to memory.", "halfword[base+offset] = rt"]}, {"href": "sw", "index": ["SW", "SW rt, offset(base)", "To store a word to memory.", "word[base+offset] = rt"]}, {"href": "swl", "index": ["SWL", "SWL rt, offset(base)", "To store the most-significant part of a word to an unaligned memory address.", "right[base+offset] = left(rt)"]}, {"href": "swr", "index": ["SWR", "SWR rt, offset(base)", "To store the least-significant part of a word to an unaligned memory address.", "left[base+offset] = right(rt)"]}, {"href": "sync", "index": ["SYNC", "SYNC (stype = 0 implied)", "To order loads and stores to shared memory in a"]}, {"href": "add", "index": ["ADD", "ADD rd, rs, rt", "To add 32-bit integers. If overflow occurs, then trap. Comment: ADD rd, r0, rs is equal to a MOVE rd, rs", "rd = rs + rt"]}, {"href": "addi", "index": ["ADDI", "ADDI rt, rs, immediate", "To add a constant to a 32-bit integer. If overflow occurs, then trap.", "rt = rs + immediate"]}, {"href": "addiu", "index": ["ADDIU", "ADDIU rt, rs, immediate", "To add a constant to a 32-bit integer.", "rt = rs + immediate"]}, {"href": "addu", "index": ["ADDU", "ADDU rd, rs, rt", "To add 32-bit integers.", "rd = rs + rt"]}, {"href": "and", "index": ["AND", "AND rd, rs, rt", "To do a bitwise logical AND.", "rd = (rs AND rt)"]}, {"href": "andi", "index": ["ANDI", "ANDI rt, rs, immediate", "To do a bitwise logical AND with a constant.", "rt = (rs AND immediate)"]}, {"href": "dadd", "index": ["DADD", "DADD rd, rs, rt", "To add 64-bit integers. If overflow occurs, then trap.", "rd = rs + rt"]}, {"href": "daddi", "index": ["DADDI", "DADDI rt, rs, immediate", "To add a constant to a 64-bit integer. If overflow occurs, then trap.", "rt = rs + immediate"]}, {"href": "daddiu", "index": ["DADDIU", "DADDIU rt, rs, immediate", "To add a constant to a 64-bit integer.", "rt = rs + immediate"]}, {"href": "daddu", "index": ["DADDU", "DADDU rd, rs, rt", "To add 64-bit integers.", "rd = rs + rt"]}, {"href": "ddiv", "index": ["DDIV", "DDIV rs, rt", "To divide 64-bit signed integers.", "LO = rs / rt;     HI = rs MOD rt"]}, {"href": "ddivu", "index": ["DDIVU", "DDIVU rs, rt", "To divide 64-bit unsigned integers.", "LO = rs / rt;     HI = rs MOD rt"]}, {"href": "div", "index": ["DIV", "DIV rs, rt", "To divide 32-bit signed integers.", "LO = rs / rt;     HI = rs MOD rt"]}, {"href": "divu", "index": ["DIVU", "DIVU rs, rt", "To divide 32-bit unsigned integers.", "LO = rs / rt;     HI = rs MOD rt"]}, {"href": "dmult", "index": ["DMULT", "DMULT rs, rt", "To multiply 64-bit signed integers.", "LO = low(rs*rt);  HI = high(rs*rt)"]}, {"href": "dmultu", "index": ["DMULTU", "DMULTU rs, rt", "To multiply 64-bit unsigned integers.", "LO = low(rs*rt);  HI = high(rs*rt)"]}, {"href": "dsll", "index": ["DSLL", "DSLL rd, rt, sa", "To left shift a doubleword by a fixed amount -- 0 to 31 bits.", "rd = rt << sa"]}, {"href": "dsll32", "index": ["DSLL32", "DSLL32 rd, rt, sa", "To left shift a doubleword by a fixed amount -- 32 to 63 bits.", "rd = rt << (sa+32)"]}, {"href": "dsllv", "index": ["DSLLV", "DSLLV rd, rt, rs", "To left shift a doubleword by a variable number of bits.", "rd = rt << rs"]}, {"href": "dsra", "index": ["DSRA", "DSRA rd, rt, sa", "To arithmetic right shift a doubleword by a fixed amount -- 0 to 31 bits.", "rd = rt >> sa"]}, {"href": "dsra32", "index": ["DSRA32", "DSRA32 rd, rt, sa", "To arithmetic right shift a doubleword by a fixed amount -- 32-63 bits.", "rd = rt >> (sa+32)"]}, {"href": "dsrav", "index": ["DSRAV", "DSRAV rd, rt, rs", "To arithmetic right shift a doubleword by a variable number of bits.", "rd = rt >> rs"]}, {"href": "dsrl", "index": ["DSRL", "DSRL rd, rt, sa", "To logical right shift a doubleword by a fixed amount -- 0 to 31 bits.", "rd = rt >> sa"]}, {"href": "dsrl32", "index": ["DSRL32", "DSRL32 rd, rt, sa", "To logical right shift a doubleword by a fixed amount -- 32 to 63 bits.", "rd = rt >> (sa+32)"]}, {"href": "dsrlv", "index": ["DSRLV", "DSRLV rd, rt, rs", "To logical right shift a doubleword by a variable number of bits.", "rd = rt >> rs"]}, {"href": "dsub", "index": ["DSUB", "DSUB rd, rs, rt", "To subtract 64-bit integers; trap if overflow.", "rd = rs - rt"]}, {"href": "dsubu", "index": ["DSUBU", "DSUBU rd, rs, rt", "To subtract 64-bit integers.", "rd = rs - rt"]}, {"href": "lui", "index": ["LUI", "LUI rt, immediate", "To load a constant into the upper half of a word.", "rt = immediate * 10000h"]}, {"href": "mfhi", "index": ["MFHI", "MFHI rd", "To copy the special purpose HI register to a GPR.", "rd = HI"]}, {"href": "mflo", "index": ["MFLO", "MFLO rd", "To copy the special purpose LO register to a GPR.", "rd = LO"]}, {"href": "mthi", "index": ["MTHI", "MTHI rs", "To copy a GPR to the special purpose HI register."]}, {"href": "mtlo", "index": ["MTLO", "MTLO rs", "To copy a GPR to the special purpose LO register."]}, {"href": "mult", "index": ["MULT", "MULT rs, rt", "To multiply 32-bit signed integers.", "LO = low(rs*rt);    HI = high(rs*rt)"]}, {"href": "multu", "index": ["MULTU", "MULTU rs, rt", "To multiply 32-bit unsigned integers.", "LO = low(rs*rt);    HI = high(rs*rt)"]}, {"href": "nor", "index": ["NOR", "NOR rd, rs, rt", "To do a bitwise logical NOT OR.", "rd = (rs NOR rt)"]}, {"href": "or", "index": ["OR", "OR rd, rs, rt", "To do a bitwise logical OR.", "rd = (rs OR rt)"]}, {"href": "ori", "index": ["ORI", "ORI rt, rs, immediate", "To do a bitwise logical OR with a constant. Comment: ORI rt, r0, imm is equal to a LI rt, imm", "rt = (rs OR immediate)"]}, {"href": "sll", "index": ["SLL", "SLL rd, rt, sa", "To left shift a word by a fixed number of bits. Comment: SLL r0, r0, 0 is equal to a NOP (No OPeration)", "rd = rt << sa"]}, {"href": "sllv", "index": ["SLLV", "SLLV rd, rt, rs", "To left shift a word by a variable number of bits.", "rd = rt << sa"]}, {"href": "slt", "index": ["SLT", "SLT rd, rs, rt", "To record the result of a less-than comparison.", "if rs < rt then rd = 1 else rd = 0"]}, {"href": "slti", "index": ["SLTI", "SLTI rt, rs, immediate", "To record the result of a less-than comparison with a constant.", "if rs < immediate then rd = 1 else rd = 0"]}, {"href": "sltiu", "index": ["SLTIU", "SLTIU rt, rs, immediate", "To record the result of an unsigned less-than comparison with a constant.", "if rs < immediate then rd = 1 else rd = 0"]}, {"href": "sltu", "index": ["SLTU", "SLTU rd, rs, rt", "To record the result of an unsigned less-than comparison.", "if rs < rt then rd = 1 else rd = 0"]}, {"href": "sra", "index": ["SRA", "SRA rd, rt, sa", "To arithmetic right shift a word by a fixed number of bits.", "rd = rt >> sa"]}, {"href": "srav", "index": ["SRAV", "SRAV rd, rt, rs", "To arithmetic right shift a word by a variable number of bits.", "rd = rt >> rs"]}, {"href": "srl", "index": ["SRL", "SRL rd, rt, sa", "To logical right shift a word by a fixed number of bits.", "rd = rt >> sa"]}, {"href": "srlv", "index": ["SRLV", "SRLV rd, rt, rs", "To logical right shift a word by a variable number of bits.", "rd = rt >> rs"]}, {"href": "sub", "index": ["SUB", "SUB rd, rs, rt", "To subtract 32-bit integers. If overflow occurs, then trap. Comment: SUB rd, r0, rt is equal to a NEG rd, rt", "rd = rs - rt"]}, {"href": "subu", "index": ["SUBU", "SUBU rd, rs, rt", "To subtract 32-bit integers. No trap on overflow. Comment: SUBU rd, r0, rs is equal to a NEGU rd, rs", "rd = rs - rt"]}, {"href": "xor", "index": ["XOR", "XOR rd, rs, rt", "To do a bitwise logical EXCLUSIVE OR.", "rd = (rs XOR rt)"]}, {"href": "xori", "index": ["XORI", "XORI rt, rs, immediate", "To do a bitwise logical EXCLUSIVE OR with a constant.", "rd = (rs XOR immediate)"]}, {"href": "beq", "index": ["BEQ", "BEQ rs, rt, offset", "To compare GPRs then do a PC-relative conditional branch. Comment: BEQ rs, r0, offset is equal to a BEQZ rs, offset BEQ r0, r0, offset is equal to a B offset", "branch if rs = rt"]}, {"href": "beql", "index": ["BEQL", "BEQL rs, rt, offset", "To compare GPRs then do a PC-relative conditional branch; execute the delay slot only if the branch is taken. Comment: BEQL rs, r0, offset is equal to a BEQZL rs, offset", "branch if rs = rt"]}, {"href": "bgez", "index": ["BGEZ", "BGEZ rs, offset", "To test a GPR then do a PC-relative conditional branch.", "branch if rs >= 0 (signed)"]}, {"href": "bgezal", "index": ["BGEZAL", "BGEZAL rs, offset", "To test a GPR then do a PC-relative conditional procedure call. Comment: BGEZAL r0, offset is equal to a BAL offset", "branch if rs >= 0 (signed) (return address in ra)"]}, {"href": "bgezall", "index": ["BGEZALL", "BGEZALL rs, offset", "To test a GPR then do a PC-relative conditional procedure call; execute the delay slot only if the branch is taken.", "branch if rs >= 0 (signed) (return address in ra)"]}, {"href": "bgezl", "index": ["BGEZL", "BGEZL rs, offset", "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.", "branch if rs >= 0 (signed)"]}, {"href": "bgtz", "index": ["BGTZ", "BGTZ rs, offset", "To test a GPR then do a PC-relative conditional branch.", "branch if rs > 0 (signed)"]}, {"href": "bgtzl", "index": ["BGTZL", "BGTZL rs, offset", "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.", "branch if rs > 0 (signed)"]}, {"href": "blez", "index": ["BLEZ", "BLEZ rs, offset", "To test a GPR then do a PC-relative conditional branch.", "branch if rs <= 0 (signed)"]}, {"href": "blezl", "index": ["BLEZL", "BLEZL rs, offset", "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.", "branch if rs <= 0 (signed)"]}, {"href": "bltz", "index": ["BLTZ", "BLTZ rs, offset", "To test a GPR then do a PC-relative conditional branch.", "branch if rs < 0 (signed)"]}, {"href": "bltzal", "index": ["BLTZAL", "BLTZAL rs, offset", "To test a GPR then do a PC-relative conditional procedure call.", "branch if rs < 0 (signed) (return address in ra)"]}, {"href": "bltzall", "index": ["BLTZALL", "BLTZALL rs, offset", "To test a GPR then do a PC-relative conditional procedure call; execute the delay slot only if the branch is taken.", "branch if rs < 0 (signed) (return address in ra)"]}, {"href": "bltzl", "index": ["BLTZL", "BLTZL rs, offset", "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.", "branch if rs < 0 (signed)"]}, {"href": "bne", "index": ["BNE", "BNE rs, rt, offset", "To compare GPRs then do a PC-relative conditional branch. Comment: BNE rs, r0, offset is equal to a BNEZ rs, offset", "branch if rs <> rt"]}, {"href": "bnel", "index": ["BNEL", "BNEL rs, rt, offset", "To compare GPRs then do a PC-relative conditional branch; execute the delay slot only if the branch is taken. Comment: BNEL rs, r0, offset is equal to a BNEZL rs, offset", "branch if rs <> rt"]}, {"href": "j", "index": ["J", "J target", "To branch within the current 256 MB aligned region."]}, {"href": "jal", "index": ["JAL", "JAL target", "To procedure call within the current 256 MB aligned region.", "return address in ra"]}, {"href": "jalr", "index": ["JALR", "JALR rs, rd", "To procedure call to an instruction address in a register.", "return address in rd"]}, {"href": "jr", "index": ["JR", "JR rs", "To branch to an instruction address in a register.", "PC = rs"]}, {"href": "break", "index": ["BREAK", "BREAK offset", "To cause a Breakpoint exception."]}, {"href": "syscall", "index": ["SYSCALL", "SYSCALL offset", "To cause a System Call exception."]}, {"href": "teq", "index": ["TEQ", "TEQ rs, rt", "To compare GPRs and do a conditional Trap.", "if rs = rt then trap"]}, {"href": "teqi", "index": ["TEQI", "TEQI rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs = immediate then trap"]}, {"href": "tge", "index": ["TGE", "TGE rs, rt", "To compare GPRs and do a conditional Trap.", "if rs >= rt then trap"]}, {"href": "tgei", "index": ["TGEI", "TGEI rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs >= immediate then trap"]}, {"href": "tgeiu", "index": ["TGEIU", "TGEIU rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs >= immediate then trap"]}, {"href": "tgeu", "index": ["TGEU", "TGEU rs, rt", "To compare GPRs and do a conditional Trap.", "if rs >= rt then trap"]}, {"href": "tlt", "index": ["TLT", "TLT rs, rt", "To compare GPRs and do a conditional Trap.", "if rs < rt then trap"]}, {"href": "tlti", "index": ["TLTI", "TLTI rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs < immediate then trap (signed)"]}, {"href": "tltiu", "index": ["TLTIU", "TLTIU rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs < immediate then trap"]}, {"href": "tltu", "index": ["TLTU", "TLTU rs, rt", "To compare GPRs and do a conditional Trap.", "if rs < rt then trap"]}, {"href": "tne", "index": ["TNE", "TNE rs, rt", "To compare GPRs and do a conditional Trap.", "if rs <> rt then trap"]}, {"href": "tnei", "index": ["TNEI", "TNEI rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs <> immediate then trap"]}, {"href": "cache", "index": ["CACHE", "CACHE op, offset(base)", "The 16-bit offset is sign-extended and added to the contents of\ngeneral register base to form a virtual address. The virtual\naddress is translated to a physical address using the TLB, and the\n5-bit sub-opcode specifies a cache operation for that address."]}, {"href": "eret", "index": ["ERET", "ERET", "ERET is the R4300 instruction for returning from an interrupt,"]}, {"href": "mfc0", "index": ["MFC0", "MFC0 rt, rd", "To copy a word from an FPR to a GPR.", "rt = COP rd"]}, {"href": "mtc0", "index": ["MTC0", "MTC0 rt, rd", "To copy a word from a GPR to an FPR.", "COP rd = rt"]}, {"href": "tlbp", "index": ["TLBP", "TLBP", "The Index register is loaded with the address of the TLB entry"]}, {"href": "tlbr", "index": ["TLBR", "TLBR", "The G bit (which controls ASID matching) read from the TLB is"]}, {"href": "tlbwi", "index": ["TLBWI", "TLBWI", "The G bit of the TLB is written with the logical AND of the G bits"]}, {"href": "tlbwr", "index": ["TLBWR", "TLBWR", "The G bit of the TLB is written with the logical AND of the G bits"]}, {"href": "abs-fmt", "index": ["ABS.fmt", "ABS.S fd, fs ABS.D fd, fs", "To compute the absolute value of an FP value."]}, {"href": "add-fmt", "index": ["ADD.fmt", "ADD.S fd, fs, ft ADD.D fd, fs, ft", "To add FP values."]}, {"href": "bc1f", "index": ["BC1F", "BC1F offset", "To test an FP condition code and do a PC-relative conditional branch."]}, {"href": "bc1fl", "index": ["BC1FL", "BC1FL offset", "To test an FP condition code and do a PC-relative conditional branch; execute the delay slot only if the branch is taken"]}, {"href": "bc1t", "index": ["BC1T", "BC1T offset", "To test an FP condition code and do a PC-relative conditional branch."]}, {"href": "bc1tl", "index": ["BC1TL", "BC1TL offset", "To test an FP condition code and do a PC-relative conditional branch; execute the delay slot only if the branch is taken."]}, {"href": "c-cond-fmt", "index": ["C.cond.fmt", "C.cond.S fs, ft C.cond.D fs, ft", "To compare FP values and record the Boolean result in"]}, {"href": "ceil-l-fmt", "index": ["CEIL.L.fmt", "CEIL.L.S fd, fs CEIL.L.D fd, fs", "To convert an FP value to 64-bit fixed-point, rounding up."]}, {"href": "ceil-w-fmt", "index": ["CEIL.W.fmt", "CEIL.W.S fd, fs CEIL.W.D fd, fs", "To convert an FP value to 32-bit fixed-point, rounding up."]}, {"href": "cfc1", "index": ["CFC1", "CFC1 rt, fs", "To copy a word from an FPU control register to a GPR.", "rt = fs"]}, {"href": "ctc1", "index": ["CTC1", "CTC1 rt, fs", "To copy a word from a GPR to an FPU control register.", "fs = rt"]}, {"href": "cvt-d-fmt", "index": ["CVT.D.fmt", "CVT.D.S fd, fs CVT.D.W fd, fs CVT.D.L fd, fs", "To convert an FP or fixed-point value to double FP."]}, {"href": "cvt-l-fmt", "index": ["CVT.L.fmt", "CVT.L.S fd, fs CVT.L.D fd, fs", "To convert an FP value to a 64-bit fixed-point."]}, {"href": "cvt-s-fmt", "index": ["CVT.S.fmt", "CVT.S.D fd, fs CVT.S.W fd, fs CVT.S.L fd, fs", "To convert an FP or fixed-point value to single FP."]}, {"href": "cvt-w-fmt", "index": ["CVT.W.fmt", "CVT.W.S fd, fs CVT.W.D fd, fs", "To convert an FP value to 32-bit fixed-point."]}, {"href": "div-fmt", "index": ["DIV.fmt", "DIV.S fd, fs, ft DIV.D fd, fs, ft", "To divide FP values."]}, {"href": "dmfc1", "index": ["DMFC1", "DMFC1 rt, fs", "To copy a doubleword from an FPR to a GPR."]}, {"href": "dmtc1", "index": ["DMTC1", "DMTC1 rt, fs", "To copy a doubleword from a GPR to an FPR."]}, {"href": "floor-l-fmt", "index": ["FLOOR.L.fmt", "FLOOR.L.S fd, fs FLOOR.L.D fd, fs", "To convert an FP value to 64-bit fixed-point, rounding down."]}, {"href": "floor-w-fmt", "index": ["FLOOR.W.fmt", "FLOOR.W.S fd, fs FLOOR.W.D fd, fs", "To convert an FP value to 32-bit fixed-point, rounding down."]}, {"href": "ldc1", "index": ["LDC1", "LDC1 ft, offset(base)", "To load a doubleword from memory to an FPR.", "COP ft = doubleword[base+offset]"]}, {"href": "lwc1", "index": ["LWC1", "LWC1 ft, offset(base)", "To load a word from memory to an FPR. Comment: LWC1 ft, offset(base) is equal to a L.S ft, offset(base)", "COP ft = word[base+offset]"]}, {"href": "mfc1", "index": ["MFC1", "MFC1 rt, fs", "To copy a word from an FPU (CP1) general register to a GPR.", "rt = COP fs"]}, {"href": "mov-fmt", "index": ["MOV.fmt", "MOV.S fd, fs\nMOV.D fd, fs", "To move an FP value between FPRs."]}, {"href": "mtc1", "index": ["MTC1", "MTC1 rt, fs", "To copy a word from a GPR to an FPU (CP1) general register.", "COP fs = rt"]}, {"href": "mul-fmt", "index": ["MUL.fmt", "MUL.S fd, fs, ft\nMUL.D fd, fs, ft", "To multiply FP values."]}, {"href": "neg-fmt", "index": ["NEG.fmt", "NEG.S fd, fs\nNEG.D fd, fs", "To negate an FP value."]}, {"href": "round-l-fmt", "index": ["ROUND.L.fmt", "ROUND.L.S fd, fs\nROUND.L.D fd, fs", "To convert an FP value to 64-bit fixed-point, rounding to nearest."]}, {"href": "round-w-fmt", "index": ["ROUND.W.fmt", "ROUND.W.S fd, fs\nROUND.W.D fd, fs", "To convert an FP value to 32-bit fixed-point, rounding to nearest."]}, {"href": "sdc1", "index": ["SDC1", "SDC1 ft, offset(base)", "To store a doubleword from an FPR to memory.", "doubleword[base+offset] = COP rt"]}, {"href": "sqrt-fmt", "index": ["SQRT.fmt", "SQRT.S fd, fs\nSQRT.D fd, fs", "To compute the square root of an FP value."]}, {"href": "sub-fmt", "index": ["SUB.fmt", "SUB.S fd, fs, ft\nSUB.D fd, fs, ft", "To subtract FP values."]}, {"href": "swc1", "index": ["SWC1", "SWC1 ft, offset(base)", "To store a word from an FPR to memory. Comment: SWC1 ft, offset(base) is equal to a S.S ft, offset(base)", "word[base+offset] = COP rt"]}, {"href": "trunc-l-fmt", "index": ["TRUNC.L.fmt", "TRUNC.L.S fd, fs\nTRUNC.L.D fd, fs", "To convert an FP value to 64-bit fixed-point, rounding toward zero."]}, {"href": "trunc-w-fmt", "index": ["TRUNC.W.fmt", "TRUNC.W.S fd, fs\nTRUNC.W.D fd, fs", "To convert an FP value to 32-bit fixed-point, rounding toward zero."]}]        </script>
+    </body>
+</html>

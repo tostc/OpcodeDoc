@@ -1,0 +1,519 @@
+{
+    "$spec": "1.0.0",
+    "$info": {
+        "title": "Chip-8",
+        "description": "A interpreted programming language for the COSMAC ELF.",
+        "clock_speed": "0",
+        "cache": {
+            "L1": {
+                "size": "24 KB",
+                "comment": "Divided into 16 KB for instructions and 8 KB for data."
+            }
+        },
+        "address_bus": 0,
+        "sources": [ "https://github.com/mattmikolay/chip-8/wiki/Mastering-CHIP%E2%80%908", "http://johnearnest.github.io/Octo/docs/chip8ref.pdf" ],
+        "version": "1.0.0",
+        "complete": true
+    },
+    "glossary": {
+        "N": "Number between 0 and 15",
+        "NN": "Number between 0 and 255",
+        "NNN": "Number between 0 and 4095",
+        "vx": "Register from 0 - F",
+        "vy": "Register from 0 - F",
+        "I": "Memory index register (Not directly accessible)",
+        "delay": "A 8-Bit register which counts down at 60 HZ until it reaches zero",
+        "buzzer": "A 8-Bit register which counts down at 60 HZ until it reaches zero. If the value is not zero a sound is playing"
+    },
+    "registers": {
+        "Main": [
+            {"name": "V0", "value": "0x00", "size": 8},
+            {"name": "V1", "value": "0x01", "size": 8},
+            {"name": "V2", "value": "0x02", "size": 8},
+            {"name": "V3", "value": "0x03", "size": 8},
+            {"name": "V4", "value": "0x04", "size": 8},
+            {"name": "V5", "value": "0x05", "size": 8},
+            {"name": "V6", "value": "0x06", "size": 8},
+            {"name": "V7", "value": "0x07", "size": 8},
+            {"name": "V8", "value": "0x08", "size": 8},
+            {"name": "V9", "value": "0x09", "size": 8},
+            {"name": "VA", "value": "0x0A", "size": 8},
+            {"name": "VB", "value": "0x0B", "size": 8},
+            {"name": "VC", "value": "0x0C", "size": 8},
+            {"name": "VD", "value": "0x0D", "size": 8},
+            {"name": "VE", "value": "0x0E", "size": 8},
+            {"name": "VF", "value": "0x0F", "size": 8}
+        ]
+    },
+    "groups": [
+        "Load and Store Instructions",
+        "Atithmetic Instructions",
+        "Jump and Branch Instructions",
+        "Timers",
+        "Keypad",
+        "Register I manipulation",
+        "Graphics",
+        "BCD",
+        "Dump and load registers from memory"
+    ],
+    "opcodes": [
+        {
+            "group": 1,
+            "name": "MOVC",
+            "opcode": 6,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "NN": 8
+            },
+            "format": "MOVC vx, NN",
+            "purpose": "Stores number NN in vx",
+            "description": "vx = NN"
+        },
+        {
+            "group": 1,
+            "name": "MOVR",
+            "opcode": 8,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "0": 4
+            },
+            "format": "MOVR vx, vy",
+            "purpose": "Stores the value of vy in vx",
+            "description": "vx = vy"
+        },
+        {
+            "group": 2,
+            "name": "ADDC",
+            "opcode": 7,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "NN": 8
+            },
+            "format": "ADDC vx, NN",
+            "purpose": "Adds the value NN to register vx",
+            "description": "vx += NN"
+        },
+        {
+            "group": 2,
+            "name": "ADDR",
+            "opcode": 8,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "4": 4
+            },
+            "format": "ADDR vx, vy",
+            "purpose": "Adds the value of register vy to register vx. Sets the VF to 01 if a carry (Integer overflow) occurs, otherwise to 00",
+            "description": "vx += vy\nif int_overflow(): VF = 0x01\nelse: VF = 0x00"
+        },
+        {
+            "group": 2,
+            "name": "SUBR",
+            "opcode": 8,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "5": 4
+            },
+            "format": "SUBR vx, vy",
+            "purpose": "Subtracts register vy from vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00",
+            "description": "vx -= vy\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"
+        },
+        {
+            "group": 2,
+            "name": "SUBR2",
+            "opcode": 8,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "7": 4
+            },
+            "format": "SUBR2 vx, vy",
+            "purpose": "Subtracts register vx from vy and stores the result in vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00",
+            "description": "vx = vy - vx\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"
+        },
+        {
+            "group": 2,
+            "name": "ANDR",
+            "opcode": 8,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "2": 4
+            },
+            "format": "ANDR vx, vy",
+            "purpose": "Sets vx to vx AND vy",
+            "description": "vx = vx & vy"
+        },
+        {
+            "group": 2,
+            "name": "ORR",
+            "opcode": 8,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "1": 4
+            },
+            "format": "ORR vx, vy",
+            "purpose": "Sets vx to vx OR vy",
+            "description": "vx = vx | vy"
+        },
+        {
+            "group": 2,
+            "name": "XORR",
+            "opcode": 8,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "3": 4
+            },
+            "format": "XORR vx, vy",
+            "purpose": "Sets vx to vx XOR vy",
+            "description": "vx = vx ^ vy"
+        },
+        {
+            "group": 2,
+            "name": "SHRR",
+            "opcode": 8,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "6": 4
+            },
+            "format": "SHRR vx, vy",
+            "purpose": "Stores the value of register vy shifted right by one bit in register vx. Sets VF to the old least significant bit",
+            "description": "VF = vy & 0x1\nvx = vy >> 1"
+        },
+        {
+            "group": 2,
+            "name": "SHLR",
+            "opcode": 8,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "E": 4
+            },
+            "format": "SHLR vx, vy",
+            "purpose": "Stores the value of register vy shifted left by one bit in register vx. Sets VF to the old most significant bit",
+            "description": "VF = vy & 0x80\nvx = vy << 1"
+        },
+        {
+            "group": 2,
+            "name": "RNDR",
+            "opcode": 12,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "NN": 8
+            },
+            "format": "RNDR vx",
+            "purpose": "Sets vx to a random number with a mask of NN",
+            "description": "vx = randi() & NN"
+        },
+        {
+            "group": 3,
+            "name": "JMP",
+            "opcode": 1,
+            "decode": {
+                "opcode": 4,
+                "NNN": 12
+            },
+            "format": "JMP NNN",
+            "purpose": "Jumps to address NNN",
+            "description": "I = NNN"
+        },
+        {
+            "group": 3,
+            "name": "JMPREL",
+            "opcode": 1,
+            "decode": {
+                "opcode": 4,
+                "NNN": 12
+            },
+            "format": "JMPREL NNN",
+            "purpose": "Jumps to address NNN + V0",
+            "description": "I = NNN + V0"
+        },
+        {
+            "group": 3,
+            "name": "CALL",
+            "opcode": 2,
+            "decode": {
+                "opcode": 4,
+                "NNN": 12
+            },
+            "format": "CALL NNN",
+            "purpose": "Calls a subroutine at the address NNN.",
+            "description": "stack.push(I)\nI = NNN"
+        },
+        {
+            "group": 3,
+            "name": "RET",
+            "opcode": 238,
+            "decode": {
+                "opcode": 16
+            },
+            "format": "RET",
+            "purpose": "Returns from a subroutine.",
+            "description": "I = stack.pop()"
+        },
+        {
+            "group": 3,
+            "name": "CALLM",
+            "opcode": 0,
+            "decode": {
+                "opcode": 4,
+                "NNN": 12
+            },
+            "format": "CALLM NNN",
+            "purpose": "Calls a subroutine at the address NNN. This is an introduction to call a real machine code subroutine on the COSMAC ELF. The subroutine must be end with D4 to inform the chip-8 interpreter, that the routine is finished.",
+            "description": "*(NNN)()"
+        },
+        {
+            "group": 3,
+            "name": "JNEC",
+            "opcode": 3,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "NN": 8
+            },
+            "format": "JNEC vx, NN",
+            "purpose": "Skips the next introduction if vx == NN",
+            "description": "if vx != NN:"
+        },
+        {
+            "group": 3,
+            "name": "JNER",
+            "opcode": 5,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "0": 4
+            },
+            "format": "JNER vx, vy",
+            "purpose": "Skips the next introduction if vx == vy",
+            "description": "if vx != vy:"
+        },
+        {
+            "group": 3,
+            "name": "JEC",
+            "opcode": 4,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "NN": 8
+            },
+            "format": "JEC vx, NN",
+            "purpose": "Skips the next introduction if vx != NN",
+            "description": "if vx == NN:"
+        },
+        {
+            "group": 3,
+            "name": "JER",
+            "opcode": 9,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "0": 4
+            },
+            "format": "JER vx, vy",
+            "purpose": "Skips the next introduction if vx != vy",
+            "description": "if vx == vy:"
+        },
+        {
+            "group": 3,
+            "name": "KNE",
+            "opcode": 14,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "9E": 8
+            },
+            "format": "KNE vx",
+            "purpose": "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is pressed",
+            "description": "if key != vx:"
+        },
+        {
+            "group": 3,
+            "name": "KE",
+            "opcode": 14,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "A1": 8
+            },
+            "format": "KE vx",
+            "purpose": "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is not pressed",
+            "description": "if key == vx:"
+        },
+        {
+            "group": 4,
+            "name": "DELAY",
+            "opcode": 10,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "15": 8
+            },
+            "format": "DELAY vx",
+            "purpose": "Sets the delay timer to the value of register vx",
+            "description": "delay = vx"
+        },
+        {
+            "group": 4,
+            "name": "DELAYR",
+            "opcode": 10,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "07": 8
+            },
+            "format": "DELAYR vx",
+            "purpose": "Stores the current value of the delay timer in register vx",
+            "description": "vx = delay"
+        },
+        {
+            "group": 4,
+            "name": "BUZZER",
+            "opcode": 10,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "18": 8
+            },
+            "format": "BUZZER vx",
+            "purpose": "Sets the sound timer to the value of register vx",
+            "description": "buzzer = vx"
+        },
+        {
+            "group": 5,
+            "name": "WAITK",
+            "opcode": 15,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "0A": 8
+            },
+            "format": "WAITK vx",
+            "purpose": "Waits for a keypress and store the result in register VX",
+            "description": ""
+        },
+        {
+            "group": 6,
+            "name": "SETI",
+            "opcode": 10,
+            "decode": {
+                "opcode": 4,
+                "NNN": 12
+            },
+            "format": "SETI NNN",
+            "purpose": "Stores memory address NNN in register I",
+            "description": "I = NNN"
+        },
+        {
+            "group": 6,
+            "name": "ADDI",
+            "opcode": 10,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "1E": 4
+            },
+            "format": "ADDI vx",
+            "purpose": "Adds the value stored in register vx to register I",
+            "description": "I += vx"
+        },
+        {
+            "group": 7,
+            "name": "DRAW",
+            "opcode": 13,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "vy": 4,
+                "N": 4
+            },
+            "format": "DRAW vx, vy",
+            "purpose": "Draws a sprite at position vx, vy with N bytes of sprite data starting at the address stored in I. Sets VF to 01 if any set pixels are changed to unset, and 00 otherwise",
+            "description": "Draw(vx, vx)"
+        },
+        {
+            "group": 7,
+            "name": "CLS",
+            "opcode": 0,
+            "decode": {
+                "opcode": 4,
+                "0E0": 12
+            },
+            "format": "CLS",
+            "purpose": "Clears the screen",
+            "description": "Clear()"
+        },
+        {
+            "group": 7,
+            "name": "FNT",
+            "opcode": 15,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "29": 8
+            },
+            "format": "FNT vx",
+            "purpose": "Sets I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register vx",
+            "description": "I = SearchLetter(vx)"
+        },
+        {
+            "group": 8,
+            "name": "BCD",
+            "opcode": 15,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "33": 8
+            },
+            "format": "BCD vx",
+            "purpose": "Stores the binary-coded decimal equivalent of the value stored in register vx at addresses I, I+1, and I+2"
+        },
+        {
+            "group": 9,
+            "name": "DMPR",
+            "opcode": 15,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "55": 4
+            },
+            "format": "DMPR vx",
+            "purpose": "Stores the values of registers V0 to VX inclusive in memory starting at address I. I is set to I + X + 1 after the operation",
+            "description": "for 0 to vx: mem[I++] = V[Idx]"
+        },
+        {
+            "group": 9,
+            "name": "RDR",
+            "opcode": 0,
+            "decode": {
+                "opcode": 4,
+                "vx": 4,
+                "65": 4
+            },
+            "format": "RDR vx",
+            "purpose": "Fill registers V0 to VX inclusive with the values stored in memory starting at address I. I is set to I + X + 1 after operation",
+            "description": "for 0 to vx: V[Idx] = mem[I++]"
+        }
+    ]
+}

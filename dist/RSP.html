@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>RSP - OpcodeDoc</title>
+        <meta name="description" content="Reality Co-Processor of the Nintendo 64. Its main purpose is rendering and computing 3D graphics.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="spec.css">
+        <script src="main.js"></script>
+        <script src="spec.js"></script>
+    </head>
+    <body>
+        <span id="forkongithub"><a href="https://github.com/tostc/OpcodeDoc" target="_blank">Fork me on GitHub</a></span>
+        <div class="overlay" id="overlay" onclick="hideMenu()"></div>
+        <div class="navbar" id="sidemenu">
+            <div class="header">
+                <h1><a href="index.html" class="material-icons">home</a>&nbsp;RSP</h1>
+                <div class="search">
+                    <span class="material-icons">search</span>
+                    <input type="text" id="search" required onfocus="toggleHighlightSearchbox(this)" onblur="toggleHighlightSearchbox(this)" onkeyup="search(this)">
+                    <label for="search">Search</label>
+                    <div class="autocomplete" id="autocomplete"></div>
+                </div>
+            </div>
+            <ul class="groups">
+                <li><h1>Categories</h1></li>
+<li><a href='#info' onclick='hideMenu()'>Specification info</a></li><li><a href='#glossary' onclick='hideMenu()'>Glossary</a></li><li><a href='#registers' onclick='hideMenu()'>Registers</a></li><li><a href='#load-and-store-instructions' onclick='hideMenu()'>Load and Store Instructions</a></li><li><a href='#vector-instructions' onclick='hideMenu()'>Vector instructions</a></li>            </ul>
+        </div>
+        <div class="content">
+            <button type="button" id="menu" onclick="showMenu()"><span class="material-icons">menu</span></button>
+
+            <button onclick="scrollUpToTop()" type="button" id="gotop" title="Go to top"><span class="material-icons">arrow_upward</span></button>
+<div class='missing'>Information is missing, please help to complete this page.</div><h2 id='info'>Specification info</h2><div class="card">
+    <div class="card-header">
+        <a href="#rsp" class="material-icons">link</a>
+        <h3 id="rsp">RSP</h3>
+        <a href="specs/rsp.json" target="_blank" class="material-icons right" title="Download specification" download>download</a>
+    </div>
+    <div class="card-content">
+        <p>Description:</p>
+        <p class="code">Reality Co-Processor of the Nintendo 64. Its main purpose is rendering and computing 3D graphics.</p>
+        <p>CPU clock speed:</p>
+        <p class="code">62.5 MHz</p>
+        <p>Address bus:</p>
+        <p class="code">0-Bit<p>
+        <p>CPU caches:</p>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Comment</th>
+            </tr>
+
+<tr><td>L1?</td><td>8 KB</td><td>4 KB for instructions and 4 KB for data</td></tr>        </table>
+        <p>Document version:</p>
+        <p class="code">1.0.0</p>
+        <p>Sources:</p>
+        <ul class="sources">
+<li><a href='https://github.com/martinlindhe/n64ops' target='_blank'>https://github.com/martinlindhe/n64ops</a></li>
+<li><a href='https://www.copetti.org/writings/consoles/nintendo-64' target='_blank'>https://www.copetti.org/writings/consoles/nintendo-64</a></li>
+<li><a href='https://n64brew.dev/wiki/Reality_Signal_Processor' target='_blank'>https://n64brew.dev/wiki/Reality_Signal_Processor</a></li>
+        </ul>
+    </div>
+</div>
+<h2 id='info'>Glossary</h2><div class="card">
+    <div class="card-header">
+        <a href="#glossary" class="material-icons">link</a>
+        <h3 id="glossary">Glossary</h3>
+    </div>
+    <div class="card-content">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+
+<tr><td>v&lt;dest&gt;</td><td>The destination vector register, where the result will be placed.</td></tr><tr><td>del</td><td>Specifies the destination element to be used.</td></tr><tr><td>offset</td><td>16-bit additional offset to use from a base register.</td></tr><tr><td>base</td><td>The base GPR to use for load/store operations.</td></tr><tr><td>v&lt;s1&gt;</td><td>Source vector register.</td></tr><tr><td>v&lt;s2&gt;</td><td>Source vector register.</td></tr><tr><td>el</td><td>Specifies the element to be used on a source vector register.</td></tr>        </table>
+    </div>
+</div>
+<h2 id='registers'>Registers</h2><div class="card">
+    <div class="card-header">
+        <a href="#main-gpr" class="material-icons">link</a>
+        <h3 id="main-gpr">Main GPR-Processor</h3>
+    </div>
+    <div class="card-content">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Size (Bits)</th>
+            </tr>
+
+<tr><td style='text-align:left'>r0/reg0</td><td style='text-align:left'>0x00</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>at/reg1</td><td style='text-align:left'>0x01</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>v0/reg2</td><td style='text-align:left'>0x02</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>v1/reg3</td><td style='text-align:left'>0x03</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>a0/reg4</td><td style='text-align:left'>0x04</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>a1/reg5</td><td style='text-align:left'>0x05</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>a2/reg6</td><td style='text-align:left'>0x06</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>a3/reg7</td><td style='text-align:left'>0x07</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>t0/reg8</td><td style='text-align:left'>0x08</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>t1/reg9</td><td style='text-align:left'>0x09</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>t2/reg10</td><td style='text-align:left'>0x0A</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>t3/reg11</td><td style='text-align:left'>0x0B</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>t4/reg12</td><td style='text-align:left'>0x0C</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>t5/reg13</td><td style='text-align:left'>0x0D</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>t6/reg14</td><td style='text-align:left'>0x0E</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>t7/reg15</td><td style='text-align:left'>0x0F</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>s0/reg16</td><td style='text-align:left'>0x10</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>s1/reg17</td><td style='text-align:left'>0x11</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>s2/reg18</td><td style='text-align:left'>0x12</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>s3/reg19</td><td style='text-align:left'>0x13</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>s4/reg20</td><td style='text-align:left'>0x14</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>s5/reg21</td><td style='text-align:left'>0x15</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>s6/reg22</td><td style='text-align:left'>0x16</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>s7/reg23</td><td style='text-align:left'>0x17</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>t8/reg24</td><td style='text-align:left'>0x18</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>t9/reg25</td><td style='text-align:left'>0x19</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>k0/reg26</td><td style='text-align:left'>0x1A</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>k1/reg27</td><td style='text-align:left'>0x1B</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>gp/reg28</td><td style='text-align:left'>0x1C</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>sp/reg29</td><td style='text-align:left'>0x1D</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>s8/reg30</td><td style='text-align:left'>0x1E</td><td style='text-align:left'>32</td></tr>
+<tr><td style='text-align:left'>ra/reg31</td><td style='text-align:left'>0x1F</td><td style='text-align:left'>32</td></tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vector" class="material-icons">link</a>
+        <h3 id="vector">Vector-Processor</h3>
+    </div>
+    <div class="card-content">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Size (Bits)</th>
+            </tr>
+
+<tr><td style='text-align:left'>$v0</td><td style='text-align:left'>0x00</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v1</td><td style='text-align:left'>0x01</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v2</td><td style='text-align:left'>0x02</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v3</td><td style='text-align:left'>0x03</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v4</td><td style='text-align:left'>0x04</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v5</td><td style='text-align:left'>0x05</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v6</td><td style='text-align:left'>0x06</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v7</td><td style='text-align:left'>0x07</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v8</td><td style='text-align:left'>0x08</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v9</td><td style='text-align:left'>0x09</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v10</td><td style='text-align:left'>0x0A</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v11</td><td style='text-align:left'>0x0B</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v12</td><td style='text-align:left'>0x0C</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v13</td><td style='text-align:left'>0x0D</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v14</td><td style='text-align:left'>0x0E</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v15</td><td style='text-align:left'>0x0F</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v16</td><td style='text-align:left'>0x10</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v17</td><td style='text-align:left'>0x11</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v18</td><td style='text-align:left'>0x12</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v19</td><td style='text-align:left'>0x13</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v20</td><td style='text-align:left'>0x14</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v21</td><td style='text-align:left'>0x15</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v22</td><td style='text-align:left'>0x16</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v23</td><td style='text-align:left'>0x17</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v24</td><td style='text-align:left'>0x18</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v25</td><td style='text-align:left'>0x19</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v26</td><td style='text-align:left'>0x1A</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v27</td><td style='text-align:left'>0x1B</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v28</td><td style='text-align:left'>0x1C</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v29</td><td style='text-align:left'>0x1D</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v30</td><td style='text-align:left'>0x1E</td><td style='text-align:left'>128</td></tr>
+<tr><td style='text-align:left'>$v31</td><td style='text-align:left'>0x1F</td><td style='text-align:left'>128</td></tr>
+        </table>
+    </div>
+</div>
+<h2 id='load-and-store-instructions'>Load and Store Instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#lbv" class="material-icons">link</a>
+        <h3 id="lbv">LBV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LBV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load byte to vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00000</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lsv" class="material-icons">link</a>
+        <h3 id="lsv">LSV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LSV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load short (halfword) to vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00001</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#llv" class="material-icons">link</a>
+        <h3 id="llv">LLV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LLV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load long (word) to vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00010</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ldv" class="material-icons">link</a>
+        <h3 id="ldv">LDV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LDV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load double to vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00011</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lqv" class="material-icons">link</a>
+        <h3 id="lqv">LQV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LQV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load quadword to vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00100</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lrv" class="material-icons">link</a>
+        <h3 id="lrv">LRV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LRV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load rest to vector </p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00101</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lpv" class="material-icons">link</a>
+        <h3 id="lpv">LPV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LPV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load packed to vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00110</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#luv" class="material-icons">link</a>
+        <h3 id="luv">LUV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LUV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load unpacked to vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00111</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lhv" class="material-icons">link</a>
+        <h3 id="lhv">LHV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LHV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load half to vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>01000</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lfv" class="material-icons">link</a>
+        <h3 id="lfv">LFV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LFV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load fourth to vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>01001</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#lwv" class="material-icons">link</a>
+        <h3 id="lwv">LWV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LWV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load wrap to vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>01010</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ltv" class="material-icons">link</a>
+        <h3 id="ltv">LTV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">LTV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Load transpose to vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>01011</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sbv" class="material-icons">link</a>
+        <h3 id="sbv">SBV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">SBV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store byte from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00000</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ssv" class="material-icons">link</a>
+        <h3 id="ssv">SSV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">SSV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store short (halfword) from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00001</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#slv" class="material-icons">link</a>
+        <h3 id="slv">SLV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">SLV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store long (word) from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00010</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sdv" class="material-icons">link</a>
+        <h3 id="sdv">SDV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">SDV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store double (doubleword) from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00011</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sqv" class="material-icons">link</a>
+        <h3 id="sqv">SQV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">SQV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store quad (quadword) from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00100</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#srv" class="material-icons">link</a>
+        <h3 id="srv">SRV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">SRV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store rest from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00101</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#spv" class="material-icons">link</a>
+        <h3 id="spv">SPV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">SPV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store packed from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00110</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#suv" class="material-icons">link</a>
+        <h3 id="suv">SUV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">SUV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store unpacked from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>00111</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#shv" class="material-icons">link</a>
+        <h3 id="shv">SHV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">SHV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store half from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>01000</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#sfv" class="material-icons">link</a>
+        <h3 id="sfv">SFV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">SFV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store fourth from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>01001</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#swv" class="material-icons">link</a>
+        <h3 id="swv">SWV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">SWV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store wrap from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>01010</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#stv" class="material-icons">link</a>
+        <h3 id="stv">STV</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">50</p>
+        <p>Format:</p>
+        <p class="code">STV $v<dest>[del], offset(base)</p>
+        <p>Purpose:</p>
+        <p class="code">Store transpose from vector</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>base</th>
+<th>dest</th>
+<th>01011</th>
+<th>del</th>
+<th>0</th>
+<th>offset</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>4</td>
+<td>1</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='vector-instructions'>Vector instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmulf" class="material-icons">link</a>
+        <h3 id="vmulf">VMULF</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMULF $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector (Frac) Multiply</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>000000</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmulu" class="material-icons">link</a>
+        <h3 id="vmulu">VMULU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMULU $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector (Unsigned Frac) Multiply</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>000001</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vrndp" class="material-icons">link</a>
+        <h3 id="vrndp">VRNDP</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VRNDP $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector DCT Round (-)</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>000010</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmulq" class="material-icons">link</a>
+        <h3 id="vmulq">VMULQ</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMULQ $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector (Integer) Multiply</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>000011</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmudl" class="material-icons">link</a>
+        <h3 id="vmudl">VMUDL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMUDL $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector low multiply</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>000100</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmudm" class="material-icons">link</a>
+        <h3 id="vmudm">VMUDM</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMUDM $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector mid-m multiply</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>000101</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmudn" class="material-icons">link</a>
+        <h3 id="vmudn">VMUDN</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMUDN $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector mid-n multiply</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>000110</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmudh" class="material-icons">link</a>
+        <h3 id="vmudh">VMUDH</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMUDH $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector high multiply</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>000111</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmacf" class="material-icons">link</a>
+        <h3 id="vmacf">VMACF</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMACF $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector (Frac) Multiply Accumulate</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>001000</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmacu" class="material-icons">link</a>
+        <h3 id="vmacu">VMACU</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMACU $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector (Unsigned Frac) Multiply Accumulate</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>001001</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vrndn" class="material-icons">link</a>
+        <h3 id="vrndn">VRNDN</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VRNDN $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector DCT Round (-)</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>001010</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmacq" class="material-icons">link</a>
+        <h3 id="vmacq">VMACQ</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMACQ $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector (Integer) Multiply Accumulate</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>001011</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmadl" class="material-icons">link</a>
+        <h3 id="vmadl">VMADL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMADL $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector low multiply accumulate</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>001100</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmadm" class="material-icons">link</a>
+        <h3 id="vmadm">VMADM</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMADM $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector mid-m multiply accumulate</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>001101</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmadn" class="material-icons">link</a>
+        <h3 id="vmadn">VMADN</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMADN $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector mid-n multiply accumulate</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>001110</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#vmadh" class="material-icons">link</a>
+        <h3 id="vmadh">VMADH</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">18</p>
+        <p>Format:</p>
+        <p class="code">VMADH $v<dest>, $v<s1>, $v<s2>[el]</p>
+        <p>Purpose:</p>
+        <p class="code">Vector high multiply accumulate</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>1</th>
+<th>el</th>
+<th>s2</th>
+<th>s1</th>
+<th>dest</th>
+<th>001111</th>
+            </tr>
+
+            <tr>
+<td>6</td>
+<td>1</td>
+<td>4</td>
+<td>5</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+            </tr>
+        </table>
+    </div>
+</div>
+        </div>
+
+        <script type="application/json" id="searchIndex">
+[{"href": "movc", "index": ["MOVC", "MOVC vx, NN", "Stores number NN in vx", "vx = NN"]}, {"href": "movr", "index": ["MOVR", "MOVR vx, vy", "Stores the value of vy in vx", "vx = vy"]}, {"href": "addc", "index": ["ADDC", "ADDC vx, NN", "Adds the value NN to register vx", "vx += NN"]}, {"href": "addr", "index": ["ADDR", "ADDR vx, vy", "Adds the value of register vy to register vx. Sets the VF to 01 if a carry (Integer overflow) occurs, otherwise to 00", "vx += vy\nif int_overflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "subr", "index": ["SUBR", "SUBR vx, vy", "Subtracts register vy from vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00", "vx -= vy\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "subr2", "index": ["SUBR2", "SUBR2 vx, vy", "Subtracts register vx from vy and stores the result in vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00", "vx = vy - vx\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "andr", "index": ["ANDR", "ANDR vx, vy", "Sets vx to vx AND vy", "vx = vx & vy"]}, {"href": "orr", "index": ["ORR", "ORR vx, vy", "Sets vx to vx OR vy", "vx = vx | vy"]}, {"href": "xorr", "index": ["XORR", "XORR vx, vy", "Sets vx to vx XOR vy", "vx = vx ^ vy"]}, {"href": "shrr", "index": ["SHRR", "SHRR vx, vy", "Stores the value of register vy shifted right by one bit in register vx. Sets VF to the old least significant bit", "VF = vy & 0x1\nvx = vy >> 1"]}, {"href": "shlr", "index": ["SHLR", "SHLR vx, vy", "Stores the value of register vy shifted left by one bit in register vx. Sets VF to the old most significant bit", "VF = vy & 0x80\nvx = vy << 1"]}, {"href": "rndr", "index": ["RNDR", "RNDR vx", "Sets vx to a random number with a mask of NN", "vx = randi() & NN"]}, {"href": "jmp", "index": ["JMP", "JMP NNN", "Jumps to address NNN", "I = NNN"]}, {"href": "jmprel", "index": ["JMPREL", "JMPREL NNN", "Jumps to address NNN + V0", "I = NNN + V0"]}, {"href": "call", "index": ["CALL", "CALL NNN", "Calls a subroutine at the address NNN.", "stack.push(I)\nI = NNN"]}, {"href": "ret", "index": ["RET", "RET", "Returns from a subroutine.", "I = stack.pop()"]}, {"href": "callm", "index": ["CALLM", "CALLM NNN", "Calls a subroutine at the address NNN. This is an introduction to call a real machine code subroutine on the COSMAC ELF. The subroutine must be end with D4 to inform the chip-8 interpreter, that the routine is finished.", "*(NNN)()"]}, {"href": "jnec", "index": ["JNEC", "JNEC vx, NN", "Skips the next introduction if vx == NN", "if vx != NN:"]}, {"href": "jner", "index": ["JNER", "JNER vx, vy", "Skips the next introduction if vx == vy", "if vx != vy:"]}, {"href": "jec", "index": ["JEC", "JEC vx, NN", "Skips the next introduction if vx != NN", "if vx == NN:"]}, {"href": "jer", "index": ["JER", "JER vx, vy", "Skips the next introduction if vx != vy", "if vx == vy:"]}, {"href": "kne", "index": ["KNE", "KNE vx", "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is pressed", "if key != vx:"]}, {"href": "ke", "index": ["KE", "KE vx", "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is not pressed", "if key == vx:"]}, {"href": "delay", "index": ["DELAY", "DELAY vx", "Sets the delay timer to the value of register vx", "delay = vx"]}, {"href": "delayr", "index": ["DELAYR", "DELAYR vx", "Stores the current value of the delay timer in register vx", "vx = delay"]}, {"href": "buzzer", "index": ["BUZZER", "BUZZER vx", "Sets the sound timer to the value of register vx", "buzzer = vx"]}, {"href": "waitk", "index": ["WAITK", "WAITK vx", "Waits for a keypress and store the result in register VX", ""]}, {"href": "seti", "index": ["SETI", "SETI NNN", "Stores memory address NNN in register I", "I = NNN"]}, {"href": "addi", "index": ["ADDI", "ADDI vx", "Adds the value stored in register vx to register I", "I += vx"]}, {"href": "draw", "index": ["DRAW", "DRAW vx, vy", "Draws a sprite at position vx, vy with N bytes of sprite data starting at the address stored in I. Sets VF to 01 if any set pixels are changed to unset, and 00 otherwise", "Draw(vx, vx)"]}, {"href": "cls", "index": ["CLS", "CLS", "Clears the screen", "Clear()"]}, {"href": "fnt", "index": ["FNT", "FNT vx", "Sets I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register vx", "I = SearchLetter(vx)"]}, {"href": "bcd", "index": ["BCD", "BCD vx", "Stores the binary-coded decimal equivalent of the value stored in register vx at addresses I, I+1, and I+2"]}, {"href": "dmpr", "index": ["DMPR", "DMPR vx", "Stores the values of registers V0 to VX inclusive in memory starting at address I. I is set to I + X + 1 after the operation", "for 0 to vx: mem[I++] = V[Idx]"]}, {"href": "rdr", "index": ["RDR", "RDR vx", "Fill registers V0 to VX inclusive with the values stored in memory starting at address I. I is set to I + X + 1 after operation", "for 0 to vx: V[Idx] = mem[I++]"]}, {"href": "lb", "index": ["LB", "LB rt, offset(base)", "To load a byte from memory as a signed value.", "rt = byte[base+offset]"]}, {"href": "lbu", "index": ["LBU", "LBU rt, offset(base)", "To load a byte from memory as an unsigned value.", "rt = byte[base+offset]"]}, {"href": "ld", "index": ["LD", "LD rt, offset(base)", "To load a doubleword from memory.", "rt = doubleword[base+offset]"]}, {"href": "ldl", "index": ["LDL", "LDL rt, offset(base)", "To load the most-significant part of a doubleword from an unaligned memory address.", "left(rt) = right[base+offset]"]}, {"href": "ldr", "index": ["LDR", "LDR rt, offset(base)", "To load the least-significant part of a doubleword from an unaligned memory address.", "right(rt) = left[base+offset]"]}, {"href": "lh", "index": ["LH", "LH rt, offset(base)", "To load a halfword from memory as a signed value.", "rt = halfword[base+offset]"]}, {"href": "lhu", "index": ["LHU", "LHU rt, offset(base)", "To load a halfword from memory as an unsigned value.", "rt = halfword[base+offset]"]}, {"href": "ll", "index": ["LL", "LL rt, offset(base)", "To load a word from memory for an atomic read-modify-write."]}, {"href": "lld", "index": ["LLD", "LLD rt, offset(base)", "To load a doubleword from memory for an atomic read-modify-write."]}, {"href": "lw", "index": ["LW", "LW rt, offset(base)", "To load a word from memory as a signed value.", "rt = word[base+offset]"]}, {"href": "lwl", "index": ["LWL", "LWL rt, offset(base)", "To load the most-significant part of a word as a signed value from an unaligned memory address.", "left(rt) = right[base+offset]"]}, {"href": "lwr", "index": ["LWR", "LWR rt, offset(base)", "To load the least-significant part of a word from an unaligned memory address as a signed value.", "right(rt) = left[base+offset]"]}, {"href": "lwu", "index": ["LWU", "LWU rt, offset(base)", "To load a word from memory as an unsigned value.", "rt = word[base+offset]"]}, {"href": "sb", "index": ["SB", "SB rt, offset(base)", "To store a byte to memory.", "byte[base+offset] = rt"]}, {"href": "sc", "index": ["SC", "SC rt, offset(base)", "To store a word to memory to complete an atomic read-modify-write."]}, {"href": "scd", "index": ["SCD", "SCD rt, offset(base)", "To store a doubleword to memory to complete an atomic"]}, {"href": "sd", "index": ["SD", "SD rt, offset(base)", "To store a doubleword to memory.", "doulbeword[base+offset] = rt"]}, {"href": "sdl", "index": ["SDL", "SDL rt, offset(base)", "To store the most-significant part of a doubleword to an unaligned memory address.", "right[base+offset] = left(rt)"]}, {"href": "sdr", "index": ["SDR", "SDR rt, offset(base)", "To store the least-significant part of a doubleword to an unaligned memory address.", "left[base+offset] = right(rt)"]}, {"href": "sh", "index": ["SH", "SH rt, offset(base)", "To store a halfword to memory.", "halfword[base+offset] = rt"]}, {"href": "sw", "index": ["SW", "SW rt, offset(base)", "To store a word to memory.", "word[base+offset] = rt"]}, {"href": "swl", "index": ["SWL", "SWL rt, offset(base)", "To store the most-significant part of a word to an unaligned memory address.", "right[base+offset] = left(rt)"]}, {"href": "swr", "index": ["SWR", "SWR rt, offset(base)", "To store the least-significant part of a word to an unaligned memory address.", "left[base+offset] = right(rt)"]}, {"href": "sync", "index": ["SYNC", "SYNC (stype = 0 implied)", "To order loads and stores to shared memory in a"]}, {"href": "add", "index": ["ADD", "ADD rd, rs, rt", "To add 32-bit integers. If overflow occurs, then trap. Comment: ADD rd, r0, rs is equal to a MOVE rd, rs", "rd = rs + rt"]}, {"href": "addi", "index": ["ADDI", "ADDI rt, rs, immediate", "To add a constant to a 32-bit integer. If overflow occurs, then trap.", "rt = rs + immediate"]}, {"href": "addiu", "index": ["ADDIU", "ADDIU rt, rs, immediate", "To add a constant to a 32-bit integer.", "rt = rs + immediate"]}, {"href": "addu", "index": ["ADDU", "ADDU rd, rs, rt", "To add 32-bit integers.", "rd = rs + rt"]}, {"href": "and", "index": ["AND", "AND rd, rs, rt", "To do a bitwise logical AND.", "rd = (rs AND rt)"]}, {"href": "andi", "index": ["ANDI", "ANDI rt, rs, immediate", "To do a bitwise logical AND with a constant.", "rt = (rs AND immediate)"]}, {"href": "dadd", "index": ["DADD", "DADD rd, rs, rt", "To add 64-bit integers. If overflow occurs, then trap.", "rd = rs + rt"]}, {"href": "daddi", "index": ["DADDI", "DADDI rt, rs, immediate", "To add a constant to a 64-bit integer. If overflow occurs, then trap.", "rt = rs + immediate"]}, {"href": "daddiu", "index": ["DADDIU", "DADDIU rt, rs, immediate", "To add a constant to a 64-bit integer.", "rt = rs + immediate"]}, {"href": "daddu", "index": ["DADDU", "DADDU rd, rs, rt", "To add 64-bit integers.", "rd = rs + rt"]}, {"href": "ddiv", "index": ["DDIV", "DDIV rs, rt", "To divide 64-bit signed integers.", "LO = rs / rt;     HI = rs MOD rt"]}, {"href": "ddivu", "index": ["DDIVU", "DDIVU rs, rt", "To divide 64-bit unsigned integers.", "LO = rs / rt;     HI = rs MOD rt"]}, {"href": "div", "index": ["DIV", "DIV rs, rt", "To divide 32-bit signed integers.", "LO = rs / rt;     HI = rs MOD rt"]}, {"href": "divu", "index": ["DIVU", "DIVU rs, rt", "To divide 32-bit unsigned integers.", "LO = rs / rt;     HI = rs MOD rt"]}, {"href": "dmult", "index": ["DMULT", "DMULT rs, rt", "To multiply 64-bit signed integers.", "LO = low(rs*rt);  HI = high(rs*rt)"]}, {"href": "dmultu", "index": ["DMULTU", "DMULTU rs, rt", "To multiply 64-bit unsigned integers.", "LO = low(rs*rt);  HI = high(rs*rt)"]}, {"href": "dsll", "index": ["DSLL", "DSLL rd, rt, sa", "To left shift a doubleword by a fixed amount -- 0 to 31 bits.", "rd = rt << sa"]}, {"href": "dsll32", "index": ["DSLL32", "DSLL32 rd, rt, sa", "To left shift a doubleword by a fixed amount -- 32 to 63 bits.", "rd = rt << (sa+32)"]}, {"href": "dsllv", "index": ["DSLLV", "DSLLV rd, rt, rs", "To left shift a doubleword by a variable number of bits.", "rd = rt << rs"]}, {"href": "dsra", "index": ["DSRA", "DSRA rd, rt, sa", "To arithmetic right shift a doubleword by a fixed amount -- 0 to 31 bits.", "rd = rt >> sa"]}, {"href": "dsra32", "index": ["DSRA32", "DSRA32 rd, rt, sa", "To arithmetic right shift a doubleword by a fixed amount -- 32-63 bits.", "rd = rt >> (sa+32)"]}, {"href": "dsrav", "index": ["DSRAV", "DSRAV rd, rt, rs", "To arithmetic right shift a doubleword by a variable number of bits.", "rd = rt >> rs"]}, {"href": "dsrl", "index": ["DSRL", "DSRL rd, rt, sa", "To logical right shift a doubleword by a fixed amount -- 0 to 31 bits.", "rd = rt >> sa"]}, {"href": "dsrl32", "index": ["DSRL32", "DSRL32 rd, rt, sa", "To logical right shift a doubleword by a fixed amount -- 32 to 63 bits.", "rd = rt >> (sa+32)"]}, {"href": "dsrlv", "index": ["DSRLV", "DSRLV rd, rt, rs", "To logical right shift a doubleword by a variable number of bits.", "rd = rt >> rs"]}, {"href": "dsub", "index": ["DSUB", "DSUB rd, rs, rt", "To subtract 64-bit integers; trap if overflow.", "rd = rs - rt"]}, {"href": "dsubu", "index": ["DSUBU", "DSUBU rd, rs, rt", "To subtract 64-bit integers.", "rd = rs - rt"]}, {"href": "lui", "index": ["LUI", "LUI rt, immediate", "To load a constant into the upper half of a word.", "rt = immediate * 10000h"]}, {"href": "mfhi", "index": ["MFHI", "MFHI rd", "To copy the special purpose HI register to a GPR.", "rd = HI"]}, {"href": "mflo", "index": ["MFLO", "MFLO rd", "To copy the special purpose LO register to a GPR.", "rd = LO"]}, {"href": "mthi", "index": ["MTHI", "MTHI rs", "To copy a GPR to the special purpose HI register."]}, {"href": "mtlo", "index": ["MTLO", "MTLO rs", "To copy a GPR to the special purpose LO register."]}, {"href": "mult", "index": ["MULT", "MULT rs, rt", "To multiply 32-bit signed integers.", "LO = low(rs*rt);    HI = high(rs*rt)"]}, {"href": "multu", "index": ["MULTU", "MULTU rs, rt", "To multiply 32-bit unsigned integers.", "LO = low(rs*rt);    HI = high(rs*rt)"]}, {"href": "nor", "index": ["NOR", "NOR rd, rs, rt", "To do a bitwise logical NOT OR.", "rd = (rs NOR rt)"]}, {"href": "or", "index": ["OR", "OR rd, rs, rt", "To do a bitwise logical OR.", "rd = (rs OR rt)"]}, {"href": "ori", "index": ["ORI", "ORI rt, rs, immediate", "To do a bitwise logical OR with a constant. Comment: ORI rt, r0, imm is equal to a LI rt, imm", "rt = (rs OR immediate)"]}, {"href": "sll", "index": ["SLL", "SLL rd, rt, sa", "To left shift a word by a fixed number of bits. Comment: SLL r0, r0, 0 is equal to a NOP (No OPeration)", "rd = rt << sa"]}, {"href": "sllv", "index": ["SLLV", "SLLV rd, rt, rs", "To left shift a word by a variable number of bits.", "rd = rt << sa"]}, {"href": "slt", "index": ["SLT", "SLT rd, rs, rt", "To record the result of a less-than comparison.", "if rs < rt then rd = 1 else rd = 0"]}, {"href": "slti", "index": ["SLTI", "SLTI rt, rs, immediate", "To record the result of a less-than comparison with a constant.", "if rs < immediate then rd = 1 else rd = 0"]}, {"href": "sltiu", "index": ["SLTIU", "SLTIU rt, rs, immediate", "To record the result of an unsigned less-than comparison with a constant.", "if rs < immediate then rd = 1 else rd = 0"]}, {"href": "sltu", "index": ["SLTU", "SLTU rd, rs, rt", "To record the result of an unsigned less-than comparison.", "if rs < rt then rd = 1 else rd = 0"]}, {"href": "sra", "index": ["SRA", "SRA rd, rt, sa", "To arithmetic right shift a word by a fixed number of bits.", "rd = rt >> sa"]}, {"href": "srav", "index": ["SRAV", "SRAV rd, rt, rs", "To arithmetic right shift a word by a variable number of bits.", "rd = rt >> rs"]}, {"href": "srl", "index": ["SRL", "SRL rd, rt, sa", "To logical right shift a word by a fixed number of bits.", "rd = rt >> sa"]}, {"href": "srlv", "index": ["SRLV", "SRLV rd, rt, rs", "To logical right shift a word by a variable number of bits.", "rd = rt >> rs"]}, {"href": "sub", "index": ["SUB", "SUB rd, rs, rt", "To subtract 32-bit integers. If overflow occurs, then trap. Comment: SUB rd, r0, rt is equal to a NEG rd, rt", "rd = rs - rt"]}, {"href": "subu", "index": ["SUBU", "SUBU rd, rs, rt", "To subtract 32-bit integers. No trap on overflow. Comment: SUBU rd, r0, rs is equal to a NEGU rd, rs", "rd = rs - rt"]}, {"href": "xor", "index": ["XOR", "XOR rd, rs, rt", "To do a bitwise logical EXCLUSIVE OR.", "rd = (rs XOR rt)"]}, {"href": "xori", "index": ["XORI", "XORI rt, rs, immediate", "To do a bitwise logical EXCLUSIVE OR with a constant.", "rd = (rs XOR immediate)"]}, {"href": "beq", "index": ["BEQ", "BEQ rs, rt, offset", "To compare GPRs then do a PC-relative conditional branch. Comment: BEQ rs, r0, offset is equal to a BEQZ rs, offset BEQ r0, r0, offset is equal to a B offset", "branch if rs = rt"]}, {"href": "beql", "index": ["BEQL", "BEQL rs, rt, offset", "To compare GPRs then do a PC-relative conditional branch; execute the delay slot only if the branch is taken. Comment: BEQL rs, r0, offset is equal to a BEQZL rs, offset", "branch if rs = rt"]}, {"href": "bgez", "index": ["BGEZ", "BGEZ rs, offset", "To test a GPR then do a PC-relative conditional branch.", "branch if rs >= 0 (signed)"]}, {"href": "bgezal", "index": ["BGEZAL", "BGEZAL rs, offset", "To test a GPR then do a PC-relative conditional procedure call. Comment: BGEZAL r0, offset is equal to a BAL offset", "branch if rs >= 0 (signed) (return address in ra)"]}, {"href": "bgezall", "index": ["BGEZALL", "BGEZALL rs, offset", "To test a GPR then do a PC-relative conditional procedure call; execute the delay slot only if the branch is taken.", "branch if rs >= 0 (signed) (return address in ra)"]}, {"href": "bgezl", "index": ["BGEZL", "BGEZL rs, offset", "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.", "branch if rs >= 0 (signed)"]}, {"href": "bgtz", "index": ["BGTZ", "BGTZ rs, offset", "To test a GPR then do a PC-relative conditional branch.", "branch if rs > 0 (signed)"]}, {"href": "bgtzl", "index": ["BGTZL", "BGTZL rs, offset", "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.", "branch if rs > 0 (signed)"]}, {"href": "blez", "index": ["BLEZ", "BLEZ rs, offset", "To test a GPR then do a PC-relative conditional branch.", "branch if rs <= 0 (signed)"]}, {"href": "blezl", "index": ["BLEZL", "BLEZL rs, offset", "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.", "branch if rs <= 0 (signed)"]}, {"href": "bltz", "index": ["BLTZ", "BLTZ rs, offset", "To test a GPR then do a PC-relative conditional branch.", "branch if rs < 0 (signed)"]}, {"href": "bltzal", "index": ["BLTZAL", "BLTZAL rs, offset", "To test a GPR then do a PC-relative conditional procedure call.", "branch if rs < 0 (signed) (return address in ra)"]}, {"href": "bltzall", "index": ["BLTZALL", "BLTZALL rs, offset", "To test a GPR then do a PC-relative conditional procedure call; execute the delay slot only if the branch is taken.", "branch if rs < 0 (signed) (return address in ra)"]}, {"href": "bltzl", "index": ["BLTZL", "BLTZL rs, offset", "To test a GPR then do a PC-relative conditional branch; execute the delay slot only if the branch is taken.", "branch if rs < 0 (signed)"]}, {"href": "bne", "index": ["BNE", "BNE rs, rt, offset", "To compare GPRs then do a PC-relative conditional branch. Comment: BNE rs, r0, offset is equal to a BNEZ rs, offset", "branch if rs <> rt"]}, {"href": "bnel", "index": ["BNEL", "BNEL rs, rt, offset", "To compare GPRs then do a PC-relative conditional branch; execute the delay slot only if the branch is taken. Comment: BNEL rs, r0, offset is equal to a BNEZL rs, offset", "branch if rs <> rt"]}, {"href": "j", "index": ["J", "J target", "To branch within the current 256 MB aligned region."]}, {"href": "jal", "index": ["JAL", "JAL target", "To procedure call within the current 256 MB aligned region.", "return address in ra"]}, {"href": "jalr", "index": ["JALR", "JALR rs, rd", "To procedure call to an instruction address in a register.", "return address in rd"]}, {"href": "jr", "index": ["JR", "JR rs", "To branch to an instruction address in a register.", "PC = rs"]}, {"href": "break", "index": ["BREAK", "BREAK offset", "To cause a Breakpoint exception."]}, {"href": "syscall", "index": ["SYSCALL", "SYSCALL offset", "To cause a System Call exception."]}, {"href": "teq", "index": ["TEQ", "TEQ rs, rt", "To compare GPRs and do a conditional Trap.", "if rs = rt then trap"]}, {"href": "teqi", "index": ["TEQI", "TEQI rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs = immediate then trap"]}, {"href": "tge", "index": ["TGE", "TGE rs, rt", "To compare GPRs and do a conditional Trap.", "if rs >= rt then trap"]}, {"href": "tgei", "index": ["TGEI", "TGEI rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs >= immediate then trap"]}, {"href": "tgeiu", "index": ["TGEIU", "TGEIU rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs >= immediate then trap"]}, {"href": "tgeu", "index": ["TGEU", "TGEU rs, rt", "To compare GPRs and do a conditional Trap.", "if rs >= rt then trap"]}, {"href": "tlt", "index": ["TLT", "TLT rs, rt", "To compare GPRs and do a conditional Trap.", "if rs < rt then trap"]}, {"href": "tlti", "index": ["TLTI", "TLTI rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs < immediate then trap (signed)"]}, {"href": "tltiu", "index": ["TLTIU", "TLTIU rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs < immediate then trap"]}, {"href": "tltu", "index": ["TLTU", "TLTU rs, rt", "To compare GPRs and do a conditional Trap.", "if rs < rt then trap"]}, {"href": "tne", "index": ["TNE", "TNE rs, rt", "To compare GPRs and do a conditional Trap.", "if rs <> rt then trap"]}, {"href": "tnei", "index": ["TNEI", "TNEI rs, immediate", "To compare a GPR to a constant and do a conditional Trap.", "if rs <> immediate then trap"]}, {"href": "cache", "index": ["CACHE", "CACHE op, offset(base)", "The 16-bit offset is sign-extended and added to the contents of\ngeneral register base to form a virtual address. The virtual\naddress is translated to a physical address using the TLB, and the\n5-bit sub-opcode specifies a cache operation for that address."]}, {"href": "eret", "index": ["ERET", "ERET", "ERET is the R4300 instruction for returning from an interrupt,"]}, {"href": "mfc0", "index": ["MFC0", "MFC0 rt, rd", "To copy a word from an FPR to a GPR.", "rt = COP rd"]}, {"href": "mtc0", "index": ["MTC0", "MTC0 rt, rd", "To copy a word from a GPR to an FPR.", "COP rd = rt"]}, {"href": "tlbp", "index": ["TLBP", "TLBP", "The Index register is loaded with the address of the TLB entry"]}, {"href": "tlbr", "index": ["TLBR", "TLBR", "The G bit (which controls ASID matching) read from the TLB is"]}, {"href": "tlbwi", "index": ["TLBWI", "TLBWI", "The G bit of the TLB is written with the logical AND of the G bits"]}, {"href": "tlbwr", "index": ["TLBWR", "TLBWR", "The G bit of the TLB is written with the logical AND of the G bits"]}, {"href": "abs-fmt", "index": ["ABS.fmt", "ABS.S fd, fs ABS.D fd, fs", "To compute the absolute value of an FP value."]}, {"href": "add-fmt", "index": ["ADD.fmt", "ADD.S fd, fs, ft ADD.D fd, fs, ft", "To add FP values."]}, {"href": "bc1f", "index": ["BC1F", "BC1F offset", "To test an FP condition code and do a PC-relative conditional branch."]}, {"href": "bc1fl", "index": ["BC1FL", "BC1FL offset", "To test an FP condition code and do a PC-relative conditional branch; execute the delay slot only if the branch is taken"]}, {"href": "bc1t", "index": ["BC1T", "BC1T offset", "To test an FP condition code and do a PC-relative conditional branch."]}, {"href": "bc1tl", "index": ["BC1TL", "BC1TL offset", "To test an FP condition code and do a PC-relative conditional branch; execute the delay slot only if the branch is taken."]}, {"href": "c-cond-fmt", "index": ["C.cond.fmt", "C.cond.S fs, ft C.cond.D fs, ft", "To compare FP values and record the Boolean result in"]}, {"href": "ceil-l-fmt", "index": ["CEIL.L.fmt", "CEIL.L.S fd, fs CEIL.L.D fd, fs", "To convert an FP value to 64-bit fixed-point, rounding up."]}, {"href": "ceil-w-fmt", "index": ["CEIL.W.fmt", "CEIL.W.S fd, fs CEIL.W.D fd, fs", "To convert an FP value to 32-bit fixed-point, rounding up."]}, {"href": "cfc1", "index": ["CFC1", "CFC1 rt, fs", "To copy a word from an FPU control register to a GPR.", "rt = fs"]}, {"href": "ctc1", "index": ["CTC1", "CTC1 rt, fs", "To copy a word from a GPR to an FPU control register.", "fs = rt"]}, {"href": "cvt-d-fmt", "index": ["CVT.D.fmt", "CVT.D.S fd, fs CVT.D.W fd, fs CVT.D.L fd, fs", "To convert an FP or fixed-point value to double FP."]}, {"href": "cvt-l-fmt", "index": ["CVT.L.fmt", "CVT.L.S fd, fs CVT.L.D fd, fs", "To convert an FP value to a 64-bit fixed-point."]}, {"href": "cvt-s-fmt", "index": ["CVT.S.fmt", "CVT.S.D fd, fs CVT.S.W fd, fs CVT.S.L fd, fs", "To convert an FP or fixed-point value to single FP."]}, {"href": "cvt-w-fmt", "index": ["CVT.W.fmt", "CVT.W.S fd, fs CVT.W.D fd, fs", "To convert an FP value to 32-bit fixed-point."]}, {"href": "div-fmt", "index": ["DIV.fmt", "DIV.S fd, fs, ft DIV.D fd, fs, ft", "To divide FP values."]}, {"href": "dmfc1", "index": ["DMFC1", "DMFC1 rt, fs", "To copy a doubleword from an FPR to a GPR."]}, {"href": "dmtc1", "index": ["DMTC1", "DMTC1 rt, fs", "To copy a doubleword from a GPR to an FPR."]}, {"href": "floor-l-fmt", "index": ["FLOOR.L.fmt", "FLOOR.L.S fd, fs FLOOR.L.D fd, fs", "To convert an FP value to 64-bit fixed-point, rounding down."]}, {"href": "floor-w-fmt", "index": ["FLOOR.W.fmt", "FLOOR.W.S fd, fs FLOOR.W.D fd, fs", "To convert an FP value to 32-bit fixed-point, rounding down."]}, {"href": "ldc1", "index": ["LDC1", "LDC1 ft, offset(base)", "To load a doubleword from memory to an FPR.", "COP ft = doubleword[base+offset]"]}, {"href": "lwc1", "index": ["LWC1", "LWC1 ft, offset(base)", "To load a word from memory to an FPR. Comment: LWC1 ft, offset(base) is equal to a L.S ft, offset(base)", "COP ft = word[base+offset]"]}, {"href": "mfc1", "index": ["MFC1", "MFC1 rt, fs", "To copy a word from an FPU (CP1) general register to a GPR.", "rt = COP fs"]}, {"href": "mov-fmt", "index": ["MOV.fmt", "MOV.S fd, fs\nMOV.D fd, fs", "To move an FP value between FPRs."]}, {"href": "mtc1", "index": ["MTC1", "MTC1 rt, fs", "To copy a word from a GPR to an FPU (CP1) general register.", "COP fs = rt"]}, {"href": "mul-fmt", "index": ["MUL.fmt", "MUL.S fd, fs, ft\nMUL.D fd, fs, ft", "To multiply FP values."]}, {"href": "neg-fmt", "index": ["NEG.fmt", "NEG.S fd, fs\nNEG.D fd, fs", "To negate an FP value."]}, {"href": "round-l-fmt", "index": ["ROUND.L.fmt", "ROUND.L.S fd, fs\nROUND.L.D fd, fs", "To convert an FP value to 64-bit fixed-point, rounding to nearest."]}, {"href": "round-w-fmt", "index": ["ROUND.W.fmt", "ROUND.W.S fd, fs\nROUND.W.D fd, fs", "To convert an FP value to 32-bit fixed-point, rounding to nearest."]}, {"href": "sdc1", "index": ["SDC1", "SDC1 ft, offset(base)", "To store a doubleword from an FPR to memory.", "doubleword[base+offset] = COP rt"]}, {"href": "sqrt-fmt", "index": ["SQRT.fmt", "SQRT.S fd, fs\nSQRT.D fd, fs", "To compute the square root of an FP value."]}, {"href": "sub-fmt", "index": ["SUB.fmt", "SUB.S fd, fs, ft\nSUB.D fd, fs, ft", "To subtract FP values."]}, {"href": "swc1", "index": ["SWC1", "SWC1 ft, offset(base)", "To store a word from an FPR to memory. Comment: SWC1 ft, offset(base) is equal to a S.S ft, offset(base)", "word[base+offset] = COP rt"]}, {"href": "trunc-l-fmt", "index": ["TRUNC.L.fmt", "TRUNC.L.S fd, fs\nTRUNC.L.D fd, fs", "To convert an FP value to 64-bit fixed-point, rounding toward zero."]}, {"href": "trunc-w-fmt", "index": ["TRUNC.W.fmt", "TRUNC.W.S fd, fs\nTRUNC.W.D fd, fs", "To convert an FP value to 32-bit fixed-point, rounding toward zero."]}, {"href": "lbv", "index": ["LBV", "LBV $v<dest>[del], offset(base)", "Load byte to vector"]}, {"href": "lsv", "index": ["LSV", "LSV $v<dest>[del], offset(base)", "Load short (halfword) to vector"]}, {"href": "llv", "index": ["LLV", "LLV $v<dest>[del], offset(base)", "Load long (word) to vector"]}, {"href": "ldv", "index": ["LDV", "LDV $v<dest>[del], offset(base)", "Load double to vector"]}, {"href": "lqv", "index": ["LQV", "LQV $v<dest>[del], offset(base)", "Load quadword to vector"]}, {"href": "lrv", "index": ["LRV", "LRV $v<dest>[del], offset(base)", "Load rest to vector "]}, {"href": "lpv", "index": ["LPV", "LPV $v<dest>[del], offset(base)", "Load packed to vector"]}, {"href": "luv", "index": ["LUV", "LUV $v<dest>[del], offset(base)", "Load unpacked to vector"]}, {"href": "lhv", "index": ["LHV", "LHV $v<dest>[del], offset(base)", "Load half to vector"]}, {"href": "lfv", "index": ["LFV", "LFV $v<dest>[del], offset(base)", "Load fourth to vector"]}, {"href": "lwv", "index": ["LWV", "LWV $v<dest>[del], offset(base)", "Load wrap to vector"]}, {"href": "ltv", "index": ["LTV", "LTV $v<dest>[del], offset(base)", "Load transpose to vector"]}, {"href": "sbv", "index": ["SBV", "SBV $v<dest>[del], offset(base)", "Store byte from vector"]}, {"href": "ssv", "index": ["SSV", "SSV $v<dest>[del], offset(base)", "Store short (halfword) from vector"]}, {"href": "slv", "index": ["SLV", "SLV $v<dest>[del], offset(base)", "Store long (word) from vector"]}, {"href": "sdv", "index": ["SDV", "SDV $v<dest>[del], offset(base)", "Store double (doubleword) from vector"]}, {"href": "sqv", "index": ["SQV", "SQV $v<dest>[del], offset(base)", "Store quad (quadword) from vector"]}, {"href": "srv", "index": ["SRV", "SRV $v<dest>[del], offset(base)", "Store rest from vector"]}, {"href": "spv", "index": ["SPV", "SPV $v<dest>[del], offset(base)", "Store packed from vector"]}, {"href": "suv", "index": ["SUV", "SUV $v<dest>[del], offset(base)", "Store unpacked from vector"]}, {"href": "shv", "index": ["SHV", "SHV $v<dest>[del], offset(base)", "Store half from vector"]}, {"href": "sfv", "index": ["SFV", "SFV $v<dest>[del], offset(base)", "Store fourth from vector"]}, {"href": "swv", "index": ["SWV", "SWV $v<dest>[del], offset(base)", "Store wrap from vector"]}, {"href": "stv", "index": ["STV", "STV $v<dest>[del], offset(base)", "Store transpose from vector"]}, {"href": "vmulf", "index": ["VMULF", "VMULF $v<dest>, $v<s1>, $v<s2>[el]", "Vector (Frac) Multiply"]}, {"href": "vmulu", "index": ["VMULU", "VMULU $v<dest>, $v<s1>, $v<s2>[el]", "Vector (Unsigned Frac) Multiply"]}, {"href": "vrndp", "index": ["VRNDP", "VRNDP $v<dest>, $v<s1>, $v<s2>[el]", "Vector DCT Round (-)"]}, {"href": "vmulq", "index": ["VMULQ", "VMULQ $v<dest>, $v<s1>, $v<s2>[el]", "Vector (Integer) Multiply"]}, {"href": "vmudl", "index": ["VMUDL", "VMUDL $v<dest>, $v<s1>, $v<s2>[el]", "Vector low multiply"]}, {"href": "vmudm", "index": ["VMUDM", "VMUDM $v<dest>, $v<s1>, $v<s2>[el]", "Vector mid-m multiply"]}, {"href": "vmudn", "index": ["VMUDN", "VMUDN $v<dest>, $v<s1>, $v<s2>[el]", "Vector mid-n multiply"]}, {"href": "vmudh", "index": ["VMUDH", "VMUDH $v<dest>, $v<s1>, $v<s2>[el]", "Vector high multiply"]}, {"href": "vmacf", "index": ["VMACF", "VMACF $v<dest>, $v<s1>, $v<s2>[el]", "Vector (Frac) Multiply Accumulate"]}, {"href": "vmacu", "index": ["VMACU", "VMACU $v<dest>, $v<s1>, $v<s2>[el]", "Vector (Unsigned Frac) Multiply Accumulate"]}, {"href": "vrndn", "index": ["VRNDN", "VRNDN $v<dest>, $v<s1>, $v<s2>[el]", "Vector DCT Round (-)"]}, {"href": "vmacq", "index": ["VMACQ", "VMACQ $v<dest>, $v<s1>, $v<s2>[el]", "Vector (Integer) Multiply Accumulate"]}, {"href": "vmadl", "index": ["VMADL", "VMADL $v<dest>, $v<s1>, $v<s2>[el]", "Vector low multiply accumulate"]}, {"href": "vmadm", "index": ["VMADM", "VMADM $v<dest>, $v<s1>, $v<s2>[el]", "Vector mid-m multiply accumulate"]}, {"href": "vmadn", "index": ["VMADN", "VMADN $v<dest>, $v<s1>, $v<s2>[el]", "Vector mid-n multiply accumulate"]}, {"href": "vmadh", "index": ["VMADH", "VMADH $v<dest>, $v<s1>, $v<s2>[el]", "Vector high multiply accumulate"]}]        </script>
+    </body>
+</html>

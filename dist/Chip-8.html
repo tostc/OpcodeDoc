@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chip-8 - OpcodeDoc</title>
+        <meta name="description" content="A interpreted programming language for the COSMAC ELF.">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="spec.css">
+        <script src="main.js"></script>
+        <script src="spec.js"></script>
+    </head>
+    <body>
+        <span id="forkongithub"><a href="https://github.com/tostc/OpcodeDoc" target="_blank">Fork me on GitHub</a></span>
+        <div class="overlay" id="overlay" onclick="hideMenu()"></div>
+        <div class="navbar" id="sidemenu">
+            <div class="header">
+                <h1><a href="index.html" class="material-icons">home</a>&nbsp;Chip-8</h1>
+                <div class="search">
+                    <span class="material-icons">search</span>
+                    <input type="text" id="search" required onfocus="toggleHighlightSearchbox(this)" onblur="toggleHighlightSearchbox(this)" onkeyup="search(this)">
+                    <label for="search">Search</label>
+                    <div class="autocomplete" id="autocomplete"></div>
+                </div>
+            </div>
+            <ul class="groups">
+                <li><h1>Categories</h1></li>
+<li><a href='#info' onclick='hideMenu()'>Specification info</a></li><li><a href='#glossary' onclick='hideMenu()'>Glossary</a></li><li><a href='#registers' onclick='hideMenu()'>Registers</a></li><li><a href='#load-and-store-instructions' onclick='hideMenu()'>Load and Store Instructions</a></li><li><a href='#atithmetic-instructions' onclick='hideMenu()'>Atithmetic Instructions</a></li><li><a href='#jump-and-branch-instructions' onclick='hideMenu()'>Jump and Branch Instructions</a></li><li><a href='#timers' onclick='hideMenu()'>Timers</a></li><li><a href='#keypad' onclick='hideMenu()'>Keypad</a></li><li><a href='#register-i-manipulation' onclick='hideMenu()'>Register I manipulation</a></li><li><a href='#graphics' onclick='hideMenu()'>Graphics</a></li><li><a href='#bcd' onclick='hideMenu()'>BCD</a></li><li><a href='#dump-and-load-registers-from-memory' onclick='hideMenu()'>Dump and load registers from memory</a></li>            </ul>
+        </div>
+        <div class="content">
+            <button type="button" id="menu" onclick="showMenu()"><span class="material-icons">menu</span></button>
+
+            <button onclick="scrollUpToTop()" type="button" id="gotop" title="Go to top"><span class="material-icons">arrow_upward</span></button>
+<h2 id='info'>Specification info</h2><div class="card">
+    <div class="card-header">
+        <a href="#chip-8" class="material-icons">link</a>
+        <h3 id="chip-8">Chip-8</h3>
+        <a href="specs/chip8.json" target="_blank" class="material-icons right" title="Download specification" download>download</a>
+    </div>
+    <div class="card-content">
+        <p>Description:</p>
+        <p class="code">A interpreted programming language for the COSMAC ELF.</p>
+        <p>CPU clock speed:</p>
+        <p class="code">0</p>
+        <p>Address bus:</p>
+        <p class="code">0-Bit<p>
+        <p>CPU caches:</p>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Comment</th>
+            </tr>
+
+<tr><td>L1</td><td>24 KB</td><td>Divided into 16 KB for instructions and 8 KB for data.</td></tr>        </table>
+        <p>Document version:</p>
+        <p class="code">1.0.0</p>
+        <p>Sources:</p>
+        <ul class="sources">
+<li><a href='https://github.com/mattmikolay/chip-8/wiki/Mastering-CHIP%E2%80%908' target='_blank'>https://github.com/mattmikolay/chip-8/wiki/Mastering-CHIP%E2%80%908</a></li>
+<li><a href='http://johnearnest.github.io/Octo/docs/chip8ref.pdf' target='_blank'>http://johnearnest.github.io/Octo/docs/chip8ref.pdf</a></li>
+        </ul>
+    </div>
+</div>
+<h2 id='info'>Glossary</h2><div class="card">
+    <div class="card-header">
+        <a href="#glossary" class="material-icons">link</a>
+        <h3 id="glossary">Glossary</h3>
+    </div>
+    <div class="card-content">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+            </tr>
+
+<tr><td>N</td><td>Number between 0 and 15</td></tr><tr><td>NN</td><td>Number between 0 and 255</td></tr><tr><td>NNN</td><td>Number between 0 and 4095</td></tr><tr><td>vx</td><td>Register from 0 - F</td></tr><tr><td>vy</td><td>Register from 0 - F</td></tr><tr><td>I</td><td>Memory index register (Not directly accessible)</td></tr><tr><td>delay</td><td>A 8-Bit register which counts down at 60 HZ until it reaches zero</td></tr><tr><td>buzzer</td><td>A 8-Bit register which counts down at 60 HZ until it reaches zero. If the value is not zero a sound is playing</td></tr>        </table>
+    </div>
+</div>
+<h2 id='registers'>Registers</h2><div class="card">
+    <div class="card-header">
+        <a href="#main" class="material-icons">link</a>
+        <h3 id="main">Main-Processor</h3>
+    </div>
+    <div class="card-content">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Value</th>
+                <th>Size (Bits)</th>
+            </tr>
+
+<tr><td style='text-align:left'>V0</td><td style='text-align:left'>0x00</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>V1</td><td style='text-align:left'>0x01</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>V2</td><td style='text-align:left'>0x02</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>V3</td><td style='text-align:left'>0x03</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>V4</td><td style='text-align:left'>0x04</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>V5</td><td style='text-align:left'>0x05</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>V6</td><td style='text-align:left'>0x06</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>V7</td><td style='text-align:left'>0x07</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>V8</td><td style='text-align:left'>0x08</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>V9</td><td style='text-align:left'>0x09</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>VA</td><td style='text-align:left'>0x0A</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>VB</td><td style='text-align:left'>0x0B</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>VC</td><td style='text-align:left'>0x0C</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>VD</td><td style='text-align:left'>0x0D</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>VE</td><td style='text-align:left'>0x0E</td><td style='text-align:left'>8</td></tr>
+<tr><td style='text-align:left'>VF</td><td style='text-align:left'>0x0F</td><td style='text-align:left'>8</td></tr>
+        </table>
+    </div>
+</div>
+<h2 id='load-and-store-instructions'>Load and Store Instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#movc" class="material-icons">link</a>
+        <h3 id="movc">MOVC</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">6</p>
+        <p>Format:</p>
+        <p class="code">MOVC vx, NN</p>
+        <p>Purpose:</p>
+        <p class="code">Stores number NN in vx</p>
+        <p>Implementation:</p>
+        <p class="code">vx = NN</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>NN</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#movr" class="material-icons">link</a>
+        <h3 id="movr">MOVR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">8</p>
+        <p>Format:</p>
+        <p class="code">MOVR vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Stores the value of vy in vx</p>
+        <p>Implementation:</p>
+        <p class="code">vx = vy</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>0</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='atithmetic-instructions'>Atithmetic Instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#addc" class="material-icons">link</a>
+        <h3 id="addc">ADDC</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">7</p>
+        <p>Format:</p>
+        <p class="code">ADDC vx, NN</p>
+        <p>Purpose:</p>
+        <p class="code">Adds the value NN to register vx</p>
+        <p>Implementation:</p>
+        <p class="code">vx += NN</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>NN</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#addr" class="material-icons">link</a>
+        <h3 id="addr">ADDR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">8</p>
+        <p>Format:</p>
+        <p class="code">ADDR vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Adds the value of register vy to register vx. Sets the VF to 01 if a carry (Integer overflow) occurs, otherwise to 00</p>
+        <p>Implementation:</p>
+        <p class="code">vx += vy
+if int_overflow(): VF = 0x01
+else: VF = 0x00</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>4</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#subr" class="material-icons">link</a>
+        <h3 id="subr">SUBR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">8</p>
+        <p>Format:</p>
+        <p class="code">SUBR vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Subtracts register vy from vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00</p>
+        <p>Implementation:</p>
+        <p class="code">vx -= vy
+if int_underflow(): VF = 0x01
+else: VF = 0x00</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>5</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#subr2" class="material-icons">link</a>
+        <h3 id="subr2">SUBR2</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">8</p>
+        <p>Format:</p>
+        <p class="code">SUBR2 vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Subtracts register vx from vy and stores the result in vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00</p>
+        <p>Implementation:</p>
+        <p class="code">vx = vy - vx
+if int_underflow(): VF = 0x01
+else: VF = 0x00</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>7</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#andr" class="material-icons">link</a>
+        <h3 id="andr">ANDR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">8</p>
+        <p>Format:</p>
+        <p class="code">ANDR vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Sets vx to vx AND vy</p>
+        <p>Implementation:</p>
+        <p class="code">vx = vx & vy</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>2</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#orr" class="material-icons">link</a>
+        <h3 id="orr">ORR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">8</p>
+        <p>Format:</p>
+        <p class="code">ORR vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Sets vx to vx OR vy</p>
+        <p>Implementation:</p>
+        <p class="code">vx = vx | vy</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>1</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#xorr" class="material-icons">link</a>
+        <h3 id="xorr">XORR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">8</p>
+        <p>Format:</p>
+        <p class="code">XORR vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Sets vx to vx XOR vy</p>
+        <p>Implementation:</p>
+        <p class="code">vx = vx ^ vy</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>3</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#shrr" class="material-icons">link</a>
+        <h3 id="shrr">SHRR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">8</p>
+        <p>Format:</p>
+        <p class="code">SHRR vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Stores the value of register vy shifted right by one bit in register vx. Sets VF to the old least significant bit</p>
+        <p>Implementation:</p>
+        <p class="code">VF = vy & 0x1
+vx = vy >> 1</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>6</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#shlr" class="material-icons">link</a>
+        <h3 id="shlr">SHLR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">8</p>
+        <p>Format:</p>
+        <p class="code">SHLR vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Stores the value of register vy shifted left by one bit in register vx. Sets VF to the old most significant bit</p>
+        <p>Implementation:</p>
+        <p class="code">VF = vy & 0x80
+vx = vy << 1</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>E</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#rndr" class="material-icons">link</a>
+        <h3 id="rndr">RNDR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">12</p>
+        <p>Format:</p>
+        <p class="code">RNDR vx</p>
+        <p>Purpose:</p>
+        <p class="code">Sets vx to a random number with a mask of NN</p>
+        <p>Implementation:</p>
+        <p class="code">vx = randi() & NN</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>NN</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='jump-and-branch-instructions'>Jump and Branch Instructions</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#jmp" class="material-icons">link</a>
+        <h3 id="jmp">JMP</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">JMP NNN</p>
+        <p>Purpose:</p>
+        <p class="code">Jumps to address NNN</p>
+        <p>Implementation:</p>
+        <p class="code">I = NNN</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>NNN</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>12</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#jmprel" class="material-icons">link</a>
+        <h3 id="jmprel">JMPREL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">1</p>
+        <p>Format:</p>
+        <p class="code">JMPREL NNN</p>
+        <p>Purpose:</p>
+        <p class="code">Jumps to address NNN + V0</p>
+        <p>Implementation:</p>
+        <p class="code">I = NNN + V0</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>NNN</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>12</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#call" class="material-icons">link</a>
+        <h3 id="call">CALL</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">2</p>
+        <p>Format:</p>
+        <p class="code">CALL NNN</p>
+        <p>Purpose:</p>
+        <p class="code">Calls a subroutine at the address NNN.</p>
+        <p>Implementation:</p>
+        <p class="code">stack.push(I)
+I = NNN</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>NNN</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>12</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ret" class="material-icons">link</a>
+        <h3 id="ret">RET</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">238</p>
+        <p>Format:</p>
+        <p class="code">RET</p>
+        <p>Purpose:</p>
+        <p class="code">Returns from a subroutine.</p>
+        <p>Implementation:</p>
+        <p class="code">I = stack.pop()</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+            </tr>
+
+            <tr>
+<td>16</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#callm" class="material-icons">link</a>
+        <h3 id="callm">CALLM</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">CALLM NNN</p>
+        <p>Purpose:</p>
+        <p class="code">Calls a subroutine at the address NNN. This is an introduction to call a real machine code subroutine on the COSMAC ELF. The subroutine must be end with D4 to inform the chip-8 interpreter, that the routine is finished.</p>
+        <p>Implementation:</p>
+        <p class="code">*(NNN)()</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>NNN</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>12</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#jnec" class="material-icons">link</a>
+        <h3 id="jnec">JNEC</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">3</p>
+        <p>Format:</p>
+        <p class="code">JNEC vx, NN</p>
+        <p>Purpose:</p>
+        <p class="code">Skips the next introduction if vx == NN</p>
+        <p>Implementation:</p>
+        <p class="code">if vx != NN:</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>NN</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#jner" class="material-icons">link</a>
+        <h3 id="jner">JNER</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">5</p>
+        <p>Format:</p>
+        <p class="code">JNER vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Skips the next introduction if vx == vy</p>
+        <p>Implementation:</p>
+        <p class="code">if vx != vy:</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>0</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#jec" class="material-icons">link</a>
+        <h3 id="jec">JEC</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">4</p>
+        <p>Format:</p>
+        <p class="code">JEC vx, NN</p>
+        <p>Purpose:</p>
+        <p class="code">Skips the next introduction if vx != NN</p>
+        <p>Implementation:</p>
+        <p class="code">if vx == NN:</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>NN</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#jer" class="material-icons">link</a>
+        <h3 id="jer">JER</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">9</p>
+        <p>Format:</p>
+        <p class="code">JER vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Skips the next introduction if vx != vy</p>
+        <p>Implementation:</p>
+        <p class="code">if vx == vy:</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>0</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#kne" class="material-icons">link</a>
+        <h3 id="kne">KNE</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">14</p>
+        <p>Format:</p>
+        <p class="code">KNE vx</p>
+        <p>Purpose:</p>
+        <p class="code">Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is pressed</p>
+        <p>Implementation:</p>
+        <p class="code">if key != vx:</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>9E</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#ke" class="material-icons">link</a>
+        <h3 id="ke">KE</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">14</p>
+        <p>Format:</p>
+        <p class="code">KE vx</p>
+        <p>Purpose:</p>
+        <p class="code">Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is not pressed</p>
+        <p>Implementation:</p>
+        <p class="code">if key == vx:</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>A1</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='timers'>Timers</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#delay" class="material-icons">link</a>
+        <h3 id="delay">DELAY</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10</p>
+        <p>Format:</p>
+        <p class="code">DELAY vx</p>
+        <p>Purpose:</p>
+        <p class="code">Sets the delay timer to the value of register vx</p>
+        <p>Implementation:</p>
+        <p class="code">delay = vx</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>15</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#delayr" class="material-icons">link</a>
+        <h3 id="delayr">DELAYR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10</p>
+        <p>Format:</p>
+        <p class="code">DELAYR vx</p>
+        <p>Purpose:</p>
+        <p class="code">Stores the current value of the delay timer in register vx</p>
+        <p>Implementation:</p>
+        <p class="code">vx = delay</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>07</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#buzzer" class="material-icons">link</a>
+        <h3 id="buzzer">BUZZER</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10</p>
+        <p>Format:</p>
+        <p class="code">BUZZER vx</p>
+        <p>Purpose:</p>
+        <p class="code">Sets the sound timer to the value of register vx</p>
+        <p>Implementation:</p>
+        <p class="code">buzzer = vx</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>18</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='keypad'>Keypad</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#waitk" class="material-icons">link</a>
+        <h3 id="waitk">WAITK</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">15</p>
+        <p>Format:</p>
+        <p class="code">WAITK vx</p>
+        <p>Purpose:</p>
+        <p class="code">Waits for a keypress and store the result in register VX</p>
+        <p>Implementation:</p>
+        <p class="code"></p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>0A</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='register-i-manipulation'>Register I manipulation</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#seti" class="material-icons">link</a>
+        <h3 id="seti">SETI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10</p>
+        <p>Format:</p>
+        <p class="code">SETI NNN</p>
+        <p>Purpose:</p>
+        <p class="code">Stores memory address NNN in register I</p>
+        <p>Implementation:</p>
+        <p class="code">I = NNN</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>NNN</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>12</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#addi" class="material-icons">link</a>
+        <h3 id="addi">ADDI</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">10</p>
+        <p>Format:</p>
+        <p class="code">ADDI vx</p>
+        <p>Purpose:</p>
+        <p class="code">Adds the value stored in register vx to register I</p>
+        <p>Implementation:</p>
+        <p class="code">I += vx</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>1E</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='graphics'>Graphics</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#draw" class="material-icons">link</a>
+        <h3 id="draw">DRAW</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">13</p>
+        <p>Format:</p>
+        <p class="code">DRAW vx, vy</p>
+        <p>Purpose:</p>
+        <p class="code">Draws a sprite at position vx, vy with N bytes of sprite data starting at the address stored in I. Sets VF to 01 if any set pixels are changed to unset, and 00 otherwise</p>
+        <p>Implementation:</p>
+        <p class="code">Draw(vx, vx)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>vy</th>
+<th>N</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#cls" class="material-icons">link</a>
+        <h3 id="cls">CLS</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">CLS</p>
+        <p>Purpose:</p>
+        <p class="code">Clears the screen</p>
+        <p>Implementation:</p>
+        <p class="code">Clear()</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>0E0</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>12</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#fnt" class="material-icons">link</a>
+        <h3 id="fnt">FNT</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">15</p>
+        <p>Format:</p>
+        <p class="code">FNT vx</p>
+        <p>Purpose:</p>
+        <p class="code">Sets I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register vx</p>
+        <p>Implementation:</p>
+        <p class="code">I = SearchLetter(vx)</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>29</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='bcd'>BCD</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#bcd" class="material-icons">link</a>
+        <h3 id="bcd">BCD</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">15</p>
+        <p>Format:</p>
+        <p class="code">BCD vx</p>
+        <p>Purpose:</p>
+        <p class="code">Stores the binary-coded decimal equivalent of the value stored in register vx at addresses I, I+1, and I+2</p>
+        <p>Implementation:</p>
+        <p class="code">Nothing or missing documentation</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>33</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>8</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<h2 id='dump-and-load-registers-from-memory'>Dump and load registers from memory</h2>
+<div class="card">
+    <div class="card-header">
+        <a href="#dmpr" class="material-icons">link</a>
+        <h3 id="dmpr">DMPR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">15</p>
+        <p>Format:</p>
+        <p class="code">DMPR vx</p>
+        <p>Purpose:</p>
+        <p class="code">Stores the values of registers V0 to VX inclusive in memory starting at address I. I is set to I + X + 1 after the operation</p>
+        <p>Implementation:</p>
+        <p class="code">for 0 to vx: mem[I++] = V[Idx]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>55</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header">
+        <a href="#rdr" class="material-icons">link</a>
+        <h3 id="rdr">RDR</h3>
+    </div>
+    <div class="card-content">
+        <p>Opcode:</p>
+        <p class="code">0</p>
+        <p>Format:</p>
+        <p class="code">RDR vx</p>
+        <p>Purpose:</p>
+        <p class="code">Fill registers V0 to VX inclusive with the values stored in memory starting at address I. I is set to I + X + 1 after operation</p>
+        <p>Implementation:</p>
+        <p class="code">for 0 to vx: V[Idx] = mem[I++]</p>
+        <p>How to decode:</p>
+        <table>
+            <tr>
+<th>opcode</th>
+<th>vx</th>
+<th>65</th>
+            </tr>
+
+            <tr>
+<td>4</td>
+<td>4</td>
+<td>4</td>
+            </tr>
+        </table>
+    </div>
+</div>
+        </div>
+
+        <script type="application/json" id="searchIndex">
+[{"href": "movc", "index": ["MOVC", "MOVC vx, NN", "Stores number NN in vx", "vx = NN"]}, {"href": "movr", "index": ["MOVR", "MOVR vx, vy", "Stores the value of vy in vx", "vx = vy"]}, {"href": "addc", "index": ["ADDC", "ADDC vx, NN", "Adds the value NN to register vx", "vx += NN"]}, {"href": "addr", "index": ["ADDR", "ADDR vx, vy", "Adds the value of register vy to register vx. Sets the VF to 01 if a carry (Integer overflow) occurs, otherwise to 00", "vx += vy\nif int_overflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "subr", "index": ["SUBR", "SUBR vx, vy", "Subtracts register vy from vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00", "vx -= vy\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "subr2", "index": ["SUBR2", "SUBR2 vx, vy", "Subtracts register vx from vy and stores the result in vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00", "vx = vy - vx\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "andr", "index": ["ANDR", "ANDR vx, vy", "Sets vx to vx AND vy", "vx = vx & vy"]}, {"href": "orr", "index": ["ORR", "ORR vx, vy", "Sets vx to vx OR vy", "vx = vx | vy"]}, {"href": "xorr", "index": ["XORR", "XORR vx, vy", "Sets vx to vx XOR vy", "vx = vx ^ vy"]}, {"href": "shrr", "index": ["SHRR", "SHRR vx, vy", "Stores the value of register vy shifted right by one bit in register vx. Sets VF to the old least significant bit", "VF = vy & 0x1\nvx = vy >> 1"]}, {"href": "shlr", "index": ["SHLR", "SHLR vx, vy", "Stores the value of register vy shifted left by one bit in register vx. Sets VF to the old most significant bit", "VF = vy & 0x80\nvx = vy << 1"]}, {"href": "rndr", "index": ["RNDR", "RNDR vx", "Sets vx to a random number with a mask of NN", "vx = randi() & NN"]}, {"href": "jmp", "index": ["JMP", "JMP NNN", "Jumps to address NNN", "I = NNN"]}, {"href": "jmprel", "index": ["JMPREL", "JMPREL NNN", "Jumps to address NNN + V0", "I = NNN + V0"]}, {"href": "call", "index": ["CALL", "CALL NNN", "Calls a subroutine at the address NNN.", "stack.push(I)\nI = NNN"]}, {"href": "ret", "index": ["RET", "RET", "Returns from a subroutine.", "I = stack.pop()"]}, {"href": "callm", "index": ["CALLM", "CALLM NNN", "Calls a subroutine at the address NNN. This is an introduction to call a real machine code subroutine on the COSMAC ELF. The subroutine must be end with D4 to inform the chip-8 interpreter, that the routine is finished.", "*(NNN)()"]}, {"href": "jnec", "index": ["JNEC", "JNEC vx, NN", "Skips the next introduction if vx == NN", "if vx != NN:"]}, {"href": "jner", "index": ["JNER", "JNER vx, vy", "Skips the next introduction if vx == vy", "if vx != vy:"]}, {"href": "jec", "index": ["JEC", "JEC vx, NN", "Skips the next introduction if vx != NN", "if vx == NN:"]}, {"href": "jer", "index": ["JER", "JER vx, vy", "Skips the next introduction if vx != vy", "if vx == vy:"]}, {"href": "kne", "index": ["KNE", "KNE vx", "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is pressed", "if key != vx:"]}, {"href": "ke", "index": ["KE", "KE vx", "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is not pressed", "if key == vx:"]}, {"href": "delay", "index": ["DELAY", "DELAY vx", "Sets the delay timer to the value of register vx", "delay = vx"]}, {"href": "delayr", "index": ["DELAYR", "DELAYR vx", "Stores the current value of the delay timer in register vx", "vx = delay"]}, {"href": "buzzer", "index": ["BUZZER", "BUZZER vx", "Sets the sound timer to the value of register vx", "buzzer = vx"]}, {"href": "waitk", "index": ["WAITK", "WAITK vx", "Waits for a keypress and store the result in register VX", ""]}, {"href": "seti", "index": ["SETI", "SETI NNN", "Stores memory address NNN in register I", "I = NNN"]}, {"href": "addi", "index": ["ADDI", "ADDI vx", "Adds the value stored in register vx to register I", "I += vx"]}, {"href": "draw", "index": ["DRAW", "DRAW vx, vy", "Draws a sprite at position vx, vy with N bytes of sprite data starting at the address stored in I. Sets VF to 01 if any set pixels are changed to unset, and 00 otherwise", "Draw(vx, vx)"]}, {"href": "cls", "index": ["CLS", "CLS", "Clears the screen", "Clear()"]}, {"href": "fnt", "index": ["FNT", "FNT vx", "Sets I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register vx", "I = SearchLetter(vx)"]}, {"href": "bcd", "index": ["BCD", "BCD vx", "Stores the binary-coded decimal equivalent of the value stored in register vx at addresses I, I+1, and I+2"]}, {"href": "dmpr", "index": ["DMPR", "DMPR vx", "Stores the values of registers V0 to VX inclusive in memory starting at address I. I is set to I + X + 1 after the operation", "for 0 to vx: mem[I++] = V[Idx]"]}, {"href": "rdr", "index": ["RDR", "RDR vx", "Fill registers V0 to VX inclusive with the values stored in memory starting at address I. I is set to I + X + 1 after operation", "for 0 to vx: V[Idx] = mem[I++]"]}]        </script>
+    </body>
+</html>

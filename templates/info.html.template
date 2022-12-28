@@ -1,0 +1,31 @@
+<div class="card">
+    <div class="card-header">
+        <a href="#{{seoname}}" class="material-icons">link</a>
+        <h3 id="{{seoname}}">{{title}}</h3>
+        <a href="{{spec}}" target="_blank" class="material-icons right" title="Download specification" download>download</a>
+    </div>
+    <div class="card-content">
+        <p>Description:</p>
+        <p class="code">{{description}}</p>
+        <p>CPU clock speed:</p>
+        <p class="code">{{clock_speed}}</p>
+        <p>Address bus:</p>
+        <p class="code">{{address_bus}}-Bit<p>
+        <p>CPU caches:</p>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Comment</th>
+            </tr>
+
+            {{caches}}
+        </table>
+        <p>Document version:</p>
+        <p class="code">{{version}}</p>
+        <p>Sources:</p>
+        <ul class="sources">
+            {{sources}}
+        </ul>
+    </div>
+</div>

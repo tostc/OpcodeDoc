@@ -1,0 +1,8 @@
+.vscode/*
+/*.css
+/*.map
+scss/*.css
+scss/*.map
+main.py
+main_rsp.py
+/*.txt
