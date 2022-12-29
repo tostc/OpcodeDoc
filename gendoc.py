@@ -257,11 +257,11 @@ shutil.copy("index.css", OUTPUT_FOLDER + "/index.css")
 shutil.copy("spec.css", OUTPUT_FOLDER + "/spec.css")
 
 try:
-    shutil.copytree("fonts", OUTPUT_FOLDER + "/fonts")
+    shutil.copytree("fonts", OUTPUT_FOLDER + "/fonts", dirs_exist_ok=True)
 except:
     pass
 
 try:
-    shutil.copytree("specs", OUTPUT_FOLDER + "/specs")
+    shutil.copytree("specs", OUTPUT_FOLDER + "/specs", dirs_exist_ok=True)
 except:
     pass
