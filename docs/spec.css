@@ -82,7 +82,7 @@
 }
 .content .card .card-header .right {
   position: absolute;
-  right: 0;
+  right: 10px;
 }
 .content .card .card-header .material-icons {
   margin: 10px;
