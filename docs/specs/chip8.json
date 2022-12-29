@@ -23,7 +23,8 @@
         "vy": "Register from 0 - F",
         "I": "Memory index register (Not directly accessible)",
         "delay": "A 8-Bit register which counts down at 60 HZ until it reaches zero",
-        "buzzer": "A 8-Bit register which counts down at 60 HZ until it reaches zero. If the value is not zero a sound is playing"
+        "buzzer": "A 8-Bit register which counts down at 60 HZ until it reaches zero. If the value is not zero a sound is playing",
+        "mem": "Memory of the emulator."
     },
     "registers": {
         "Main": [
@@ -487,7 +488,8 @@
                 "33": 8
             },
             "format": "BCD vx",
-            "purpose": "Stores the binary-coded decimal equivalent of the value stored in register vx at addresses I, I+1, and I+2"
+            "purpose": "Stores the binary-coded decimal equivalent of the value stored in register vx at addresses I, I+1, and I+2",
+            "description": "mem[I] = vx / 100 % 10\nmem[I + 1] = vx / 10 % 10\nmem[I + 2] = vx % 10"
         },
         {
             "group": 9,
