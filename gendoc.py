@@ -60,6 +60,8 @@ with open(OUTPUT_FOLDER + "/index.html", "w") as indexHTMLFile:
         m = re.search("{{(.*?)}}", ifl)
         if m and (m[1] == "content"):
             for f in specFiles:
+                searchIndex.clear()
+
                 with open(f, "r") as spec:
                     specsJson = json.load(spec)
 
