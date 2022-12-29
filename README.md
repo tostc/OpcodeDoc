@@ -4,7 +4,11 @@ OpcodeDoc is the name of this website and the protocol for documenting opcodes o
 
 The goal of this project is to create a one-stop shop where both emulator and compiler developers can find information about the different CPU's and VM's in a consistent format.
 
-## OpcodeDoc Spec
+# How to Build
+
+You need Python 3 to create/generate the web pages. If Python 3 is installed, the `gendoc.py` file must be executed. After that, the `dist` folder will contain the web pages.
+
+# OpcodeDoc Spec
 
 The OpcodeDoc Spec format is a JSON file with various blocks of data. The idea behind this format is to provide a consistent format that can be easily consumed by a program, so you can generate source code from it, for example, as is the case with OpenAPI.
 
