@@ -1,0 +1,743 @@
+{
+    "$spec": "1.0.0",
+    "$info": {
+        "title": "RSP",
+        "description": "Reality Co-Processor of the Nintendo 64. Its main purpose is rendering and computing 3D graphics.",
+        "clock_speed": "62.5 MHz",
+        "cache": {
+            "L1?": {
+                "size": "8 KB",
+                "comment": "4 KB for instructions and 4 KB for data"
+            }
+        },
+        "address_bus": 0,
+        "version": "1.0.0",
+        "sources": [ "https://github.com/martinlindhe/n64ops", "https://www.copetti.org/writings/consoles/nintendo-64", "https://n64brew.dev/wiki/Reality_Signal_Processor" ],
+        "complete": false
+    },
+    "glossary": {
+        "v<dest>": "The destination vector register, where the result will be placed.",
+        "del": "Specifies the destination element to be used.",
+        "offset": "16-bit additional offset to use from a base register.",
+        "base": "The base GPR to use for load/store operations.",
+        "v<s1>": "Source vector register.",
+        "v<s2>": "Source vector register.",
+        "el": "Specifies the element to be used on a source vector register."
+    },
+    "registers": {
+        "Main GPR": [
+            {"name": "r0/reg0", "value": "0x00", "size": 32},
+            {"name": "at/reg1", "value": "0x01", "size": 32},
+            {"name": "v0/reg2", "value": "0x02", "size": 32},
+            {"name": "v1/reg3", "value": "0x03", "size": 32},
+            {"name": "a0/reg4", "value": "0x04", "size": 32},
+            {"name": "a1/reg5", "value": "0x05", "size": 32},
+            {"name": "a2/reg6", "value": "0x06", "size": 32},
+            {"name": "a3/reg7", "value": "0x07", "size": 32},
+            {"name": "t0/reg8", "value": "0x08", "size": 32},
+            {"name": "t1/reg9", "value": "0x09", "size": 32},
+            {"name": "t2/reg10", "value": "0x0A", "size": 32},
+            {"name": "t3/reg11", "value": "0x0B", "size": 32},
+            {"name": "t4/reg12", "value": "0x0C", "size": 32},
+            {"name": "t5/reg13", "value": "0x0D", "size": 32},
+            {"name": "t6/reg14", "value": "0x0E", "size": 32},
+            {"name": "t7/reg15", "value": "0x0F", "size": 32},
+            {"name": "s0/reg16", "value": "0x10", "size": 32},
+            {"name": "s1/reg17", "value": "0x11", "size": 32},
+            {"name": "s2/reg18", "value": "0x12", "size": 32},
+            {"name": "s3/reg19", "value": "0x13", "size": 32},
+            {"name": "s4/reg20", "value": "0x14", "size": 32},
+            {"name": "s5/reg21", "value": "0x15", "size": 32},
+            {"name": "s6/reg22", "value": "0x16", "size": 32},
+            {"name": "s7/reg23", "value": "0x17", "size": 32},
+            {"name": "t8/reg24", "value": "0x18", "size": 32},
+            {"name": "t9/reg25", "value": "0x19", "size": 32},
+            {"name": "k0/reg26", "value": "0x1A", "size": 32},
+            {"name": "k1/reg27", "value": "0x1B", "size": 32},
+            {"name": "gp/reg28", "value": "0x1C", "size": 32},
+            {"name": "sp/reg29", "value": "0x1D", "size": 32},
+            {"name": "s8/reg30", "value": "0x1E", "size": 32},
+            {"name": "ra/reg31", "value": "0x1F", "size": 32}
+        ],
+        "Vector": [
+            {"name": "$v0", "value": "0x00", "size": 128},
+            {"name": "$v1", "value": "0x01", "size": 128},
+            {"name": "$v2", "value": "0x02", "size": 128},
+            {"name": "$v3", "value": "0x03", "size": 128},
+            {"name": "$v4", "value": "0x04", "size": 128},
+            {"name": "$v5", "value": "0x05", "size": 128},
+            {"name": "$v6", "value": "0x06", "size": 128},
+            {"name": "$v7", "value": "0x07", "size": 128},
+            {"name": "$v8", "value": "0x08", "size": 128},
+            {"name": "$v9", "value": "0x09", "size": 128},
+            {"name": "$v10", "value": "0x0A", "size": 128},
+            {"name": "$v11", "value": "0x0B", "size": 128},
+            {"name": "$v12", "value": "0x0C", "size": 128},
+            {"name": "$v13", "value": "0x0D", "size": 128},
+            {"name": "$v14", "value": "0x0E", "size": 128},
+            {"name": "$v15", "value": "0x0F", "size": 128},
+            {"name": "$v16", "value": "0x10", "size": 128},
+            {"name": "$v17", "value": "0x11", "size": 128},
+            {"name": "$v18", "value": "0x12", "size": 128},
+            {"name": "$v19", "value": "0x13", "size": 128},
+            {"name": "$v20", "value": "0x14", "size": 128},
+            {"name": "$v21", "value": "0x15", "size": 128},
+            {"name": "$v22", "value": "0x16", "size": 128},
+            {"name": "$v23", "value": "0x17", "size": 128},
+            {"name": "$v24", "value": "0x18", "size": 128},
+            {"name": "$v25", "value": "0x19", "size": 128},
+            {"name": "$v26", "value": "0x1A", "size": 128},
+            {"name": "$v27", "value": "0x1B", "size": 128},
+            {"name": "$v28", "value": "0x1C", "size": 128},
+            {"name": "$v29", "value": "0x1D", "size": 128},
+            {"name": "$v30", "value": "0x1E", "size": 128},
+            {"name": "$v31", "value": "0x1F", "size": 128}
+        ]
+    },
+    "groups": [
+        "Load and Store Instructions",
+        "Vector instructions"
+    ],
+    "opcodes": [
+        {
+            "group": 1,
+            "name": "LBV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00000": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LBV $v<dest>[del], offset(base)",
+            "purpose": "Load byte to vector"
+        },
+        {
+            "group": 1,
+            "name": "LSV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00001": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LSV $v<dest>[del], offset(base)",
+            "purpose": "Load short (halfword) to vector"
+        },
+        {
+            "group": 1,
+            "name": "LLV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00010": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LLV $v<dest>[del], offset(base)",
+            "purpose": "Load long (word) to vector"
+        },
+        {
+            "group": 1,
+            "name": "LDV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00011": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LDV $v<dest>[del], offset(base)",
+            "purpose": "Load double to vector"
+        },
+        {
+            "group": 1,
+            "name": "LQV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00100": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LQV $v<dest>[del], offset(base)",
+            "purpose": "Load quadword to vector"
+        },
+        {
+            "group": 1,
+            "name": "LRV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00101": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LRV $v<dest>[del], offset(base)",
+            "purpose": "Load rest to vector "
+        },
+        {
+            "group": 1,
+            "name": "LPV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00110": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LPV $v<dest>[del], offset(base)",
+            "purpose": "Load packed to vector"
+        },
+        {
+            "group": 1,
+            "name": "LUV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00111": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LUV $v<dest>[del], offset(base)",
+            "purpose": "Load unpacked to vector"
+        },
+        {
+            "group": 1,
+            "name": "LHV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "01000": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LHV $v<dest>[del], offset(base)",
+            "purpose": "Load half to vector"
+        },
+        {
+            "group": 1,
+            "name": "LFV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "01001": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LFV $v<dest>[del], offset(base)",
+            "purpose": "Load fourth to vector"
+        },
+        {
+            "group": 1,
+            "name": "LWV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "01010": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LWV $v<dest>[del], offset(base)",
+            "purpose": "Load wrap to vector"
+        },
+        {
+            "group": 1,
+            "name": "LTV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "01011": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "LTV $v<dest>[del], offset(base)",
+            "purpose": "Load transpose to vector"
+        },
+        {
+            "group": 1,
+            "name": "SBV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00000": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "SBV $v<dest>[del], offset(base)",
+            "purpose": "Store byte from vector"
+        },
+        {
+            "group": 1,
+            "name": "SSV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00001": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "SSV $v<dest>[del], offset(base)",
+            "purpose": "Store short (halfword) from vector"
+        },
+        {
+            "group": 1,
+            "name": "SLV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00010": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "SLV $v<dest>[del], offset(base)",
+            "purpose": "Store long (word) from vector"
+        },
+        {
+            "group": 1,
+            "name": "SDV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00011": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "SDV $v<dest>[del], offset(base)",
+            "purpose": "Store double (doubleword) from vector"
+        },
+        {
+            "group": 1,
+            "name": "SQV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00100": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "SQV $v<dest>[del], offset(base)",
+            "purpose": "Store quad (quadword) from vector"
+        },
+        {
+            "group": 1,
+            "name": "SRV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00101": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "SRV $v<dest>[del], offset(base)",
+            "purpose": "Store rest from vector"
+        },
+        {
+            "group": 1,
+            "name": "SPV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00110": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "SPV $v<dest>[del], offset(base)",
+            "purpose": "Store packed from vector"
+        },
+        {
+            "group": 1,
+            "name": "SUV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "00111": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "SUV $v<dest>[del], offset(base)",
+            "purpose": "Store unpacked from vector"
+        },
+        {
+            "group": 1,
+            "name": "SHV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "01000": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "SHV $v<dest>[del], offset(base)",
+            "purpose": "Store half from vector"
+        },
+        {
+            "group": 1,
+            "name": "SFV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "01001": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "SFV $v<dest>[del], offset(base)",
+            "purpose": "Store fourth from vector"
+        },
+        {
+            "group": 1,
+            "name": "SWV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "01010": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "SWV $v<dest>[del], offset(base)",
+            "purpose": "Store wrap from vector"
+        },
+        {
+            "group": 1,
+            "name": "STV",
+            "opcode": 50,
+            "decode": {
+                "opcode": 6,
+                "base": 5,
+                "dest": 5,
+                "01011": 5,
+                "del": 4,
+                "0": 1,
+                "offset": 6
+            },
+            "format": "STV $v<dest>[del], offset(base)",
+            "purpose": "Store transpose from vector"
+        },
+        {
+            "group": 2,
+            "name": "VMULF",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "000000": 6
+            },
+            "format": "VMULF $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector (Frac) Multiply"
+        },
+        {
+            "group": 2,
+            "name": "VMULU",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "000001": 6
+            },
+            "format": "VMULU $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector (Unsigned Frac) Multiply"
+        },
+        {
+            "group": 2,
+            "name": "VRNDP",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "000010": 6
+            },
+            "format": "VRNDP $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector DCT Round (-)"
+        },
+        {
+            "group": 2,
+            "name": "VMULQ",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "000011": 6
+            },
+            "format": "VMULQ $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector (Integer) Multiply"
+        },
+        {
+            "group": 2,
+            "name": "VMUDL",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "000100": 6
+            },
+            "format": "VMUDL $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector low multiply"
+        },
+        {
+            "group": 2,
+            "name": "VMUDM",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "000101": 6
+            },
+            "format": "VMUDM $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector mid-m multiply"
+        },
+        {
+            "group": 2,
+            "name": "VMUDN",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "000110": 6
+            },
+            "format": "VMUDN $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector mid-n multiply"
+        },
+        {
+            "group": 2,
+            "name": "VMUDH",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "000111": 6
+            },
+            "format": "VMUDH $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector high multiply"
+        },
+        {
+            "group": 2,
+            "name": "VMACF",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "001000": 6
+            },
+            "format": "VMACF $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector (Frac) Multiply Accumulate"
+        },
+        {
+            "group": 2,
+            "name": "VMACU",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "001001": 6
+            },
+            "format": "VMACU $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector (Unsigned Frac) Multiply Accumulate"
+        },
+        {
+            "group": 2,
+            "name": "VRNDN",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "001010": 6
+            },
+            "format": "VRNDN $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector DCT Round (-)"
+        },
+        {
+            "group": 2,
+            "name": "VMACQ",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "001011": 6
+            },
+            "format": "VMACQ $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector (Integer) Multiply Accumulate"
+        },
+        {
+            "group": 2,
+            "name": "VMADL",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "001100": 6
+            },
+            "format": "VMADL $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector low multiply accumulate"
+        },
+        {
+            "group": 2,
+            "name": "VMADM",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "001101": 6
+            },
+            "format": "VMADM $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector mid-m multiply accumulate"
+        },
+        {
+            "group": 2,
+            "name": "VMADN",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "001110": 6
+            },
+            "format": "VMADN $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector mid-n multiply accumulate"
+        },
+        {
+            "group": 2,
+            "name": "VMADH",
+            "opcode": 18,
+            "decode": {
+                "opcode": 6,
+                "1": 1,
+                "el": 4,
+                "s2": 5,
+                "s1": 5,
+                "dest": 5,
+                "001111": 6
+            },
+            "format": "VMADH $v<dest>, $v<s1>, $v<s2>[el]",
+            "purpose": "Vector high multiply accumulate"
+        }
+    ]
+}

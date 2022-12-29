@@ -9,7 +9,7 @@ import html as htmlModule
 
 SPECS_FOLDER = "specs"
 TEMPLATES_FOLDER = "templates"
-OUTPUT_FOLDER = "dist"
+OUTPUT_FOLDER = "docs"
 
 searchIndex = []
 
