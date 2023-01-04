@@ -532,7 +532,7 @@ vx = vy << 1</p>
     </div>
     <div class="card-content">
         <p>Opcode:</p>
-        <p class="code">1</p>
+        <p class="code">11</p>
         <p>Format:</p>
         <p class="code">JMPREL NNN</p>
         <p>Purpose:</p>
@@ -589,7 +589,7 @@ I = NNN</p>
     </div>
     <div class="card-content">
         <p>Opcode:</p>
-        <p class="code">238</p>
+        <p class="code">0</p>
         <p>Format:</p>
         <p class="code">RET</p>
         <p>Purpose:</p>
@@ -600,10 +600,12 @@ I = NNN</p>
         <table>
             <tr>
 <th>opcode</th>
+<th>0ee</th>
             </tr>
 
             <tr>
-<td>16</td>
+<td>4</td>
+<td>12</td>
             </tr>
         </table>
     </div>
@@ -828,7 +830,7 @@ I = NNN</p>
     </div>
     <div class="card-content">
         <p>Opcode:</p>
-        <p class="code">10</p>
+        <p class="code">15</p>
         <p>Format:</p>
         <p class="code">DELAY vx</p>
         <p>Purpose:</p>
@@ -858,7 +860,7 @@ I = NNN</p>
     </div>
     <div class="card-content">
         <p>Opcode:</p>
-        <p class="code">10</p>
+        <p class="code">15</p>
         <p>Format:</p>
         <p class="code">DELAYR vx</p>
         <p>Purpose:</p>
@@ -888,7 +890,7 @@ I = NNN</p>
     </div>
     <div class="card-content">
         <p>Opcode:</p>
-        <p class="code">10</p>
+        <p class="code">15</p>
         <p>Format:</p>
         <p class="code">BUZZER vx</p>
         <p>Purpose:</p>
@@ -978,7 +980,7 @@ I = NNN</p>
     </div>
     <div class="card-content">
         <p>Opcode:</p>
-        <p class="code">10</p>
+        <p class="code">15</p>
         <p>Format:</p>
         <p class="code">ADDI vx</p>
         <p>Purpose:</p>
@@ -996,7 +998,7 @@ I = NNN</p>
             <tr>
 <td>4</td>
 <td>4</td>
-<td>4</td>
+<td>8</td>
             </tr>
         </table>
     </div>
@@ -1011,7 +1013,7 @@ I = NNN</p>
         <p>Opcode:</p>
         <p class="code">13</p>
         <p>Format:</p>
-        <p class="code">DRAW vx, vy</p>
+        <p class="code">DRAW vx, vy, N</p>
         <p>Purpose:</p>
         <p class="code">Draws a sprite at position vx, vy with N bytes of sprite data starting at the address stored in I. Sets VF to 01 if any set pixels are changed to unset, and 00 otherwise</p>
         <p>Implementation:</p>
@@ -1151,7 +1153,7 @@ mem[I + 2] = vx % 10</p>
             <tr>
 <td>4</td>
 <td>4</td>
-<td>4</td>
+<td>8</td>
             </tr>
         </table>
     </div>
@@ -1163,7 +1165,7 @@ mem[I + 2] = vx % 10</p>
     </div>
     <div class="card-content">
         <p>Opcode:</p>
-        <p class="code">0</p>
+        <p class="code">15</p>
         <p>Format:</p>
         <p class="code">RDR vx</p>
         <p>Purpose:</p>
@@ -1181,7 +1183,7 @@ mem[I + 2] = vx % 10</p>
             <tr>
 <td>4</td>
 <td>4</td>
-<td>4</td>
+<td>8</td>
             </tr>
         </table>
     </div>
@@ -1189,6 +1191,6 @@ mem[I + 2] = vx % 10</p>
         </div>
 
         <script type="application/json" id="searchIndex">
-[{"href": "movc", "index": ["MOVC", "MOVC vx, NN", "Stores number NN in vx", "vx = NN"]}, {"href": "movr", "index": ["MOVR", "MOVR vx, vy", "Stores the value of vy in vx", "vx = vy"]}, {"href": "addc", "index": ["ADDC", "ADDC vx, NN", "Adds the value NN to register vx", "vx += NN"]}, {"href": "addr", "index": ["ADDR", "ADDR vx, vy", "Adds the value of register vy to register vx. Sets the VF to 01 if a carry (Integer overflow) occurs, otherwise to 00", "vx += vy\nif int_overflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "subr", "index": ["SUBR", "SUBR vx, vy", "Subtracts register vy from vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00", "vx -= vy\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "subr2", "index": ["SUBR2", "SUBR2 vx, vy", "Subtracts register vx from vy and stores the result in vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00", "vx = vy - vx\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "andr", "index": ["ANDR", "ANDR vx, vy", "Sets vx to vx AND vy", "vx = vx & vy"]}, {"href": "orr", "index": ["ORR", "ORR vx, vy", "Sets vx to vx OR vy", "vx = vx | vy"]}, {"href": "xorr", "index": ["XORR", "XORR vx, vy", "Sets vx to vx XOR vy", "vx = vx ^ vy"]}, {"href": "shrr", "index": ["SHRR", "SHRR vx, vy", "Stores the value of register vy shifted right by one bit in register vx. Sets VF to the old least significant bit", "VF = vy & 0x1\nvx = vy >> 1"]}, {"href": "shlr", "index": ["SHLR", "SHLR vx, vy", "Stores the value of register vy shifted left by one bit in register vx. Sets VF to the old most significant bit", "VF = vy & 0x80\nvx = vy << 1"]}, {"href": "rndr", "index": ["RNDR", "RNDR vx", "Sets vx to a random number with a mask of NN", "vx = randi() & NN"]}, {"href": "jmp", "index": ["JMP", "JMP NNN", "Jumps to address NNN", "I = NNN"]}, {"href": "jmprel", "index": ["JMPREL", "JMPREL NNN", "Jumps to address NNN + V0", "I = NNN + V0"]}, {"href": "call", "index": ["CALL", "CALL NNN", "Calls a subroutine at the address NNN.", "stack.push(I)\nI = NNN"]}, {"href": "ret", "index": ["RET", "RET", "Returns from a subroutine.", "I = stack.pop()"]}, {"href": "callm", "index": ["CALLM", "CALLM NNN", "Calls a subroutine at the address NNN. This is an introduction to call a real machine code subroutine on the COSMAC ELF. The subroutine must be end with D4 to inform the chip-8 interpreter, that the routine is finished.", "*(NNN)()"]}, {"href": "jnec", "index": ["JNEC", "JNEC vx, NN", "Skips the next introduction if vx == NN", "if vx != NN:"]}, {"href": "jner", "index": ["JNER", "JNER vx, vy", "Skips the next introduction if vx == vy", "if vx != vy:"]}, {"href": "jec", "index": ["JEC", "JEC vx, NN", "Skips the next introduction if vx != NN", "if vx == NN:"]}, {"href": "jer", "index": ["JER", "JER vx, vy", "Skips the next introduction if vx != vy", "if vx == vy:"]}, {"href": "kne", "index": ["KNE", "KNE vx", "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is pressed", "if key != vx:"]}, {"href": "ke", "index": ["KE", "KE vx", "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is not pressed", "if key == vx:"]}, {"href": "delay", "index": ["DELAY", "DELAY vx", "Sets the delay timer to the value of register vx", "delay = vx"]}, {"href": "delayr", "index": ["DELAYR", "DELAYR vx", "Stores the current value of the delay timer in register vx", "vx = delay"]}, {"href": "buzzer", "index": ["BUZZER", "BUZZER vx", "Sets the sound timer to the value of register vx", "buzzer = vx"]}, {"href": "waitk", "index": ["WAITK", "WAITK vx", "Waits for a keypress and store the result in register VX", ""]}, {"href": "seti", "index": ["SETI", "SETI NNN", "Stores memory address NNN in register I", "I = NNN"]}, {"href": "addi", "index": ["ADDI", "ADDI vx", "Adds the value stored in register vx to register I", "I += vx"]}, {"href": "draw", "index": ["DRAW", "DRAW vx, vy", "Draws a sprite at position vx, vy with N bytes of sprite data starting at the address stored in I. Sets VF to 01 if any set pixels are changed to unset, and 00 otherwise", "Draw(vx, vx)"]}, {"href": "cls", "index": ["CLS", "CLS", "Clears the screen", "Clear()"]}, {"href": "fnt", "index": ["FNT", "FNT vx", "Sets I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register vx", "I = SearchLetter(vx)"]}, {"href": "bcd", "index": ["BCD", "BCD vx", "Stores the binary-coded decimal equivalent of the value stored in register vx at addresses I, I+1, and I+2", "mem[I] = vx / 100 % 10\nmem[I + 1] = vx / 10 % 10\nmem[I + 2] = vx % 10"]}, {"href": "dmpr", "index": ["DMPR", "DMPR vx", "Stores the values of registers V0 to VX inclusive in memory starting at address I. I is set to I + X + 1 after the operation", "for 0 to vx: mem[I++] = V[Idx]"]}, {"href": "rdr", "index": ["RDR", "RDR vx", "Fill registers V0 to VX inclusive with the values stored in memory starting at address I. I is set to I + X + 1 after operation", "for 0 to vx: V[Idx] = mem[I++]"]}]        </script>
+[{"href": "movc", "index": ["MOVC", "MOVC vx, NN", "Stores number NN in vx", "vx = NN"]}, {"href": "movr", "index": ["MOVR", "MOVR vx, vy", "Stores the value of vy in vx", "vx = vy"]}, {"href": "addc", "index": ["ADDC", "ADDC vx, NN", "Adds the value NN to register vx", "vx += NN"]}, {"href": "addr", "index": ["ADDR", "ADDR vx, vy", "Adds the value of register vy to register vx. Sets the VF to 01 if a carry (Integer overflow) occurs, otherwise to 00", "vx += vy\nif int_overflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "subr", "index": ["SUBR", "SUBR vx, vy", "Subtracts register vy from vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00", "vx -= vy\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "subr2", "index": ["SUBR2", "SUBR2 vx, vy", "Subtracts register vx from vy and stores the result in vx. VF is set to 01 if a borrow occurs (Integer underflow), otherwise to 00", "vx = vy - vx\nif int_underflow(): VF = 0x01\nelse: VF = 0x00"]}, {"href": "andr", "index": ["ANDR", "ANDR vx, vy", "Sets vx to vx AND vy", "vx = vx & vy"]}, {"href": "orr", "index": ["ORR", "ORR vx, vy", "Sets vx to vx OR vy", "vx = vx | vy"]}, {"href": "xorr", "index": ["XORR", "XORR vx, vy", "Sets vx to vx XOR vy", "vx = vx ^ vy"]}, {"href": "shrr", "index": ["SHRR", "SHRR vx, vy", "Stores the value of register vy shifted right by one bit in register vx. Sets VF to the old least significant bit", "VF = vy & 0x1\nvx = vy >> 1"]}, {"href": "shlr", "index": ["SHLR", "SHLR vx, vy", "Stores the value of register vy shifted left by one bit in register vx. Sets VF to the old most significant bit", "VF = vy & 0x80\nvx = vy << 1"]}, {"href": "rndr", "index": ["RNDR", "RNDR vx", "Sets vx to a random number with a mask of NN", "vx = randi() & NN"]}, {"href": "jmp", "index": ["JMP", "JMP NNN", "Jumps to address NNN", "I = NNN"]}, {"href": "jmprel", "index": ["JMPREL", "JMPREL NNN", "Jumps to address NNN + V0", "I = NNN + V0"]}, {"href": "call", "index": ["CALL", "CALL NNN", "Calls a subroutine at the address NNN.", "stack.push(I)\nI = NNN"]}, {"href": "ret", "index": ["RET", "RET", "Returns from a subroutine.", "I = stack.pop()"]}, {"href": "callm", "index": ["CALLM", "CALLM NNN", "Calls a subroutine at the address NNN. This is an introduction to call a real machine code subroutine on the COSMAC ELF. The subroutine must be end with D4 to inform the chip-8 interpreter, that the routine is finished.", "*(NNN)()"]}, {"href": "jnec", "index": ["JNEC", "JNEC vx, NN", "Skips the next introduction if vx == NN", "if vx != NN:"]}, {"href": "jner", "index": ["JNER", "JNER vx, vy", "Skips the next introduction if vx == vy", "if vx != vy:"]}, {"href": "jec", "index": ["JEC", "JEC vx, NN", "Skips the next introduction if vx != NN", "if vx == NN:"]}, {"href": "jer", "index": ["JER", "JER vx, vy", "Skips the next introduction if vx != vy", "if vx == vy:"]}, {"href": "kne", "index": ["KNE", "KNE vx", "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is pressed", "if key != vx:"]}, {"href": "ke", "index": ["KE", "KE vx", "Skips the following instruction, if the key corresponding to the hex value currently stored in register vx, is not pressed", "if key == vx:"]}, {"href": "delay", "index": ["DELAY", "DELAY vx", "Sets the delay timer to the value of register vx", "delay = vx"]}, {"href": "delayr", "index": ["DELAYR", "DELAYR vx", "Stores the current value of the delay timer in register vx", "vx = delay"]}, {"href": "buzzer", "index": ["BUZZER", "BUZZER vx", "Sets the sound timer to the value of register vx", "buzzer = vx"]}, {"href": "waitk", "index": ["WAITK", "WAITK vx", "Waits for a keypress and store the result in register VX", ""]}, {"href": "seti", "index": ["SETI", "SETI NNN", "Stores memory address NNN in register I", "I = NNN"]}, {"href": "addi", "index": ["ADDI", "ADDI vx", "Adds the value stored in register vx to register I", "I += vx"]}, {"href": "draw", "index": ["DRAW", "DRAW vx, vy, N", "Draws a sprite at position vx, vy with N bytes of sprite data starting at the address stored in I. Sets VF to 01 if any set pixels are changed to unset, and 00 otherwise", "Draw(vx, vx)"]}, {"href": "cls", "index": ["CLS", "CLS", "Clears the screen", "Clear()"]}, {"href": "fnt", "index": ["FNT", "FNT vx", "Sets I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register vx", "I = SearchLetter(vx)"]}, {"href": "bcd", "index": ["BCD", "BCD vx", "Stores the binary-coded decimal equivalent of the value stored in register vx at addresses I, I+1, and I+2", "mem[I] = vx / 100 % 10\nmem[I + 1] = vx / 10 % 10\nmem[I + 2] = vx % 10"]}, {"href": "dmpr", "index": ["DMPR", "DMPR vx", "Stores the values of registers V0 to VX inclusive in memory starting at address I. I is set to I + X + 1 after the operation", "for 0 to vx: mem[I++] = V[Idx]"]}, {"href": "rdr", "index": ["RDR", "RDR vx", "Fill registers V0 to VX inclusive with the values stored in memory starting at address I. I is set to I + X + 1 after operation", "for 0 to vx: V[Idx] = mem[I++]"]}]        </script>
     </body>
 </html>

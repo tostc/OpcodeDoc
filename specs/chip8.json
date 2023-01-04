@@ -11,6 +11,7 @@
             }
         },
         "address_bus": 0,
+        "is_big_endian": true,
         "sources": [ "https://github.com/mattmikolay/chip-8/wiki/Mastering-CHIP%E2%80%908", "http://johnearnest.github.io/Octo/docs/chip8ref.pdf" ],
         "version": "1.0.0",
         "complete": true
@@ -238,7 +239,7 @@
         {
             "group": 3,
             "name": "JMPREL",
-            "opcode": 1,
+            "opcode": 11,
             "decode": {
                 "opcode": 4,
                 "NNN": 12
@@ -262,9 +263,10 @@
         {
             "group": 3,
             "name": "RET",
-            "opcode": 238,
+            "opcode": 0,
             "decode": {
-                "opcode": 16
+                "opcode": 4,
+                "0ee": 12
             },
             "format": "RET",
             "purpose": "Returns from a subroutine.",
@@ -365,7 +367,7 @@
         {
             "group": 4,
             "name": "DELAY",
-            "opcode": 10,
+            "opcode": 15,
             "decode": {
                 "opcode": 4,
                 "vx": 4,
@@ -378,7 +380,7 @@
         {
             "group": 4,
             "name": "DELAYR",
-            "opcode": 10,
+            "opcode": 15,
             "decode": {
                 "opcode": 4,
                 "vx": 4,
@@ -391,7 +393,7 @@
         {
             "group": 4,
             "name": "BUZZER",
-            "opcode": 10,
+            "opcode": 15,
             "decode": {
                 "opcode": 4,
                 "vx": 4,
@@ -429,11 +431,11 @@
         {
             "group": 6,
             "name": "ADDI",
-            "opcode": 10,
+            "opcode": 15,
             "decode": {
                 "opcode": 4,
                 "vx": 4,
-                "1E": 4
+                "1E": 8
             },
             "format": "ADDI vx",
             "purpose": "Adds the value stored in register vx to register I",
@@ -449,7 +451,7 @@
                 "vy": 4,
                 "N": 4
             },
-            "format": "DRAW vx, vy",
+            "format": "DRAW vx, vy, N",
             "purpose": "Draws a sprite at position vx, vy with N bytes of sprite data starting at the address stored in I. Sets VF to 01 if any set pixels are changed to unset, and 00 otherwise",
             "description": "Draw(vx, vx)"
         },
@@ -498,7 +500,7 @@
             "decode": {
                 "opcode": 4,
                 "vx": 4,
-                "55": 4
+                "55": 8
             },
             "format": "DMPR vx",
             "purpose": "Stores the values of registers V0 to VX inclusive in memory starting at address I. I is set to I + X + 1 after the operation",
@@ -507,11 +509,11 @@
         {
             "group": 9,
             "name": "RDR",
-            "opcode": 0,
+            "opcode": 15,
             "decode": {
                 "opcode": 4,
                 "vx": 4,
-                "65": 4
+                "65": 8
             },
             "format": "RDR vx",
             "purpose": "Fill registers V0 to VX inclusive with the values stored in memory starting at address I. I is set to I + X + 1 after operation",

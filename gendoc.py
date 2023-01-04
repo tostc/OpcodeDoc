@@ -61,6 +61,8 @@ with open(OUTPUT_FOLDER + "/index.html", "w") as indexHTMLFile:
         if m and (m[1] == "content"):
             for f in specFiles:
                 searchIndex.clear()
+                if path.splitext(f)[1] != ".json":
+                    continue
 
                 with open(f, "r") as spec:
                     specsJson = json.load(spec)
